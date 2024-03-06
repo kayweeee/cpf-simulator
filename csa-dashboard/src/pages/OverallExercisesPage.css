@@ -27,3 +27,15 @@
     background-color: #75AFAC;
     color: black;
   }
+
+  .page{
+    display: flex;
+}
+
+.navwrapper{
+    align-items: stretch;
+}
+
+.bodywrapper{
+    flex-grow: 8;
+}
