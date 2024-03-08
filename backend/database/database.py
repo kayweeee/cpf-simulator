@@ -1,18 +1,12 @@
-import sqlalchemy as create_engine
+from sqlalchemy import create_engine
 from sqlalchemy.orm  import sessionmaker, Session
-import sqlalchemy.ext.declarative as declarative_base
+from sqlalchemy.ext.declarative import declarative_base
 
 
-
-SQL_DATABASE_URL = ""
+SQL_DATABASE_URL = "mysql+pymysql:///tanka:090401@localhost:3306/testing"
 
 engine = create_engine(SQL_DATABASE_URL)
 
-def get_db():
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    try:
-        yield SessionLocal
-    finally:
-        SessionLocal.close()
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
