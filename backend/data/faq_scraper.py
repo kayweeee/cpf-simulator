@@ -16,6 +16,7 @@ import pandas as pd
 
 link = "https://www.cpf.gov.sg/member/faq/retirement-income"
 base = "https://www.cpf.gov.sg"
+data = []
 
 all_faq_links = []
 
@@ -51,10 +52,27 @@ for button_link in button_links:
             all_faq_links.append(href)
 
 for faq_link in all_faq_links:
-    # question = content.find('span', {'class': 'question'})
-    question = driver.find_element(By.CLASS_NAME, "//span[@class='question']")
-    # answer_paragraphs = driver.find_elements(By.XPATH, "//div[@class='cmp-teaser__description']/p")
-    print(question)
+    driver.get(faq_link)
+    html = driver.page_source
+    content = BeautifulSoup(html, "html.parser")
+    question = content.find('span', {'class': 'question'})
+    answer_paragraphs = driver.find_elements(By.XPATH, "//div[@class='cmp-teaser__description']/p")
+    answer = []
+    for paragraph in answer_paragraphs:
+        if paragraph.text:
+            answer.append(paragraph.text)
+        
+    # New data in dictionary format
+    new_data = {"question": question.text, "answer": answer, "link": faq_link}
 
-# # Close the browser
-# driver.quit()
+    # Append the new data to the DataFrame
+    data.append(new_data)
+    # time.sleep(2)
+
+df = pd.DataFrame(data)
+# Save DataFrame to Excel
+df.to_excel('faq_data.xlsx', index=False)
+
+
+# Close the browser
+driver.quit()
