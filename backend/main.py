@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Depends, status, HTTPException
 from sqlalchemy.orm  import Session
-from models import UserModel, SchemaModel, AttemptModel
+from models import UserModel, SchemaModel, AttemptModel, ScoreModel
 from session import create_session, engine
-from schemas import UserBase, SchemaBase, AttemptBase
+from schemas import UserBase, SchemaBase, AttemptBase, ScoreBase
 from config import Base
 
 app = FastAPI()
@@ -50,14 +50,29 @@ async def create_schema(schema: SchemaBase , db: Session = Depends(create_sessio
 ## ATTEMPT ROUTES ##
     
 @app.get("/attempt/{attempt_id}", status_code=status.HTTP_201_CREATED)
-async def read_schema(attempt_id: int, db: Session = Depends(create_session)):
+async def read_attempt(attempt_id: int, db: Session = Depends(create_session)):
     db_schema = db.query(AttemptModel).filter(AttemptModel.attempt_id == attempt_id).first()
     if db_schema is None:
         raise HTTPException(status_code=404, detail="Attempt not found")
     return db_schema
 
 @app.post("/attempt/", status_code=status.HTTP_201_CREATED)
-async def create_schema(schema: AttemptBase , db: Session = Depends(create_session)):
+async def create_attempt(schema: AttemptBase , db: Session = Depends(create_session)):
     db_schema = AttemptModel(**schema.dict())
+    db.add(db_schema)
+    db.commit()
+
+## SCORE ROUTES ##
+    
+@app.get("/score/{score_id}", status_code=status.HTTP_201_CREATED)
+async def read_score(score_id: int, db: Session = Depends(create_session)):
+    db_schema = db.query(ScoreModel).filter(ScoreModel.score_id == score_id).first()
+    if db_schema is None:
+        raise HTTPException(status_code=404, detail="Attempt not found")
+    return db_schema
+
+@app.post("/score/", status_code=status.HTTP_201_CREATED)
+async def create_score(schema: ScoreBase , db: Session = Depends(create_session)):
+    db_schema = ScoreModel(**schema.dict())
     db.add(db_schema)
     db.commit()

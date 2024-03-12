@@ -22,3 +22,10 @@ class AttemptBase(BaseModel):
     scores_id: int
     answer: str
     
+class ScoreBase(BaseModel):
+    score_id: int
+    attempt_id: int
+    precision_score: int
+    accuracy_score: int
+    tone_score: int
+    feedback: str
