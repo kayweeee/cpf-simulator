@@ -1,8 +1,9 @@
-from sqlalchemy import Integer, String, Column
+from sqlalchemy import Integer, String, Column, DateTime
 from typing import List
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from database.database import Base
+from datetime import datetime
 
 class UserModel(Base):
     __tablename__ = "user"
