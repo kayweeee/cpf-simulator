@@ -9,14 +9,6 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
-
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-
 ### USER ROUTES ###
 
 @app.get("/user/{user_id}", status_code=status.HTTP_201_CREATED)
@@ -61,6 +53,13 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
     db_schema = AttemptModel(**schema.dict())
     db.add(db_schema)
     db.commit()
+
+@app.get("/attempt/user/{user_id}", status_code=status.HTTP_201_CREATED)
+async def get_user_attempts(user_id:int, db: Session = Depends(create_session)):
+    db_user = db.query(AttemptModel).filter(AttemptModel.user_id == user_id).all()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="Attempts not found")
+    return db_user    
 
 ## SCORE ROUTES ##
     

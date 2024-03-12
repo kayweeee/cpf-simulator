@@ -2,6 +2,7 @@ from sqlalchemy import Integer, String, Column, DateTime, func, ForeignKey
 from sqlalchemy.orm import Mapped
 from config import Base
 import datetime
+import uuid
 
 class UserModel(Base):
     __tablename__ = "user"
@@ -23,7 +24,8 @@ class SchemaModel(Base):
 class AttemptModel(Base):
     __tablename__ = "attempt"
     attempt_id: Mapped[int] = Column(Integer, primary_key=True)
-    # user_id: Mapped[int] = Column(Integer, ForeignKey("user.uuid"), nullable=False)
+    user_id: Mapped[int] = Column(Integer, ForeignKey("user.uuid"), nullable=False)
+    ##foreign key but question model not created yet
     question_id: Mapped[int] = Column(Integer, nullable=False)
     scores_id: Mapped[int] = Column(Integer, nullable=False)
     answer: Mapped[str] = Column(String(255), nullable=False)
