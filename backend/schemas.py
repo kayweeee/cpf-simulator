@@ -15,3 +15,10 @@ class SchemaBase(BaseModel):
     scheme_four: int
     scheme_five: int
 
+class AttemptBase(BaseModel):
+    attempt_id: int
+    user_id: int
+    question_id: int
+    scores_id: int
+    answer: str
+    

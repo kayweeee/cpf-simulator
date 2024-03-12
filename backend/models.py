@@ -1,13 +1,13 @@
-from sqlalchemy import Integer, String, Column
+from sqlalchemy import Integer, String, Column, DateTime, func
 from sqlalchemy.orm import Mapped
 from config import Base
+import datetime
 
 class UserModel(Base):
     __tablename__ = "user"
     uuid: Mapped[int] = Column(Integer, primary_key=True)
     access_rights: Mapped[str] = Column(String(255), nullable=False)
     team_id: Mapped[int] = Column(Integer, nullable=False)
-    # scheme_id: Mapped[List] = Column(List(String(255)), nullable=True)
     scheme_id: Mapped[int] = Column(Integer, nullable=True)
 
 class SchemaModel(Base):
@@ -19,3 +19,12 @@ class SchemaModel(Base):
     scheme_three: Mapped[int] = Column(Integer, nullable=False)
     scheme_four: Mapped[int] = Column(Integer, nullable=False)
     scheme_five: Mapped[int] = Column(Integer, nullable=False)
+
+class AttemptModel(Base):
+    __tablename__ = "attempt"
+    attempt_id: Mapped[int] = Column(Integer, primary_key=True)
+    user_id: Mapped[int] = Column(Integer, nullable=False)
+    question_id: Mapped[int] = Column(Integer, nullable=False)
+    scores_id: Mapped[int] = Column(Integer, nullable=False)
+    answer: Mapped[str] = Column(String(255), nullable=False)
+    date: Mapped[datetime.datetime] = Column(DateTime, server_default=func.now(), nullable=False)
