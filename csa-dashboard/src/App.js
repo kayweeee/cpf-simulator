@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { OverallExercisesPage } from "./pages/OverallExercisesPage";
+import {TestingPage} from "./pages/testingpage"
 
 // Routing
 export const App = () => {
@@ -12,6 +13,9 @@ export const App = () => {
                 </Route>
                 <Route path="/overallexercises">
                     <OverallExercisesPage/>
+                </Route>
+                <Route path="/testingpage">
+                    <TestingPage/>
                 </Route>
             </Switch>
         </Router>
