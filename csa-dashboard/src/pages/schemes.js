@@ -1,14 +1,14 @@
 import React from 'react';
-import './SchemesPage.css';
-import case_scenario from '../case_scenario.png';
-import retirement from '../retirement.png';
-import housing from '../housing.png';
-import medisave from '../medisave.png';
-import progress45 from '../progress45.png';
-import progress20 from '../progress20.png';
-import progress50 from '../progress50.png';
+import './schemes.css';
+import case_scenario from '../../public/case_scenario.png';
+import retirement from '../../public/retirement.png';
+import housing from '../../public/housing.png';
+import medisave from '../../public/medisave.png';
+import progress45 from '../../public/progress45.png';
+import progress20 from '../../public/progress20.png';
+import progress50 from '../../public/progress50.png';
 
-export function SchemesPage() {
+export default function SchemesPage() {
   return (
     <div className='page-container'>
       <header className='header'>
@@ -17,19 +17,19 @@ export function SchemesPage() {
       <div className='schemes-page'>
         <div className='card'>
           <div className='card-body'>
-            <img src={retirement} alt='...' className='card-image' />
+            <img src={retirement.src} alt='...' className='card-image' />
             <div className='card-text-container'>
               <h2 className='card-title'>Retirement</h2>
               <div className='card-text'>
                 <p>
-                  <img src={case_scenario} alt='...' className='card-image-small' />
+                  <img src={case_scenario.src} alt='...' className='card-image-small' />
                   Case Scenarios: 11
                 </p>
               </div>
               <button className="card-button">Start Course</button>
               <div className="progress-container">
                 <span className="progress-text">Progress</span>
-                <img src={progress45} alt="Progress" className="progress-image" />
+                <img src={progress45.src} alt="Progress" className="progress-image" />
                 </div>
             </div>
           </div>
@@ -37,19 +37,19 @@ export function SchemesPage() {
 
         <div className='card'>
             <div className='card-body'>
-                <img src={housing} alt='...' className='card-image' />
+                <img src={housing.src} alt='...' className='card-image' />
                 <div className='card-text-container'>
                     <h2 className='card-title'>Housing</h2>
                     <div className='card-text'>
                         <p>
-                            <img src={case_scenario} alt='...' className='card-image-small' />
+                            <img src={case_scenario.src} alt='...' className='card-image-small' />
                             Case Scenarios: 6
                         </p>
                     </div>
                     <button className="card-button">Start Course</button>
                     <div className="progress-container">
                         <span className="progress-text">Progress</span>
-                        <img src={progress20} alt="Progress" className="progress-image" />
+                        <img src={progress20.src} alt="Progress" className="progress-image" />
                     </div>
                 </div>
             </div>
@@ -58,19 +58,19 @@ export function SchemesPage() {
 
         <div className='card'>
             <div className='card-body'>
-            <img src={medisave} alt='...' className='card-image' />
+            <img src={medisave.src} alt='...' className='card-image' />
             <div className='card-text-container'>
                 <h2 className='card-title'>Medisave</h2>
                 <div className='card-text'>
                 <p>
-                <img src={case_scenario} alt='...' className='card-image-small' />
+                <img src={case_scenario.src} alt='...' className='card-image-small' />
                     Case Scenarios: 8
                     </p>
                 </div>
                 <button className="card-button">Start Course</button>
                 <div className="progress-container">
                         <span className="progress-text">Progress</span>
-                        <img src={progress50} alt="Progress" className="progress-image" />
+                        <img src={progress50.src} alt="Progress" className="progress-image" />
                     </div>
             </div>
             </div>
