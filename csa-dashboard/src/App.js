@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { OverallExercisesPage } from "./pages/OverallExercisesPage";
 import {TestingPage} from "./pages/testingpage"
+import { SchemesPage } from "./pages/SchemesPage";
 
 // Routing
 export const App = () => {
@@ -16,6 +17,9 @@ export const App = () => {
                 </Route>
                 <Route path="/testingpage">
                     <TestingPage/>
+                </Route>
+                <Route path="/schemes">  
+                    <SchemesPage />
                 </Route>
             </Switch>
         </Router>

@@ -1,0 +1,66 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+.header {
+    font-size: x-large;
+}
+
+.schemes-page {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .card {
+    width: 500px;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    position: relative;
+  }
+  
+  .card-image {
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .card-image-small {
+    width: 14;
+    border-radius: 8px;
+    transform: translate(-20%, 30%);
+  }
+  
+  .card-title {
+    margin-top: 0;
+  }
+  
+  .card-text {
+    margin-bottom: 50px;
+  }
+  
+  .card-button {
+    position: absolute;
+    bottom: 16px; 
+    background-color: #0A6160; 
+    color: white; 
+  }
+
+  .progress-container {
+    position: absolute;
+    bottom: 10px;
+    right: 10px; 
+    display: flex;
+    align-items: center;
+}
+
+.progress-text {
+    margin-right: 5px;
+}
+
+.progress-image {
+    height: auto;
+}
+  
