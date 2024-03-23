@@ -3,10 +3,8 @@ from sqlalchemy.orm  import Session
 from models.user import UserModel
 from models.attempt import AttemptModel
 from models.scheme import SchemeModel
-from models.score import ScoreModel
 from session import create_session, engine
 from schemas.attempt import AttemptBase
-from schemas.score import ScoreBase
 from schemas.user import UserBase
 from schemas.scheme import SchemeBase
 from config import Base
@@ -78,18 +76,3 @@ async def get_user_attempts(user_id: str, db: Session = Depends(create_session))
     if db_user is None:
         raise HTTPException(status_code=404, detail="Attempts not found")
     return db_user    
-
-## SCORE ROUTES ##
-    
-@app.get("/score/{score_id}", status_code=status.HTTP_201_CREATED)
-async def read_score(score_id: str, db: Session = Depends(create_session)):
-    db_schema = db.query(ScoreModel).filter(ScoreModel.score_id == score_id).first()
-    if db_schema is None:
-        raise HTTPException(status_code=404, detail="Attempt not found")
-    return db_schema
-
-@app.post("/score/", status_code=status.HTTP_201_CREATED)
-async def create_score(schema: ScoreBase , db: Session = Depends(create_session)):
-    db_schema = ScoreModel(**schema.dict())
-    db.add(db_schema)
-    db.commit()

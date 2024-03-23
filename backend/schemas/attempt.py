@@ -3,5 +3,4 @@ from pydantic import BaseModel
 class AttemptBase(BaseModel):
     user_id: str
     question_id: int
-    scores_id: str
     answer: str
