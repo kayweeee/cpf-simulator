@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './HomePage.css';
-import cpf_image from '../cpf_image.png'; // Import your CPF image
+import cpf_image from '../../public/cpf_image.png'; // Import your CPF image
 import { FaUser } from 'react-icons/fa';
 
 export class HomePage extends Component {
@@ -9,7 +9,7 @@ export class HomePage extends Component {
       <div className="container">
         <div className="left-section">
           <div className="cpf-block">
-            <img src={cpf_image} alt="CPF Image" className="cpf-image" />
+            <img src={cpf_image.src} alt="CPF Image" className="cpf-image" />
           </div>
         </div>
         <div className="right-section">
