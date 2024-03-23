@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './Navbar.css';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import * as MatIcons from '@mui/icons-material';
-import cpf_image from '../cpf_image.png';
+import cpf_image from '../../public/cpf_image.png';
 
 export default class Navbar extends Component {
     constructor(props) {
@@ -43,14 +42,14 @@ export default class Navbar extends Component {
             <>
                 <nav className='nav-menu'>
                     <div className='header'>
-                        <img src={cpf_image} alt="CPF Image" className="cpf-image" width="80" height="80" />
+                        <img src={cpf_image.src} alt="CPF Image" className="cpf-image" width="80" height="80" />
                     </div>
                     <ul>
                         {this.NavbarData.map((item, index) => {
                             return (
                                 <li>
                                     <div key={index} className="tooltip_element" onMouseOver={this.handleMouseIn.bind(this)} onMouseOut={this.handleMouseOut.bind(this)}>
-                                        <Link to={item.path} className='tooltip_image'>{item.icon}</Link>
+                                        <Link href={item.path} className='tooltip_image'>{item.icon}</Link>
                                         <div className="tooltip">
                                             <Triangle className="triangle" w={20} h={35} direction='left' color='#E9E9E9' />
                                             <div className='rectangle'>
@@ -64,7 +63,7 @@ export default class Navbar extends Component {
                     </ul>
                     <div className='footer'>
                         <div className="tooltip_element" onMouseOver={this.handleMouseIn.bind(this)} onMouseOut={this.handleMouseOut.bind(this)}>
-                            <Link to='/'><MatIcons.Logout fontSize='large' style={{ color: 'white' }} /></Link>
+                            <Link href='/'><MatIcons.Logout fontSize='large' style={{ color: 'white' }} /></Link>
                             <div className="tooltip">
                                 <Triangle className="triangle" w={20} h={35} direction='left' color='#E9E9E9' />
                                 <div className='rectangle'>

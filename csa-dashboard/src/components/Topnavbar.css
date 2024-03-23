@@ -1,0 +1,44 @@
+.top-nav-menu {
+    background-color: #0A6160;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+  }
+  
+  .nav-text {
+    font-weight: bold;
+    margin-left: 10px;
+    color: white !important;
+    font-size: 14px; 
+  }
+
+  
+  .logout {
+    padding: 10px;
+    padding-right: 10%;
+    color: #FFFFFF;
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center; 
+    margin-left: -60px;
+  }
+  
+  .nav-links div {
+    padding: 0 10px;
+    font-size: 14px;
+  }
+  .nav-links div a {
+    color: white; 
+  }
+  

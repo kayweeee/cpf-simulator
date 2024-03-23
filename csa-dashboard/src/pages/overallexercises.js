@@ -1,12 +1,10 @@
-import './OverallExercisesPage.css';
+import './overallexercises.css';
 import React, { Component } from 'react'
-import greentick from '../status_greentick.png';
-import handslogo from '../hands_w_hearts_logo.png'
+import greentick from '../../public/status_greentick.png';
+import handslogo from '../../public/hands_w_hearts_logo.png'
 import Navbar from '../components/Navbar';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-
-export class OverallExercisesPage extends Component {
+export class OverallExercises extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -43,7 +41,7 @@ export class OverallExercisesPage extends Component {
       }
       return (
         <tr key={Status} style={{ height: '67px' }}>
-          <td>{Status === 'completed' ? <img src={greentick} alt="completed" /> : null}</td>
+          <td>{Status === 'completed' ? <img src={greentick.src} alt="completed" /> : null}</td>
           <td>{index + 1}. {Title}</td>
           <td style={{ color: DifficultyColor }}>{Difficulty}</td>
           <td>{Category}</td>
@@ -67,7 +65,7 @@ export class OverallExercisesPage extends Component {
             <Navbar />
         </div>
         <div className='bodywrapper'>
-          <h1 id='title'> <img src={handslogo} alt="handslogo" /> Retirement Scheme Training</h1>
+          <h1 id='title'> <img src={handslogo.src} alt="handslogo" /> Retirement Scheme Training</h1>
           <table id='exercises'>
             <tbody>
               <tr>{this.renderTableHeader()}</tr>
@@ -79,3 +77,5 @@ export class OverallExercisesPage extends Component {
     )
   }
 }
+
+export default OverallExercises;
