@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './Navbar.css';
 import Link from 'next/link';
-import * as MatIcons from '@mui/icons-material';
+import PersonOutlined  from '@mui/icons-material/PersonOutlined';
+import Assessment  from '@mui/icons-material/Assessment';
+import Logout  from '@mui/icons-material/Logout';
 import cpf_image from '../../public/cpf_image.png';
 
 export default class Navbar extends Component {
@@ -16,13 +18,13 @@ export default class Navbar extends Component {
         {
             title: 'My Profile',
             path: '/personal',
-            icon: <MatIcons.PersonOutlined fontSize='large' style={{ color: 'white' }} />,
+            icon: <PersonOutlined fontSize='large' style={{ color: 'white' }} />,
             cName: 'nav-icon'
         },
         {
             title: 'Exercises',
             path: '/overallexercises',
-            icon: <MatIcons.Assessment fontSize='large' style={{ color: 'white' }} />,
+            icon: <Assessment fontSize='large' style={{ color: 'white' }} />,
             cName: 'nav-icon'
         },
     ]
@@ -63,7 +65,7 @@ export default class Navbar extends Component {
                     </ul>
                     <div className='footer'>
                         <div className="tooltip_element" onMouseOver={this.handleMouseIn.bind(this)} onMouseOut={this.handleMouseOut.bind(this)}>
-                            <Link href='/'><MatIcons.Logout fontSize='large' style={{ color: 'white' }} /></Link>
+                            <Link href='/'><Logout fontSize='large' style={{ color: 'white' }} /></Link>
                             <div className="tooltip">
                                 <Triangle className="triangle" w={20} h={35} direction='left' color='#E9E9E9' />
                                 <div className='rectangle'>

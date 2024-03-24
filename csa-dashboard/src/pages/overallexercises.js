@@ -1,5 +1,5 @@
 import './overallexercises.css';
-import React, { Component } from 'react'
+import {React, Component} from 'react';
 import greentick from '../../public/status_greentick.png';
 import handslogo from '../../public/hands_w_hearts_logo.png'
 import Navbar from '../components/Navbar';

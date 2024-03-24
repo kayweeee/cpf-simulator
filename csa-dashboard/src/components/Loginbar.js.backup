@@ -36,8 +36,8 @@ export default class Loginbar extends Component {
 
         <div className='login'>
           <FaUser className="avatar-icon" />
-          {/* <Link href="/">Login</Link> */}
-          {/* <Link href='/' style={{ textDecoration: 'none', color: 'white' }}>Login</Link> */}
+          <Link href="/">Login</Link>
+          <Link href='/' style={{ textDecoration: 'none', color: 'white' }}>Login</Link>
         </div>
       </nav>
     );

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import cpf_image from '../public/cpf_image.png'; // Import your CPF image
 import { FaUser } from 'react-icons/fa';
 import './App.css';
