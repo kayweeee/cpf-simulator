@@ -1,16 +1,19 @@
 from fastapi import FastAPI, Depends, status, HTTPException
 from sqlalchemy.orm  import Session
+from sqlalchemy import select
 from models.user import UserModel
 from models.attempt import AttemptModel
 from models.scheme import SchemeModel
+from models.question import QuestionModel
 from session import create_session, engine
 from schemas.attempt import AttemptBase
 from schemas.user import UserBase
 from schemas.scheme import SchemeBase
+from schemas.question import QuestionBase
 from config import Base
 
 app = FastAPI()
-# Base.metadata.drop_all(bind=engine, checkfirst=False)
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 ### USER ROUTES ###
@@ -35,26 +38,61 @@ async def create_user(user: UserBase, db: Session = Depends(create_session)):
 ### SCHEME ROUTES ###
     
 @app.get("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
-async def read_schema(user_id: str, db: Session = Depends(create_session)):
+async def get_scheme(user_id: str, db: Session = Depends(create_session)):
     db_scheme = db.query(SchemeModel).filter(SchemeModel.user_id == user_id).all()
     if db_scheme is None:
         raise HTTPException(status_code=404, detail="User schema not found")
     return db_scheme
 
-@app.post("/scheme", status_code=status.HTTP_201_CREATED)
-async def create_scheme(scheme: SchemeBase , db: Session = Depends(create_session)):
-    user_id = scheme.user_id
-    # Check if the user exists
-    db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
 
-    # Create and add the SchemeModel instance
-    db_scheme_data = scheme.dict()
-    db_scheme_data.pop("user_id")  # Remove user_id from scheme data
-    db_scheme = SchemeModel(**db_scheme_data, user=db_user)  # Assign user object to relationship
-    db.add(db_scheme)
-    db.commit()
+@app.post("/scheme", status_code=status.HTTP_201_CREATED)
+async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_session)):
+    print(scheme)
+    # Check if the scheme with the provided scheme_name exists
+    db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme.scheme_name).first()
+    
+    if db_scheme:
+        # If the scheme exists, add the user to it
+        user = db.query(UserModel).filter(UserModel.uuid == scheme.user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Add the user to the scheme
+        db_scheme.users.append(user)
+        db.commit()
+    else:
+        # If the scheme doesn't exist, create a new scheme and add the user to it
+
+        user = db.query(UserModel).filter(UserModel.uuid == scheme.user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        new_scheme = SchemeModel(scheme_name=scheme.scheme_name, users=[user], user_id=user.uuid)
+        db.add(new_scheme)
+        db.commit()
+    
+# get unique schemes
+@app.get("/scheme/unique", status_code=status.HTTP_201_CREATED)
+async def read_unique_scheme(user_id: str, db: Session = Depends(create_session)):
+    unique_schemes = select(SchemeModel.scheme_name.distinct())
+    scheme_models = db.scalars(unique_schemes).all()
+    # select(func.count(users_table.c.name.distinct()))
+    if scheme_models is None:
+        raise HTTPException(status_code=404, detail="No unique schemes not found")
+    return [SchemeModel(**scheme_model.to_dict())['scheme_name'] for scheme_model in scheme_models]
+
+## QUESTION ROUTES ##
+# /question/{scheme_no} Get all questions of a specific scheme. Filter question by scheme
+@app.get("/question/{scheme_name}", status_code=status.HTTP_201_CREATED)
+async def get_scheme_question(scheme_name: str, db: Session = Depends(create_session)):
+    db_question = db.query(QuestionModel).filter(QuestionModel.scheme == scheme_name).all()
+    if db_question is None:
+        raise HTTPException(status_code=404, detail="User schema not found")
+    return db_question
+
+# /questions/schemes Get number of questions in each scheme
+# /questions add question 
+
 
 ## ATTEMPT ROUTES ##
 @app.get("/attempt/{attempt_id}", status_code=status.HTTP_201_CREATED)
