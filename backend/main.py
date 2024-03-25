@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, status, HTTPException
 from sqlalchemy.orm  import Session
-from sqlalchemy import select
+from sqlalchemy import select, distinct
 from models.user import UserModel
 from models.attempt import AttemptModel
 from models.scheme import SchemeModel
@@ -47,7 +47,6 @@ async def get_scheme(user_id: str, db: Session = Depends(create_session)):
 
 @app.post("/scheme", status_code=status.HTTP_201_CREATED)
 async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_session)):
-    print(scheme)
     # Check if the scheme with the provided scheme_name exists
     db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme.scheme_name).first()
     
@@ -71,15 +70,22 @@ async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_se
         db.add(new_scheme)
         db.commit()
     
-# get unique schemes
-@app.get("/scheme/unique", status_code=status.HTTP_201_CREATED)
-async def read_unique_scheme(user_id: str, db: Session = Depends(create_session)):
-    unique_schemes = select(SchemeModel.scheme_name.distinct())
-    scheme_models = db.scalars(unique_schemes).all()
-    # select(func.count(users_table.c.name.distinct()))
-    if scheme_models is None:
-        raise HTTPException(status_code=404, detail="No unique schemes not found")
-    return [SchemeModel(**scheme_model.to_dict())['scheme_name'] for scheme_model in scheme_models]
+
+@app.get("/scheme", status_code=status.HTTP_201_CREATED)
+async def get_scheme_names(db: Session = Depends(create_session)):
+    # Query for scheme names
+    print(db.query((SchemeModel)).all())
+    print(db.query(distinct(SchemeModel.scheme_name)).all())
+    schemes= db.query(distinct(SchemeModel.scheme_name)).all()
+    
+    # If no scheme names are found, raise an HTTPException with status code 404
+    if not schemes:
+        raise HTTPException(status_code=404, detail="No scheme names found")
+    print(schemes)
+    # Extract the scheme names from the query results
+    scheme_name_list = [scheme_name[0] for scheme_name in schemes]
+    
+    return scheme_name_list
 
 ## QUESTION ROUTES ##
 # /question/{scheme_no} Get all questions of a specific scheme. Filter question by scheme

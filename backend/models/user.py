@@ -7,6 +7,7 @@ import uuid
 from models.association_tables import user_scheme_association
 
 def generate_uuid():
+    print(uuid.uuid4())
     return str(uuid.uuid4())
 
 class UserModel(Base):
@@ -16,5 +17,5 @@ class UserModel(Base):
     team_id: Mapped[int] = Column(Integer, nullable=False)
     
     # relationships
-    scheme: Mapped[list["SchemeModel"]] = relationship("SchemeModel", secondary=user_scheme_association, back_populates="users")
+    scheme: Mapped[list[SchemeModel]] = relationship(SchemeModel, secondary=user_scheme_association, back_populates="users")
 
