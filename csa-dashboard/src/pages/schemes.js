@@ -1,5 +1,7 @@
 import React from 'react';
 import './schemes.css';
+import Topnavbar from '../components/Topnavbar.js';
+import Bottomnavbar from '../components/Bottomnavbar.js';
 import case_scenario from '../../public/case_scenario.png';
 import retirement from '../../public/retirement.png';
 import housing from '../../public/housing.png';
@@ -11,6 +13,7 @@ import progress50 from '../../public/progress50.png';
 export default function SchemesPage() {
   return (
     <div className='page-container'>
+      <Topnavbar />
       <header className='header'>
         <h1>Schemes</h1>
       </header>
@@ -76,6 +79,7 @@ export default function SchemesPage() {
             </div>
         </div>
         </div>
+        <Bottomnavbar />
     </div>
   );
 }
