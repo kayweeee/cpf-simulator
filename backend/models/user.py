@@ -11,6 +11,7 @@ def generate_uuid():
 class UserModel(Base):
     __tablename__ = "user"
     uuid: Mapped[str] = Column(String(255), primary_key=True, default=generate_uuid)
+    email: Mapped[str] = Column(String(255), nullable=False)
     access_rights: Mapped[str] = Column(String(255), nullable=False)
     team_id: Mapped[int] = Column(Integer, nullable=False)
     schemes: Mapped[list["SchemeModel"]] = relationship("SchemeModel", back_populates="user" )

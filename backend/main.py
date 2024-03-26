@@ -5,15 +5,42 @@ from models.attempt import AttemptModel
 from models.scheme import SchemeModel
 from session import create_session, engine
 from schemas.attempt import AttemptBase
-from schemas.user import UserBase
+from schemas.user import UserBase, UserEmailInput
 from schemas.scheme import SchemeBase
 from config import Base
+from sqlalchemy import func
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 # Base.metadata.drop_all(bind=engine, checkfirst=False)
 Base.metadata.create_all(bind=engine)
 
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "https://example.com"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
 ### USER ROUTES ###
+
+@app.post("/login", status_code=200)
+async def read_user(user_input: UserEmailInput, db: Session = Depends(create_session)):
+    email = user_input.email
+    db_user = db.query(UserModel).filter(UserModel.email == email).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    # Query the schemes associated with the user
+    db_schemes = db.query(SchemeModel).filter(SchemeModel.user_id == db_user.uuid).all()
+    db_user.schemes = db_schemes
+    return db_user
 
 @app.get("/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def read_user(user_id:str, db: Session = Depends(create_session)):
@@ -76,3 +103,22 @@ async def get_user_attempts(user_id: str, db: Session = Depends(create_session))
     if db_user is None:
         raise HTTPException(status_code=404, detail="Attempts not found")
     return db_user    
+
+@app.get("/attempt/user/{user_id}/average_scores", status_code=200)
+async def get_user_average_scores(user_id: str, db: Session = Depends(create_session)):
+    attempts = db.query(
+        func.avg(AttemptModel.precision_score),
+        func.avg(AttemptModel.accuracy_score),
+        func.avg(AttemptModel.tone_score)
+    ).filter(AttemptModel.user_id == user_id).first()
+
+    if not attempts:
+        raise HTTPException(status_code=404, detail="Attempts not found")
+
+    precision_score_avg, accuracy_score_avg, tone_score_avg = attempts
+
+    return {
+        "precision_score_avg": precision_score_avg,
+        "accuracy_score_avg": accuracy_score_avg,
+        "tone_score_avg": tone_score_avg
+    }
