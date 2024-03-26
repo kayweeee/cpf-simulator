@@ -14,5 +14,4 @@ class QuestionModel(Base):
     question_details: Mapped[str] = Column(String(255), nullable=False )
     
     scheme_name: Mapped[str] = Column(String(255), ForeignKey("scheme.scheme_name"), nullable=False)
-    
     scheme: Mapped["SchemeModel"] = relationship("SchemeModel", back_populates="questions")

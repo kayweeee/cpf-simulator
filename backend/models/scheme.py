@@ -13,4 +13,4 @@ class SchemeModel(Base):
     scheme_name: Mapped[str] = Column(String(255), primary_key=True, nullable=False )
     user_id: Mapped[str] = Column(String(255), ForeignKey("user.uuid"), nullable=False )
     users: Mapped[list["UserModel"]] = relationship("UserModel", secondary=user_scheme_association, back_populates="scheme")
-    questions = relationship("QuestionModel", back_populates="scheme")
+    questions: Mapped[list["QuestionModel"]] = relationship("QuestionModel", back_populates="scheme")

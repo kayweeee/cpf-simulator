@@ -11,6 +11,7 @@ from schemas.user import UserBase
 from schemas.scheme import SchemeBase
 from schemas.question import QuestionBase
 from config import Base
+from collections import Counter
 
 app = FastAPI()
 Base.metadata.drop_all(bind=engine)
@@ -74,30 +75,42 @@ async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_se
 @app.get("/scheme", status_code=status.HTTP_201_CREATED)
 async def get_scheme_names(db: Session = Depends(create_session)):
     # Query for scheme names
-    print(db.query((SchemeModel)).all())
-    print(db.query(distinct(SchemeModel.scheme_name)).all())
     schemes= db.query(distinct(SchemeModel.scheme_name)).all()
     
     # If no scheme names are found, raise an HTTPException with status code 404
     if not schemes:
         raise HTTPException(status_code=404, detail="No scheme names found")
-    print(schemes)
-    # Extract the scheme names from the query results
+    
+    # Extract the scheme names from the query results to return a list of schemes
     scheme_name_list = [scheme_name[0] for scheme_name in schemes]
     
     return scheme_name_list
 
 ## QUESTION ROUTES ##
-# /question/{scheme_no} Get all questions of a specific scheme. Filter question by scheme
 @app.get("/question/{scheme_name}", status_code=status.HTTP_201_CREATED)
 async def get_scheme_question(scheme_name: str, db: Session = Depends(create_session)):
-    db_question = db.query(QuestionModel).filter(QuestionModel.scheme == scheme_name).all()
+    db_question = db.query(QuestionModel).filter(QuestionModel.scheme_name == scheme_name).all()
     if db_question is None:
-        raise HTTPException(status_code=404, detail="User schema not found")
+        raise HTTPException(status_code=404, detail="No questions found for the given scheme")
     return db_question
 
-# /questions/schemes Get number of questions in each scheme
-# /questions add question 
+@app.post("/question", status_code=status.HTTP_201_CREATED)
+async def add_question_to_scheme(question: QuestionBase, db: Session = Depends(create_session)):
+    # Check if the scheme with the provided scheme_name exists
+    db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == question.scheme_name).first()
+    
+    if db_scheme:
+        # check if question is unique
+        exists = db.query(QuestionModel).filter(QuestionModel.question_details== question.question_details).first()
+        if exists:
+            raise HTTPException(status_code=404, detail="Question is already in the database")
+        else:
+            db_question= QuestionModel(**question.dict())
+            db.add(db_question)
+            db.commit()    
+    else:
+        # If the scheme doesn't exist, create a new scheme and add the user to it
+        raise HTTPException(status_code=404, detail="Scheme not found")
 
 
 ## ATTEMPT ROUTES ##
