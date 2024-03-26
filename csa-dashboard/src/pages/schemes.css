@@ -58,6 +58,19 @@
   background-color: #074641; 
 }
 
+.card-button-disabled {
+  position: absolute;
+  width: 130px;
+  bottom: 16px;
+  padding: 10px 20px; 
+  background-color: #ccc;
+  color: #666;
+  border-radius: 8px; 
+  border: 1px solid #ccc;
+  text-align: center; 
+  cursor: not-allowed; 
+}
+
   .progress-container {
     position: absolute;
     bottom: 10px;
