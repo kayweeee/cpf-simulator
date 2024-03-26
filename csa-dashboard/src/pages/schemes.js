@@ -52,7 +52,7 @@ export default function SchemesPage() {
                             Case Scenarios: 6
                         </p>
                     </div>
-                    <button className="card-button">Start Course</button>
+                    <button className="card-button-disabled">Start Course</button>
                     <div className="progress-container">
                         <span className="progress-text">Progress</span>
                         <img src={progress20.src} alt="Progress" className="progress-image" />
@@ -73,7 +73,7 @@ export default function SchemesPage() {
                     Case Scenarios: 8
                     </p>
                 </div>
-                <button className="card-button">Start Course</button>
+                <button className="card-button-disabled">Start Course</button>
                 <div className="progress-container">
                         <span className="progress-text">Progress</span>
                         <img src={progress50.src} alt="Progress" className="progress-image" />
