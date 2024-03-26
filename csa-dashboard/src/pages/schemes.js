@@ -1,5 +1,5 @@
-import React from 'react';
 import './schemes.css';
+import Link from 'next/link';
 import Topnavbar from '../components/Topnavbar.js';
 import Bottomnavbar from '../components/Bottomnavbar.js';
 import case_scenario from '../../public/case_scenario.png';
@@ -29,7 +29,10 @@ export default function SchemesPage() {
                   Case Scenarios: 11
                 </p>
               </div>
+              <Link href="/overallexercises">
               <button className="card-button">Start Course</button>
+              </Link>
+              
               <div className="progress-container">
                 <span className="progress-text">Progress</span>
                 <img src={progress45.src} alt="Progress" className="progress-image" />
