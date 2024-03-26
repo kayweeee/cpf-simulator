@@ -1,0 +1,189 @@
+
+
+CSS
+.greenFlexBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #E6EDED;
+  width: 100%;
+  padding: 10px;
+  height: 20px;
+  
+  
+}
+.body {
+  margin: 0;
+  padding: 0;
+}
+.backText {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: black;
+}
+/*make dybnamic*/
+.graphContainer {
+  border-radius: 20px;
+  background-color: #F3F7FC;
+  padding: 10px;
+  /* fit-content*/
+  width: 1100px; 
+  margin-left: 50px;
+  justify-content: center;
+  height: auto;
+}
+
+.graph {
+  display: flex;
+}
+
+.nextQuestion {
+  color: black;
+  padding-left: 50px;
+}
+
+.node {
+  width: 100px; 
+  height: 10px; 
+  background-color: #0A6160;
+  margin: 0 10px; 
+  border-radius: 10px; 
+}
+
+.node1 {
+  width: 100px; 
+  height: 10px; 
+  background-color: silver;
+  margin: 0 10px;
+  border-radius: 10px; 
+}
+.titles {
+    padding-top: 30px;
+    margin-top: 20px;
+    margin-left: 100px;
+    color:black;
+    font-weight: bold;
+    line-height: 1.5px;
+    font-size: 24px;
+}
+.greenBox {
+    border: 5px solid #186D69; 
+    border-radius: 10px;
+    padding: 20px;
+    height: 200px;
+    width: 800px;
+    display: flex; 
+    align-items: left; 
+    justify-content: center; 
+    color: black;
+    margin-top: 30px;
+    margin-left: auto; 
+    margin-right: auto; 
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profileContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; 
+    margin-top: -30px;
+  }
+  
+  .avatar {
+    height: 2em; 
+    width: 2em; 
+    margin-right: 10px;
+    
+  }
+  .textContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .helpText {
+    font-weight: bold;
+  }
+  
+  .replyContainer {
+    margin-top: 20px;
+  }
+  
+  .replyContainer hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin-top: 20px;
+  }
+
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.buttonContainer button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submitButton {
+  background-color: #186D69;
+  color: white;
+  transition: background-color 0.3s; 
+
+ 
+
+}
+
+.submitButton:hover {
+  background-color: #999999;
+}
+
+.previousButton,
+.nextButton
+ {
+  background-color: transparent;
+  border: none;
+  color: black;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.previousButton:hover,
+.nextButton:hover {
+  color: #999999;
+}
+
+.chevronIcon {
+  margin-right: 5px; }
+
+.dearOfficerText {
+    margin-top: 10px;   
+}
+.helpText, .cpfMemberText, .dearOfficerText, .textContent {
+    margin-bottom: 5px; 
+  }
+  
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+ 
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+  
+  
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }

@@ -2,11 +2,10 @@
     background-color: #0A6160;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: top;
     padding: 10px;
     width: 100%;
-    position: fixed;
-    bottom: 0;
+    margin-top: 50px;
   }
   
   
@@ -26,22 +25,30 @@
   .nav-right ul {
   padding: 0;
   margin: 0;
-  list-style: none; 
+  list-style-type: none;
+  flex-direction: column;
   justify-content: flex-start;
   display: flex; 
+  
+  
 }
   
   .nav-right ul li {
     padding: 0 10px;
-    
     color: white ; 
-    align-items: left;
+    text-align: left;
+    font-weight: normal;
+
+    
   }
+  
   
   .nav-right ul li a {
     color: white;
     text-decoration: none;
     text-align: left ;
+    align-items: left;
+
   }
   .nav-right ul + ul {
     margin-left: 60px; 

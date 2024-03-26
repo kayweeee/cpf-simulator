@@ -1,4 +1,3 @@
-// import React from 'react';
 import Link from 'next/link';
 import './Bottomnavbar.css';
 
@@ -12,13 +11,13 @@ function Bottomnavbar() {
       <div className='nav-right'>
         
         <ul>
-          <li><b>Schemes</b></li>
+        <li style={{ fontWeight: 'bold', paddingBottom: '10px' }}>Schemes</li>
           <li><Link href='/retirement'>Retirement</Link></li>
           <li><Link href='/housing'>Housing</Link></li>
           <li><Link href='/medisave'>Medisave</Link></li>
         </ul>
         <ul>
-        <li><b>Products</b></li>
+        <li style={{ fontWeight: 'bold', paddingBottom: '10px' }}>Products</li>
           <li><Link href='/home'>Home</Link></li>
           <li><Link href='/schemes'>Schemes</Link></li>
           <li><Link href='/faq'>FAQ</Link></li>
