@@ -6,9 +6,8 @@ CSS
   background-color: #E6EDED;
   width: 100%;
   padding: 10px;
-  height: 20px;
-
-
+  min-height: 20vh;
+  overflow: hidden
 }
 .body {
   margin: 0;
@@ -19,17 +18,19 @@ CSS
   display: flex;
   align-items: center;
   color: black;
+  height: 40px;
 }
 /*make dybnamic*/
 .graphContainer {
   border-radius: 20px;
   background-color: #F3F7FC;
-  padding: 10px;
-  /* fit-content*/
+  padding: 2px;
   width: 1100px; 
   margin-left: 50px;
   justify-content: center;
-  height: auto;
+  display: inline-flex;
+  justify-content: left;
+  max-height: fit-content;
 }
 
 .graph {
