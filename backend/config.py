@@ -12,7 +12,9 @@ class DatabaseConfig(BaseModel):
             DSN for target database.
     """
 
-    dsn: str = "mysql+pymysql://root:Riochan18!@localhost:3306/rio"
+
+    dsn: str = "mysql+pymysql://root:090401@localhost:3306/testing"
+
 
 
 class Config(BaseSettings):
