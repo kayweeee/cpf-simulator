@@ -12,7 +12,7 @@ class DatabaseConfig(BaseModel):
             DSN for target database.
     """
 
-    dsn: str = "mysql+pymysql://root:test1234!@localhost:3306/cpf_simulator_db1"
+    dsn: str = "mysql+pymysql://root:090401@localhost:3306/testing"
 
 
 class Config(BaseSettings):
