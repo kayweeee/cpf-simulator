@@ -4,13 +4,17 @@
   }
   
 .header {
-    font-size: x-large;
+    font-size: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bolder;
+    padding: 20px;
 }
 
 .schemes-page {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    padding: 0 0 0 80px;
   }
   
   .card {
