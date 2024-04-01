@@ -15,7 +15,6 @@ import medisave from '../../public/medisave.png';
 export default function Home() {
   return (
     <div>
-      <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins" />
       <Topnavbar />
       {/* Top Container */}
       <div className={'container'}>
