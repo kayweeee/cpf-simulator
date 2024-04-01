@@ -1,3 +1,6 @@
 .page-container {
-    margin-top: 6em;
+  display: flex;
+  margin-top: 7em;
+  flex-direction: column;
+  background-color: #E6EDED;
   }
