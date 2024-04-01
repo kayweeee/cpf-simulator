@@ -12,7 +12,7 @@ export default class Topnavbar extends Component {
     const { loginstate } = this.props;
 
     async function checkRoute() {
-      if (loginstate === true && window.location.pathname != null) {
+      if (loginstate === true && document.getElementById(window.location.pathname) != null) {
         console.log(window.location.pathname);
         document.getElementById(window.location.pathname).style.fontWeight = "900";
       }

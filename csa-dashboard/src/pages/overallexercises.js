@@ -1,6 +1,7 @@
 import './overallexercises.css';
 import React, { Component } from 'react';
 import Link from 'next/link';
+import '../global.css';
 import greentick from '../../public/status_greentick.png';
 import backbutton from '../../public/back_button.png';
 import Topnavbar from '../components/Topnavbar.js';
@@ -44,11 +45,16 @@ class OverallExercises extends Component {
       return (
         <tr key={index} style={{ height: '67px' }}>
           <td>{Status === 'completed' ? <img src={greentick.src} alt="completed" /> : null}</td>
-          <td>{index + 1}. {Title}</td>
+          <td>
+            <Link href="/exercisepage">
+              {index + 1}. {Title}
+            </Link>
+          </td>
           <td style={{ color: difficultyColor }}>{Difficulty}</td>
           <td>{Category}</td>
           <td>{Review}</td>
         </tr>
+
       );
     });
   }
@@ -62,11 +68,11 @@ class OverallExercises extends Component {
 
   render() {
     return (
-      <div className='page'>
+      <div className='page-container'>
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins" />
-        <Topnavbar loginstate={true}/>
+        <Topnavbar loginstate={true} />
         <div class="button-container">
-          <Link href="/">
+          <Link href="/schemes">
             <button className="button-btm">
               <div className="back-button">
                 <img src={backbutton.src} alt="Back" className="back-img" />
