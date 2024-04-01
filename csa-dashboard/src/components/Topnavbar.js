@@ -37,8 +37,10 @@ export default class Topnavbar extends Component {
           )
             : (
               <div className='login'>
-                <FaUser className="avatar-icon" />
-                Login
+                <Link href='/login' style={{ textDecoration: 'none', color: 'white' }}>
+                  <FaUser className="avatar-icon" />
+                  Login
+                </Link>
               </div>
             )}
         </nav>

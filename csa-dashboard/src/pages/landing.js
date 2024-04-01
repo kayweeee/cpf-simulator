@@ -1,4 +1,4 @@
-import './landing.css';
+// import './landing.css';
 import Topnavbar from '../components/Topnavbar.js';
 import Bottomnavbar from '../components/Bottomnavbar.js';
 import landingpage from '../../public/landingpage.png';
@@ -6,7 +6,8 @@ import image235 from '../../public/image 235.png';
 import rectangle from '../../public/Rectangle.png';
 import Link from 'next/link';
 
-import './schemes.css';
+// import './schemes.css';
+import './login.css';
 import case_scenario from '../../public/case_scenario.png';
 import retirement from '../../public/retirement.png';
 import housing from '../../public/housing.png';
@@ -15,7 +16,7 @@ import medisave from '../../public/medisave.png';
 export default function Home() {
   return (
     <div>
-      <Topnavbar />
+      <Topnavbar loginstate={false} />
       {/* Top Container */}
       <div className={'container'}>
         <div className={'text'}>
