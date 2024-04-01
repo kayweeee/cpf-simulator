@@ -10,11 +10,5 @@ export default function RootLayout({ children }) {
         <div id="root">{children}</div>
       </body>
     </html>
-
-    // {/* <>
-    // <Navbar />
-    // <main>{children}</main>
-    // <Footer />
-    // </> */}
   )
 }

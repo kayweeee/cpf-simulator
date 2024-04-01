@@ -4,13 +4,17 @@
   }
   
 .header {
-    font-size: x-large;
+    font-size: 50px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bolder;
+    padding: 20px;
 }
 
 .schemes-page {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    padding: 0 0 0 80px;
   }
   
   .card {
@@ -35,10 +39,16 @@
   
   .card-title {
     margin-top: 0;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px 0 5px 0;
   }
   
   .card-text {
     margin-bottom: 50px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
   }
   
   .card-button {
@@ -81,6 +91,7 @@
 
 .progress-text {
     margin-right: 5px;
+    font-family: "Montserrat", sans-serif;
 }
 
 .progress-image {
