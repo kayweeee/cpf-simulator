@@ -64,7 +64,7 @@ class OverallExercises extends Component {
     return (
       <div className='page'>
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins" />
-        <Topnavbar />
+        <Topnavbar loginstate={true}/>
         <div class="button-container">
           <Link href="/">
             <button className="button-btm">

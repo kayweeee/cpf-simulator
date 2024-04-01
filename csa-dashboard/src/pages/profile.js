@@ -3,6 +3,7 @@ import Bottomnavbar from '../components/Bottomnavbar.js';
 import Radialgraph from '../components/Radialgraph.js';
 import CustomTable from '../components/CustomTable.js';
 import './profile.css';
+import '../global.css';
 import { piepercentage } from '../components/utils/helpers.js';
 import { Bar } from "react-chartjs-2";
 import { Chart, CategoryScale, BarElement, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
@@ -46,7 +47,7 @@ export default function ProfilePage() {
         <>
             {/* <div className='page-container' onLoad={piepercentage([['Accuracy', 20], ["Detail", 50], ["Conciseness", 80], ["Conciseness", 100]])}> */}
             <div className='page-container'>
-                <Topnavbar />
+                <Topnavbar loginstate={true}/>
                 <div className='profile-page'>
                     <div className='continue-progress'>
                         <span>Next up: Retirement Scenario 5</span>
