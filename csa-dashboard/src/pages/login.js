@@ -3,12 +3,21 @@ import Topnavbar from '../components/Topnavbar.js';
 import Bottomnavbar from '../components/Bottomnavbar.js';
 
 export default function Login() {
+  async function onSubmit(event) {
+    event.preventDefault()
+
+    if (document.getElementById('username').value !== 'admin') {
+      let url = "/profile"
+      window.location.href = url;
+    }
+  }
+
     return (
         <div>
           <Topnavbar loginstate={false} />
           <div className="container">
             <div className="middle-section">
-              <form>
+              <form onSubmit={onSubmit}>
                 <h1 style={{ marginTop: '-150px' }}>Log In</h1>
                 <p style={{ marginBottom: '5px', fontSize: '13px' }}>Employee ID or Email</p>
                 <div className="icon-input">
