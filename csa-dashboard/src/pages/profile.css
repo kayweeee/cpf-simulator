@@ -1,5 +1,6 @@
 .page-container {
     display: flex;
+    margin-top: 6em;
     flex-direction: column;
     background-color: #E6EDED;
 }
@@ -21,23 +22,13 @@
     align-items: right;
 }
 
-.button {
+.continuebutton {
     background-color: #0A6160;
     border: none;
     color: white;
     padding: 1em;
     cursor: pointer;
     border-radius: 10px;
-  }
-
-.content {
-    background: #F5F5F5;
-    border-radius: 15px;
-    width:auto;
-    height:max-content;
-    display: flex;
-    flex-direction: column;
-    margin: 1em;
 }
 
 .label {
@@ -56,6 +47,16 @@
     margin: 1em;
 }
 
+.pie-content {
+    background: #F5F5F5;
+    border-radius: 15px;
+    width:auto;
+    height:max-content;
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+}
+
 .pie-graph {
     height:max-content;
     display: flex;
@@ -68,10 +69,20 @@
     margin-top: 1em;
 }
 
+.content {
+    background: #F5F5F5;
+    border-radius: 15px;
+    width:auto;
+    height:max-content;
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+    width: 50%;
+}
+
 .statistics {
     height:max-content;
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
@@ -79,22 +90,7 @@
     background: #F5F5F5;
     border-radius: 15px;
     padding: 1em;
-    width:auto;
-    height:max-content;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 1em;
-}
-
-.transcription-table {
-    background: #F5F5F5;
-    border-radius: 15px;
-    padding: 1em;
-    width:auto;
-    height:max-content;
-    display: flex;
-    justify-content: space-between;
+    height: 100%;
     align-items: center;
     margin: 1em;
 }

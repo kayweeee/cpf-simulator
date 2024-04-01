@@ -1,20 +1,49 @@
 import Topnavbar from '../components/Topnavbar.js';
 import Bottomnavbar from '../components/Bottomnavbar.js';
 import Radialgraph from '../components/Radialgraph.js';
+import CustomTable from '../components/CustomTable.js';
 import './profile.css';
-import Head from 'next/head';
 import { piepercentage } from '../components/utils/helpers.js';
-// import JSTable from "../components/jstable.min.js";
+import { Bar } from "react-chartjs-2";
+import { Chart, CategoryScale, BarElement, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
+import React from "react";
 
 export default function ProfilePage() {
-    // let myTable = new JSTable("#basic");
+    Chart.register(CategoryScale, BarElement, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
+
+    const data = {
+        labels: ["Retirement", "Housing", "Medisave", "Scheme 1", "Scheme 2"],
+        datasets: [
+            {
+                data: [76, 25, 100, 70, 12]
+            }
+        ]
+    }
+
+    const options = {
+        plugins: {
+            legend: {
+                display: false,
+            }
+        },
+        elements: {
+            line: {
+                tension: 0,
+                borderWidth: 2,
+            }
+        },
+        scales: {
+            xAxis: {
+                display: false,
+            },
+            yAxis: {
+                display: false
+            }
+        }
+    }
 
     return (
         <>
-            <Head>
-                <link rel="stylesheet" type="text/css" href="../components/jstable.css"></link>
-                <script type="text/javascript" src="../components/jstable.min.js"></script>
-            </Head>
             {/* <div className='page-container' onLoad={piepercentage([['Accuracy', 20], ["Detail", 50], ["Conciseness", 80], ["Conciseness", 100]])}> */}
             <div className='page-container'>
                 <Topnavbar />
@@ -22,10 +51,10 @@ export default function ProfilePage() {
                     <div className='continue-progress'>
                         <span>Next up: Retirement Scenario 5</span>
                         <div className='continue-progress-link'>
-                            <button type="button" className='button'>Continue Course {'>'}</button>
+                            <button type="button" className='continuebutton'>Continue Course {'>'}</button>
                         </div>
                     </div >
-                    <div className='content'>
+                    <div className='pie-content'>
                         <h3 className='label'>Overall Scores</h3>
                         <div className='graphs'>
                             <div className='pie-graph'>
@@ -49,29 +78,15 @@ export default function ProfilePage() {
                     <div className='statistics'>
                         <div className="content">
                             <h3 className='label'>Subcategory Mastery</h3>
-                            <div>
-                                <canvas id="myChart"></canvas>
-                                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                            <div className='mastery-graph'>
+                                <Bar data={data} options={options} />
                             </div>
                         </div>
                         <div className="content">
                             <h3 className='label'>Past Exercises</h3>
-                            <table id="basic">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Time Completed</th>
-                                        <th>Transcript</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Retirement: Scenario 5</td>
-                                        <td>Jan 25, 2024 01:32 PM</td>
-                                        <td>Review</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div className='mastery-graph'>
+                                <CustomTable/>
+                            </div>
                         </div>
                     </div>
                 </div>
