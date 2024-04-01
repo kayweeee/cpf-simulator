@@ -7,13 +7,20 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { FaUser } from 'react-icons/fa';
 
 export default class Topnavbar extends Component {
-  render() {
 
+  render() {
     const { loginstate } = this.props;
+
+    async function checkRoute() {
+      if (loginstate === true && window.location.pathname != null) {
+        console.log(window.location.pathname);
+        document.getElementById(window.location.pathname).style.fontWeight = "900";
+      }
+    }
 
     return (
       <>
-        <nav className='top-nav-menu'>
+        <nav className='top-nav-menu' onLoad={checkRoute}>
           <div className='header'>
             <img src={cpf_image.src} alt="CPF Image" className="cpf-image" width="80" height="80" />
             <div className='nav-text'>
@@ -24,10 +31,10 @@ export default class Topnavbar extends Component {
             <>
               <div className='nav-links'>
                 <div key={'testing'}>
-                  <Link href='/personal' style={{ textDecoration: 'none', color: 'white' }}>My Profile</Link>
+                  <Link href='/profile' style={{ textDecoration: 'none', color: 'white' }} id="/profile">My Profile</Link>
                 </div>
-                <div><Link href='/' style={{ textDecoration: 'none', color: 'white' }}>Get Started</Link></div>
-                <div><Link href='/faq' style={{ textDecoration: 'none', color: 'white' }}>FAQ</Link></div>
+                <div><Link href='/schemes' style={{ textDecoration: 'none', color: 'white' }} id="/schemes">Get Started</Link></div>
+                <div><Link href='/faq' style={{ textDecoration: 'none', color: 'white' }} id="/faq">FAQ</Link></div>
               </div><div className='logout'>
                 <Link href='/'>
                   Logout <FontAwesomeIcon icon={faSignOutAlt} />
