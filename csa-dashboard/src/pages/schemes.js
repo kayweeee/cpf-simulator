@@ -13,6 +13,7 @@ import progress50 from '../../public/progress50.png';
 export default function SchemesPage() {
   return (
     <div className='page-container'>
+      <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins" />
       <Topnavbar />
       <header className='header'>
         <h1>Schemes</h1>
@@ -60,8 +61,6 @@ export default function SchemesPage() {
                 </div>
             </div>
         </div>
-
-
         <div className='card'>
             <div className='card-body'>
             <img src={medisave.src} alt='...' className='card-image' />

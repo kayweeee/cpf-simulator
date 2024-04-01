@@ -1,12 +1,14 @@
 import './overallexercises.css';
-import {React, Component} from 'react';
+import React, { Component } from 'react';
+import Link from 'next/link';
 import greentick from '../../public/status_greentick.png';
-import handslogo from '../../public/hands_w_hearts_logo.png'
-import Navbar from '../components/Navbar';
+import backbutton from '../../public/back_button.png';
+import Topnavbar from '../components/Topnavbar.js';
+import Bottomnavbar from '../components/Bottomnavbar.js';
 
-export class OverallExercises extends Component {
+class OverallExercises extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       exercises: [
         { Status: 'completed', Title: 'Help with Medisave', Difficulty: 'Easy', Category: 'Medisave', Review: '' },
@@ -25,25 +27,25 @@ export class OverallExercises extends Component {
         { Status: 'completed', Title: 'Help with Medisave', Difficulty: 'Easy', Category: 'Medisave', Review: '' },
         { Status: 'not completed', Title: 'Help with Medisave', Difficulty: 'Easy', Category: 'Medisave', Review: '' }
       ]
-    }
+    };
   }
 
   renderTableData() {
-    return this.state.exercises.map((exercises, index) => {
-      const { Status, Title, Difficulty, Category, Review } = exercises;
-      let DifficultyColor = '';
+    return this.state.exercises.map((exercise, index) => {
+      const { Status, Title, Difficulty, Category, Review } = exercise;
+      let difficultyColor = '';
       if (Difficulty === 'Easy') {
-        DifficultyColor = '#2EAE4B';
+        difficultyColor = '#2EAE4B';
       } else if (Difficulty === 'Medium') {
-        DifficultyColor = '#F0CC4B';
+        difficultyColor = '#F0CC4B';
       } else if (Difficulty === 'Hard') {
-        DifficultyColor = '#AE2E2E';
+        difficultyColor = '#AE2E2E';
       }
       return (
-        <tr key={Status} style={{ height: '67px' }}>
+        <tr key={index} style={{ height: '67px' }}>
           <td>{Status === 'completed' ? <img src={greentick.src} alt="completed" /> : null}</td>
           <td>{index + 1}. {Title}</td>
-          <td style={{ color: DifficultyColor }}>{Difficulty}</td>
+          <td style={{ color: difficultyColor }}>{Difficulty}</td>
           <td>{Category}</td>
           <td>{Review}</td>
         </tr>
@@ -52,20 +54,29 @@ export class OverallExercises extends Component {
   }
 
   renderTableHeader() {
-    let header = Object.keys(this.state.exercises[0])
+    let header = Object.keys(this.state.exercises[0]);
     return header.map((key, index) => {
-      return <th key={index}>{key}</th>
-    })
+      return <th key={index}>{key}</th>;
+    });
   }
 
   render() {
     return (
       <div className='page'>
-        <div className='navwrapper'>
-            <Navbar />
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins" />
+        <Topnavbar />
+        <div class="button-container">
+          <Link href="/">
+            <button className="button-btm">
+              <div className="back-button">
+                <img src={backbutton.src} alt="Back" className="back-img" />
+                <span className="back-text">Back</span>
+              </div>
+            </button>
+          </Link>
         </div>
         <div className='bodywrapper'>
-          <h1 id='title'> <img src={handslogo.src} alt="handslogo" /> Retirement Scheme Training</h1>
+          <h1 id='title'> Retirement Scheme </h1>
           <table id='exercises'>
             <tbody>
               <tr>{this.renderTableHeader()}</tr>
@@ -73,8 +84,9 @@ export class OverallExercises extends Component {
             </tbody>
           </table>
         </div>
+        <Bottomnavbar />
       </div>
-    )
+    );
   }
 }
 

@@ -1,6 +1,8 @@
 #title {
-    text-align: center;
-    font-family: arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-size: 40px;
+  font-weight: bolder;
+  padding: 20px 50px 50px 200px;
   }
   
   #exercises {
@@ -8,17 +10,24 @@
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     border: 3px solid #ddd;
-    width: 100%;
+    width: 80%;
+    margin-left: 200px;
   }
   
   #exercises td, #students th {
     border: 1px solid #ddd;
     padding: 8px;
+    text-align: center;
+    vertical-align: middle;
   }
   
-  #exercises tr:nth-child(even){background-color: #f2f2f2;}
+  #exercises tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
   
-  #exercises tr:hover {background-color: #ddd;}
+  #exercises tr:hover {
+    background-color: #ddd;
+  }
   
   #exercises th {
     padding-top: 12px;
@@ -28,14 +37,47 @@
     color: black;
   }
 
-  .page{
+  .page {
     display: flex;
-}
+    flex-direction: column;
+    height: 100%;
+  }
 
-.navwrapper{
-    align-items: stretch;
-}
-
-.bodywrapper{
-    flex-grow: 8;
-}
+  .back-button {
+    display: flex;
+    align-items: center; /* Align items vertically */
+  }
+  
+  .back-img {
+    margin-right: 8px; /* Add some space between the image and text */
+  }
+  
+  .back-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .button-container {
+    padding: 20px;
+    text-align: left;
+    margin-left: 20px; /* Adjust margin to move the button to the left */
+  }
+  
+  .button-btm {
+    background-color: transparent;
+    border: none;
+    padding: 8px 16px; /* Add padding to provide some space around the text */
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    transition: background-color 0.3s, color 0.3s; /* Add transition for smoother hover effect */
+  }
