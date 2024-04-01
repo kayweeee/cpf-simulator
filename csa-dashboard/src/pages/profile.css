@@ -1,12 +1,7 @@
 .page-container {
     display: flex;
-    margin-top: 6em;
     flex-direction: column;
     background-color: #E6EDED;
-}
-
-.profile-page {
-    margin-bottom: 2em;
 }
 
 .continue-progress {
