@@ -24,7 +24,7 @@ export const App = () => {
         <div className={'text'}>
           <h1 className={'heading'}>Start training with CPF Simulator</h1>
           <p className={'paragraph'}>Welcome to CPF Simulator! Improve your skills by engaging with real-life scenarios and boost your ability to independently respond to various enquiries across different schemes after training with us!  </p>
-          <Link href="/">
+          <Link href="/login">
             <button className="button">Let's Start</button>
           </Link>
         </div>
