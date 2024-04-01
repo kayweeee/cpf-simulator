@@ -3,7 +3,7 @@ import Bottomnavbar from '../components/Bottomnavbar.js';
 import Radialgraph from '../components/Radialgraph.js';
 import Download from '@mui/icons-material/SimCardDownloadOutlined';
 import './review.css';
-import '../global.css';
+import '../app/[[...slug]]/index.css';
 import { piepercentage } from '../components/utils/helpers.js';
 import Questionbar from '../components/Questionbar.js';
 import Submitbar from '../components/Submitbar.js';

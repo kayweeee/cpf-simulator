@@ -3,7 +3,7 @@ import Bottomnavbar from '../components/Bottomnavbar.js';
 import Radialgraph from '../components/Radialgraph.js';
 import CustomTable from '../components/CustomTable.js';
 import './profile.css';
-import '../global.css';
+import '../app/[[...slug]]/index.css';
 import { piepercentage } from '../components/utils/helpers.js';
 import { Bar } from "react-chartjs-2";
 import { Chart, CategoryScale, BarElement, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';

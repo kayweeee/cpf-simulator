@@ -1,7 +1,7 @@
 import './overallexercises.css';
 import React, { Component } from 'react';
 import Link from 'next/link';
-import '../global.css';
+import '../app/[[...slug]]/index.css';
 import greentick from '../../public/status_greentick.png';
 import backbutton from '../../public/back_button.png';
 import Topnavbar from '../components/Topnavbar.js';

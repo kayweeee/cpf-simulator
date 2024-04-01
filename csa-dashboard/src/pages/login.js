@@ -1,4 +1,5 @@
 import './login.css';
+import '../app/[[...slug]]/index.css';
 import Topnavbar from '../components/Topnavbar.js';
 import Bottomnavbar from '../components/Bottomnavbar.js';
 
