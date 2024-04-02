@@ -1,85 +1,121 @@
-
-import React, { Component } from 'react';
-import cpf_image from '../public/cpf_image.png'; // Import your CPF image
-import { FaUser } from 'react-icons/fa';
+import React from 'react';
 import './App.css';
+import './pages/schemes.css';
+import './app/[[...slug]]/index.css';
 import Link from 'next/link';
+import Topnavbar from './components/Topnavbar.js';
+import Bottomnavbar from './components/Bottomnavbar.js';
 
-// top nav
-class Loginbar extends Component {
-  render() {
-    return (
-      <nav className='top-nav-menu'>
-        <div className='header'>
-          <img src={cpf_image.src} alt="CPF Image" className="cpf-image" width="80" height="80" />
-          <div className='nav-text'>
-            Central Provident<br />Fund Board Simulator
-          </div>
-        </div>
+import landingpage from '../public/landingpage.png';
+import image235 from '../public/image 235.png';
+import rectangle from '../public/Rectangle.png';
+import case_scenario from '../public/case_scenario.png';
+import retirement from '../public/retirement.png';
+import housing from '../public/housing.png';
+import medisave from '../public/medisave.png';
 
-        <div className='login'>
-          <FaUser className="avatar-icon" />
-          Login 
-
-        </div>
-      </nav>
-    );
-  }
-}
-
-//bottom nav
-  class Bottomnavbar extends Component {
-    render(){
-    return (
-      <nav className='bottom-nav-menu'>
-        <div className='nav-left'>
-          <span><b>CPF Board Simulator</b></span>
-        </div>
-
-        <div className='nav-right'>
-
-          <ul>
-          <li style={{ fontWeight: 'bold', paddingBottom: '10px' }}>Schemes</li>
-            <li><Link href='/retirement'>Retirement</Link></li>
-            <li><Link href='/housing'>Housing</Link></li>
-            <li><Link href='/medisave'>Medisave</Link></li>
-          </ul>
-          <ul>
-          <li style={{ fontWeight: 'bold', paddingBottom: '10px' }}>Products</li>
-            <li><Link href='/home'>Home</Link></li>
-            <li><Link href='/schemes'>Schemes</Link></li>
-            <li><Link href='/faq'>FAQ</Link></li>
-          </ul>
-        </div>
-      </nav>
-    );
-  }}
 // Routing
 export const App = () => {
   return (
-    <div>
-      <Loginbar />
-      <div className="container">
-        <div className="middle-section">
-
-
-
-          <form>
-            <h1 style = {{marginTop:'-150px'}}>Log In</h1>
-            <p style={{ marginBottom: '5px',fontSize: '13px'}}>Employee ID or Email</p>
-            <div className="icon-input">
-
-              <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Enter your Employee ID or Email"
-
-              />
+    <div className={'page-container'}>
+      <Topnavbar loginstate={false} />
+      {/* Top Container */}
+      <div className={'container'}>
+        <div className={'text'}>
+          <h1 className={'heading'}>Start training with CPF Simulator</h1>
+          <p className={'paragraph'}>Welcome to CPF Simulator! Improve your skills by engaging with real-life scenarios and boost your ability to independently respond to various enquiries across different schemes after training with us!  </p>
+          <Link href="/login">
+            <button className="button">Let's Start</button>
+          </Link>
+        </div>
+        <div className={'image'}>
+          <img src={landingpage.src} alt="Your Image" />
+        </div>
+      </div>
+      {/* Main Container 1 */}
+      <div className={'bottom-container'}>
+        {/* Container A */}
+        <div className={'bottom-container-1'}>
+          <div className={'left-content'}>
+            <div className={'box'}>
+              <h1 className={'heading2'}>Practice with Simulated Exercises</h1>
+              <p className={'paragraph2'}>The simulated exercises mirror real-life scenarios you might encounter, varying in difficulty levels from easy to medium to hard. </p>
             </div>
-            {/* Todo: js function to submit username for routing*/}
-            <button type="submit" id={'login'}>Login</button>
-          </form>
+          </div>
+          <div className={'right-content'}>
+            <div className={'image2-container'}>
+              <img className={'image2'} src={image235.src} alt="Your Image" />
+              <h1 className={'heading3'}>Gain real-time feedback on your performance</h1>
+              <p className={'paragraph3'}>Upon submitting your answer, you will instantly receive a personalized feedback from our specially trained model. This feedback is tailored specifically to your response. </p>
+            </div>
+          </div>
+        </div>
+        {/* Container B */}
+        <div className={'bottom-container-2'}>
+          <div className="image-bottom-left">
+            <img src={rectangle.src} alt="Image" />
+          </div>
+          <div className={'text-bottom-right'}>
+            {/* Text content for container B */}
+            <h1 className={'heading4'}>Download your transcripts for offline reference</h1>
+            <p className={'paragraph4'}>Afraid that you will forget your review? Fret not as you can download the transcripts to revisit and review again in the future! </p>
+          </div>
+        </div>
+      </div>
+      {/* Container C */}
+      <div className={'bottom-container-3'}>
+        <header className='header-text'>
+          <h1>Schemes</h1>
+        </header>
+        <div className='schemes-page'>
+          <div className='card'>
+            <div className='card-body'>
+              <img src={retirement.src} alt='...' className='card-image' />
+              <div className='card-text-container'>
+                <h2 className='card-title'>Retirement</h2>
+                <div className='card-text'>
+                  <p>
+                    <img src={case_scenario.src} alt='...' className='card-image-small' />
+                    Case Scenarios: 11
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className='card'>
+            <div className='card-body'>
+              <img src={housing.src} alt='...' className='card-image' />
+              <div className='card-text-container'>
+                <h2 className='card-title'>Housing</h2>
+                <div className='card-text'>
+                  <p>
+                    <img src={case_scenario.src} alt='...' className='card-image-small' />
+                    Case Scenarios: 6
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='card'>
+            <div className='card-body'>
+              <img src={medisave.src} alt='...' className='card-image' />
+              <div className='card-text-container'>
+                <h2 className='card-title'>Medisave</h2>
+                <div className='card-text'>
+                  <p>
+                    <img src={case_scenario.src} alt='...' className='card-image-small' />
+                    Case Scenarios: 8
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="button-container">
+          <Link href="/login">
+            <button className="button-btm">Login to Start Now!</button>
+          </Link>
         </div>
       </div>
       <Bottomnavbar />
@@ -88,3 +124,4 @@ export const App = () => {
 }
 
 export default App;
+

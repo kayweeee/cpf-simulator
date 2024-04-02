@@ -6,47 +6,67 @@
   padding: 10px;
   width: 100%;
   position: fixed;
-  left:0;
-  top:0;
+  height: 10%;
+  left: 0;
+  top: 0;
   z-index: 5;
-
 }
 
 .header {
-    display: flex;
-    align-items: center;
-    padding-left: 10%;
-  }
-  
-  .nav-text {
-    font-weight: bold;
-    margin-left: 10px;
-    color: white !important;
-    font-size: 14px; 
-  }
+  display: flex;
+  align-items: center;
+  padding-left: 10%;
+}
 
-  .logout {
-    padding: 10px;
-    padding-right: 10%;
-    color: #FFFFFF;
-    text-decoration: none; 
-  }
-  .logout a {
-    color: #FFFFFF;
-    text-decoration: none; 
-    margin-left: 10px;
-  }
+.login {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  margin-right: 10%;
+  color: #FFFFFF;
+}
 
-  .nav-links {
-    display: flex;
-    align-items: center; 
+.avatar-icon {
+  margin-right: 10px;
+}
 
-  }
+.header {
+  display: flex;
+  align-items: center;
+  padding-left: 10%;
+}
 
-  .nav-links div {
-    padding: 0 10px;
-    font-size: 14px;
-  }
-  .nav-links div a {
-    color: white; 
-  }
+.nav-text {
+  font-weight: bold;
+  margin-left: 10px;
+  color: white !important;
+  font-size: 14px;
+}
+
+.logout {
+  padding: 10px;
+  padding-right: 10%;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.logout a {
+  color: #FFFFFF;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+
+}
+
+.nav-links div {
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+.nav-links div a {
+  color: white;
+}

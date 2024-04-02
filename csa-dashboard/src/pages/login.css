@@ -1,0 +1,147 @@
+body {
+    line-height: 1;
+    overflow-x: hidden;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    min-height: 50vh;
+  }
+  
+  .middle-section {
+    width: calc(519px * 0.7); /* 80% of the original width */
+    height: calc(794px * 0.60); /* 80% of the original height */
+    background-color: #E6EDED;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15vh;
+    margin-bottom: 7vh;
+  }
+  input {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 175px;
+    padding: 8px 16px;
+  
+  }
+  .icon-input input {
+    padding-left: 0; 
+  }
+  
+  button {
+    background-color: #0A6160;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    width: 210px;
+    margin-top: 5px;
+  }
+  
+  button:hover {
+    background-color: #60908e;
+  }
+  /*top nav*/
+  
+  .top-nav-menu {
+    background-color: #0A6160;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    position: fixed;
+    height: 10%;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+  }
+  
+  .nav-text {
+    font-weight: bold;
+    margin-left: 10px;
+    font-size: 14px; 
+    color: #FFFFFF;
+  }
+  
+  .login {
+    padding: 10px;
+    display: flex; 
+    align-items: center;
+    margin-right: 10%;
+    color: #FFFFFF;
+  }
+  
+  .avatar-icon {
+    margin-right: 10px;
+  }
+  
+  
+  
+   /* btm nav bar css */
+   .bottom-nav-menu {
+    background-color: #0A6160;
+    display: flex;
+    justify-content: space-between;
+    align-items: top;
+    padding: 10px;
+    width: 100%;
+    padding-top: 10px;
+  }
+  
+  
+  .nav-left {
+    padding-left: 10%;
+    color: white;
+  
+  }
+  
+  .nav-right {
+    display: flex;
+    align-items: left;
+  
+    padding-right: 10%;
+  }
+  
+  .nav-right ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  display: flex; 
+  
+  
+  }
+  
+  .nav-right ul li {
+    padding: 0 10px;
+    color: white ; 
+    text-align: left;
+    font-weight: normal;
+  
+  
+  }
+  
+  
+  .nav-right ul li a {
+    color: white;
+    text-decoration: none;
+    text-align: left ;
+    align-items: left;
+  
+  }
+  .nav-right ul + ul {
+    margin-left: 60px; 
+  
+  }

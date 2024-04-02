@@ -3,15 +3,24 @@ import Bottomnavbar from '../components/Bottomnavbar.js';
 import Radialgraph from '../components/Radialgraph.js';
 import Download from '@mui/icons-material/SimCardDownloadOutlined';
 import './review.css';
+import '../app/[[...slug]]/index.css';
 import { piepercentage } from '../components/utils/helpers.js';
+import Questionbar from '../components/Questionbar.js';
+import Submitbar from '../components/Submitbar.js';
 
 export default function ReviewPage() {
+    async function onClick(event) {
+        event.preventDefault()
+    
+        let url = "/exercisepage"
+        window.location.href = url;
+      }
 
     return (
         <>
             <div className='page-container'>
-                <Topnavbar />
-                {/* TODO: add in question bar */}
+                <Topnavbar loginstate={true}/>
+                <Questionbar progress={2} />
                 <div className="label-bar">
                     <h3 className='label'>Feedback</h3>
                     <button type="button" className='button'>
@@ -47,9 +56,9 @@ export default function ReviewPage() {
                     <div className='pie-graph'>
                         <Radialgraph id='Tone' />
                         <p className='pie-name'>Tone</p>
-                    </div>
-                    {/* TODO: add in question bar */}
+                    </div>       
                 </div>
+                <Submitbar onClick={onClick} review={true}/>
                 <Bottomnavbar />
             </div>
         </>
