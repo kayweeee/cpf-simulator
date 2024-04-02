@@ -28,9 +28,9 @@ encode_kwargs = {'normalize_embeddings': False}
 
 # Initialize an instance of HuggingFaceEmbeddings with the specified parameters
 embeddings = HuggingFaceEmbeddings(
-    model_name=modelPath,     # Provide the pre-trained model's path
-    model_kwargs=model_kwargs, # Pass the model configuration options
-    encode_kwargs=encode_kwargs # Pass the encoding options
+    model_name=modelPath,    
+    model_kwargs=model_kwargs, 
+    encode_kwargs=encode_kwargs 
 )
 
 vectorstore = Chroma.from_documents(documents=docs, embedding=embeddings)

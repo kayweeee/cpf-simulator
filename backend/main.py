@@ -140,7 +140,6 @@ async def add_question_to_scheme(question: QuestionBase, db: Session = Depends(c
         # If the scheme doesn't exist, create a new scheme and add the user to it
         raise HTTPException(status_code=404, detail="Scheme not found")
 
-
 ## ATTEMPT ROUTES ##
 @app.get("/attempt/{attempt_id}", status_code=status.HTTP_201_CREATED)
 async def read_attempt(attempt_id: str, db: Session = Depends(create_session)):
@@ -152,19 +151,27 @@ async def read_attempt(attempt_id: str, db: Session = Depends(create_session)):
 @app.post("/attempt/", status_code=status.HTTP_201_CREATED)
 async def create_attempt(schema: AttemptBase , db: Session = Depends(create_session)):
     inputs = dict(schema)
+    # Get question details
+    db_question = db.query(QuestionModel).filter(QuestionModel.question_id == inputs['question_id']).first()
 
+    if db_question is None: 
+        raise HTTPException(status_code=404, detail="question does not exist")
+    
+    question = db_question.question_details
+    ideal = db_question.ideal   
+
+    # Get model answer and process
     response = openAI_response(
-        question=inputs['question'], 
+        question=question, 
         response=inputs['answer'],
-        ideal=inputs['ideal']
+        ideal=ideal
         )
-        
+    
+    print(response)
     response = process_response(response)
 
-    inputs.pop('question')
-    inputs.pop('ideal')
+    # Save to db
     inputs.update(response)
-
     db_schema = AttemptModel(**inputs)
     db.add(db_schema)
     db.commit() 
@@ -194,3 +201,5 @@ async def get_user_average_scores(user_id: str, db: Session = Depends(create_ses
         "accuracy_score_avg": accuracy_score_avg,
         "tone_score_avg": tone_score_avg
     }
+
+

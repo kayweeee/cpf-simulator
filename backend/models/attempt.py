@@ -12,7 +12,7 @@ class AttemptModel(Base):
     attempt_id: Mapped[str] = Column(String(255), primary_key=True, default=generate_uuid)
     user_id: Mapped[str] = Column(String(255), ForeignKey("user.uuid"), nullable=False)
     ##foreign key but question model not created yet
-    question_id: Mapped[int] = Column(Integer, nullable=False)
+    question_id: Mapped[int] = Column(String(255), ForeignKey("question.question_id"), nullable=False)
     answer: Mapped[str] = Column(String(3000), nullable=False)
     date: Mapped[DateTime] = Column(DateTime, default=func.now(), nullable=False)
     # scores
