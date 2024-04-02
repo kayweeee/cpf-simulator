@@ -2,6 +2,7 @@ import Topnavbar from '../components/Topnavbar.js';
 import Bottomnavbar from '../components/Bottomnavbar.js';
 import React, { useEffect , useRef } from 'react';
 import './faq.css';
+import '../app/[[...slug]]/index.css';
 import landingpage from '../../public/landingpage.png';
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -68,8 +69,8 @@ const Faq = () => {
     }, [control4, inView4]);
 
     return (
-        <div>
-            <Topnavbar />
+        <div className='page-container'>
+            <Topnavbar loginstate={true}/>
             <div className="greenFlexBox">
                 <div className="leftFlex">
                     <div className="title">CPF Simulator FAQ</div>
