@@ -14,9 +14,10 @@ from config import Base
 from sqlalchemy import func
 from fastapi.middleware.cors import CORSMiddleware
 from collections import Counter
+from ML.openAI import process_response, openAI_response
 
 app = FastAPI()
-Base.metadata.drop_all(bind=engine)
+# Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 origins = [
@@ -150,9 +151,23 @@ async def read_attempt(attempt_id: str, db: Session = Depends(create_session)):
 
 @app.post("/attempt/", status_code=status.HTTP_201_CREATED)
 async def create_attempt(schema: AttemptBase , db: Session = Depends(create_session)):
-    db_schema = AttemptModel(**schema.dict())
+    inputs = dict(schema)
+
+    response = openAI_response(
+        question=inputs['question'], 
+        response=inputs['answer'],
+        ideal=inputs['ideal']
+        )
+        
+    response = process_response(response)
+
+    inputs.pop('question')
+    inputs.pop('ideal')
+    inputs.update(response)
+
+    db_schema = AttemptModel(**inputs)
     db.add(db_schema)
-    db.commit()
+    db.commit() 
 
 @app.get("/attempt/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def get_user_attempts(user_id: str, db: Session = Depends(create_session)):

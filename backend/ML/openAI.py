@@ -8,6 +8,7 @@ from langchain_community.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import (ConversationalRetrievalChain)
 from langchain.memory import ConversationBufferMemory
+import json
 
 file_path = "./ML/faq_data.csv"
 
@@ -36,6 +37,14 @@ vectorstore = Chroma.from_documents(documents=docs, embedding=embeddings)
 
 retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
 
+def process_response(res):
+    json_object = json.loads(res)
+    format_dict = {'accuracy_score': json_object.get('Accuracy'), 
+                  'precision_score': json_object.get('Precision'), 
+                  'tone_score': json_object.get('Tone'), 
+                  'feedback': json_object.get('Feedback')}
+    
+    return format_dict
 
 def openAI_response(question, response, ideal):
     # Define model
