@@ -176,6 +176,8 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
     db.add(db_schema)
     db.commit() 
 
+    return response
+
 @app.get("/attempt/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def get_user_attempts(user_id: str, db: Session = Depends(create_session)):
     db_user = db.query(AttemptModel).filter(AttemptModel.user_id == user_id).all()
