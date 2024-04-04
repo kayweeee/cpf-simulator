@@ -13,7 +13,6 @@ module.exports = {
         "dark-green": "#0A6160",
         "light-green": "#E6EDED",
         "sage-green": "#0A6160",
-        // "light-green": "#60908e",
       },
     },
   },

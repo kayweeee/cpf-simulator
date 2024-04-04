@@ -3,7 +3,7 @@ export default function Footer() {
   const scheme_names = ["Retirement", "Housing", "Medisave"];
 
   return (
-    <div className="bg-dark-green text-white w-screen h-1/5 text-xl flex flex-row justify-between px-32 py-10">
+    <div className="bg-dark-green text-white w-screen h-1/5 text-xs flex flex-row justify-between px-16 py-5">
       <div>CPF Board Simulator</div>
       <div className="flex flex-row w-1/3 justify-between">
         <div>

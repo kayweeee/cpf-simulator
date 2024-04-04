@@ -34,11 +34,11 @@ export default function Home() {
   ];
 
   return (
-    <div className="text-xl">
+    <div className="text-base">
       {/* Intro Page */}
-      <div className="w-screen h-auto bg-light-green flex flex-row items-center justify-center pl-20 gap-8 py-24">
+      <div className="w-screen h-auto bg-light-green flex flex-row items-center justify-center pl-20 gap-8 py-10">
         <div className=" w-2/5 flex flex-col gap-8">
-          <div className="font-bold text-5xl">
+          <div className="font-bold text-3xl">
             Start training with CPF simulator
           </div>
           <div>
@@ -47,21 +47,21 @@ export default function Home() {
             vitae nibh nunc mattis imperdiet sed nullam.
           </div>
           <div>
-            <button className="bg-dark-green text-white py-4 px-8 rounded-lg">
+            <button className="bg-dark-green text-white py-3 px-8 rounded-lg">
               Let's Start
             </button>
           </div>
         </div>
         <div className="drop-shadow-2xl ">
-          <Image height={700} src={landingpage} alt="Trainee email enquiry" />
+          <Image height={500} src={landingpage} alt="Trainee email enquiry" />
         </div>
       </div>
 
       {/* Feature Highlights */}
-      <div className="py-20 flex flex-col gap-20">
+      <div className="py-10 flex flex-col gap-20">
         <div className="flex flex-row justify-center items-center gap-20">
           <div className="w-2/5 flex flex-col gap-8 border-4 px-8 py-12 text-center drop-shadow-m rounded-lg">
-            <div className="text-3xl font-extrabold text-sage-green">
+            <div className="text-3xl font-bold text-sage-green">
               Practice with Simulated Exercises
             </div>
             <div>
@@ -109,7 +109,7 @@ export default function Home() {
 
         {/* Schemes */}
         <div className="flex flex-col gap-y-5">
-          <div className="flex flex-row flex-wrap px-40 justify-between gap-y-7">
+          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7">
             {exampleData.map((i) => (
               <SchemeCard
                 key={i.scheme_name}
