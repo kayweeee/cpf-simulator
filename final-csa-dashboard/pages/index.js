@@ -1,10 +1,12 @@
-import "tailwindcss/tailwind.css";
+// framework
+import Image from "next/image";
+// icons and images
 import landingpage from "../public/landingpage.png";
 import feedbackpage from "../public/feedbackpage.png";
 import transcriptsimage from "../public/transcriptsimage.png";
-import Image from "next/image";
-import SchemeCard from "../components/SchemeCard";
 import retirementimage from "../public/retirement.png";
+// components
+import SchemeCard from "../components/SchemeCard";
 
 export default function Home() {
   // scheme card example data (to be replaced with api call)
@@ -15,17 +17,17 @@ export default function Home() {
       scheme_img: retirementimage,
     },
     {
-      scheme_name: "Retirement",
+      scheme_name: "a",
       questions: 20,
       scheme_img: retirementimage,
     },
     {
-      scheme_name: "Retirement",
+      scheme_name: "b",
       questions: 20,
       scheme_img: retirementimage,
     },
     {
-      scheme_name: "Retirement",
+      scheme_name: "c",
       questions: 20,
       scheme_img: retirementimage,
     },
@@ -34,7 +36,7 @@ export default function Home() {
   return (
     <div className="text-xl">
       {/* Intro Page */}
-      <div className="w-screen h-screen bg-light-green flex flex-row items-center justify-center pl-20 gap-8">
+      <div className="w-screen h-auto bg-light-green flex flex-row items-center justify-center pl-20 gap-8 py-24">
         <div className=" w-2/5 flex flex-col gap-8">
           <div className="font-bold text-5xl">
             Start training with CPF simulator
@@ -50,8 +52,8 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <div className="drop-shadow-2xl h-2/3">
-          <Image src={landingpage} alt="Trainee email enquiry" />
+        <div className="drop-shadow-2xl ">
+          <Image height={700} src={landingpage} alt="Trainee email enquiry" />
         </div>
       </div>
 
@@ -110,6 +112,7 @@ export default function Home() {
           <div className="flex flex-row flex-wrap px-40 justify-between gap-y-7">
             {exampleData.map((i) => (
               <SchemeCard
+                key={i.scheme_name}
                 scheme_name={i.scheme_name}
                 scheme_img={i.scheme_img}
                 questions={i.questions}
