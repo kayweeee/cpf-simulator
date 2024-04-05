@@ -2,13 +2,17 @@ import './login.css';
 import '../app/[[...slug]]/index.css';
 import Topnavbar from '../components/Topnavbar.js';
 import Bottomnavbar from '../components/Bottomnavbar.js';
+import {setCookie, getCookie, deleteCookie} from '../services/cookies.js';
 
 export default function Login() {
   async function onSubmit(event) {
     event.preventDefault()
 
-    if (document.getElementById('username').value !== 'admin') {
-      let url = "/profile"
+    var value = document.getElementById('username').value;
+    if (value != null & value !== 'admin') {
+      deleteCookie("name");
+      setCookie("name", value, 500);
+      let url = `/${getCookie("name")}/profile`;
       window.location.href = url;
     }
   }

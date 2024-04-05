@@ -1,15 +1,17 @@
-import Topnavbar from '../components/Topnavbar.js';
-import Bottomnavbar from '../components/Bottomnavbar.js';
-import Radialgraph from '../components/Radialgraph.js';
-import CustomTable from '../components/CustomTable.js';
+import Topnavbar from '../../components/Topnavbar.js';
+import Bottomnavbar from '../../components/Bottomnavbar.js';
+import Radialgraph from '../../components/Radialgraph.js';
+import CustomTable from '../../components/CustomTable.js';
 import './profile.css';
-import '../app/[[...slug]]/index.css';
-import { piepercentage } from '../components/utils/helpers.js';
+import '../../app/[[...slug]]/index.css';
+import { piepercentage } from '../../components/utils/helpers.js';
 import { Bar } from "react-chartjs-2";
 import { Chart, CategoryScale, BarElement, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import React from "react";
 
 export default function ProfilePage() {
+    // TODO: onload piechart data, bargraph data, transcript data + bookmark data
+
     Chart.register(CategoryScale, BarElement, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
     const data = {

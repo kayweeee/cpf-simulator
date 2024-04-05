@@ -1,14 +1,14 @@
 import './schemes.css';
-import Topnavbar from '../components/Topnavbar.js';
-import Bottomnavbar from '../components/Bottomnavbar.js';
-import retirement from '../../public/retirement.png';
-import housing from '../../public/housing.png';
-import medisave from '../../public/medisave.png';
-import Schemelist from '../components/schemelist.js';
-import progress45 from '../../public/progress45.png';
-import progress20 from '../../public/progress20.png';
-import progress50 from '../../public/progress50.png';
-import '../app/[[...slug]]/index.css';
+import Topnavbar from '../../components/Topnavbar.js';
+import Bottomnavbar from '../../components/Bottomnavbar.js';
+import retirement from '../../../public/retirement.png';
+import housing from '../../../public/housing.png';
+import medisave from '../../../public/medisave.png';
+import Schemelist from '../../components/schemelist.js';
+import progress45 from '../../../public/progress45.png';
+import progress20 from '../../../public/progress20.png';
+import progress50 from '../../../public/progress50.png';
+import '../../app/[[...slug]]/index.css';
 
 export default function SchemesPage() {
   const data = [
