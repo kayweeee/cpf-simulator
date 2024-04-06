@@ -36,15 +36,16 @@ export default function Home() {
   return (
     <div className="text-base">
       {/* Intro Page */}
-      <div className="w-screen h-auto bg-light-green flex flex-row items-center justify-center pl-20 gap-8 py-10">
+      <div className="w-screen h-auto flex flex-row items-center justify-center pl-20 gap-8 py-10 bg-light-green">
         <div className=" w-2/5 flex flex-col gap-8">
           <div className="font-bold text-3xl">
             Start training with CPF simulator
           </div>
           <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum
-            nisi aliquet volutpat pellentesque volutpat est. Sapien in etiam
-            vitae nibh nunc mattis imperdiet sed nullam.
+            Welcome to CPF Simulator! Improve your skills by engaging with
+            real-life scenarios and boost your ability to independently respond
+            to various enquiries across different schemes after training with
+            us!
           </div>
           <div>
             <button className="bg-dark-green text-white py-3 px-8 rounded-lg">
@@ -53,21 +54,31 @@ export default function Home() {
           </div>
         </div>
         <div className="drop-shadow-2xl ">
-          <Image height={500} src={landingpage} alt="Trainee email enquiry" />
+          <Image
+            height={500}
+            src={landingpage}
+            priority
+            alt="Trainee email simulator"
+          />
         </div>
       </div>
 
       {/* Feature Highlights */}
-      <div className="py-10 flex flex-col gap-20">
+      <div
+        className="py-10 flex flex-col gap-20 bg-scroll bg-center bg-no-repeat bg-contain"
+        style={{
+          backgroundImage: `url('/backgroundRectangle.png')`,
+        }}
+      >
         <div className="flex flex-row justify-center items-center gap-20">
           <div className="w-2/5 flex flex-col gap-8 border-4 px-8 py-12 text-center drop-shadow-m rounded-lg">
             <div className="text-3xl font-bold text-sage-green">
               Practice with Simulated Exercises
             </div>
             <div>
-              speak Up is a quick and convenient online test to help higher
-              education institutions and employers check the English levels of
-              individuals and groups of candidates.
+              The simulated exercises mirror real-life scenarios you might
+              encounter, varying in difficulty levels from easy to medium to
+              hard.
             </div>
           </div>
 
@@ -82,10 +93,9 @@ export default function Home() {
                 Gain real-time feedback on your performance.
               </div>
               <div>
-                Our range of free teaching resources, lesson plans and
-                activities is designed to help you prepare your students for our
-                exams and tests. We also have a range of teaching
-                qualifications, courses and support to help you as a teacher.
+                Upon submitting your answer, you will instantly receive a
+                personalized feedback from our specially trained model. This
+                feedback is tailored specifically to your response.
               </div>
             </div>
           </div>
@@ -96,13 +106,13 @@ export default function Home() {
             <Image src={transcriptsimage} alt="transcripts" />
           </div>
           <div className="w-2/5">
-            <div className="text-3xl font-bold">
+            <div className="text-3xl font-bold pb-2">
               Download your transcripts for offline reference
             </div>
             <div>
-              speak Up is a quick and convenient online test to help higher
-              education institutions and employers check the English levels of
-              individuals and groups of candidates.
+              Afraid that you will forget your review? Fret not as you can
+              download the transcripts to revisit and review again in the
+              future!
             </div>
           </div>
         </div>
