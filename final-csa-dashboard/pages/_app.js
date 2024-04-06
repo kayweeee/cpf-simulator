@@ -1,5 +1,4 @@
 import "../styles/global.css";
-
 // components
 import Header from "../components/Layouts/Header";
 import Footer from "../components/Layouts/Footer";
