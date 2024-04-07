@@ -13,14 +13,14 @@ class DatabaseConfig(BaseModel):
     """
 
 
-    dsn: str = "mysql+pymysql://root:090401@localhost:3306/testing"
+    dsn: str = "mysql+pymysql://root:test1234!@localhost:3306/testing"
 
 
 
 class Config(BaseSettings):
     """API configuration parameters.
 
-    Automatically read modifications to the configuration parameters
+    Automatically read modifications to the configuration parametersß
     from environment variables and ``.env`` file.
 
     Attributes:
