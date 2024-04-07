@@ -1,0 +1,67 @@
+.page-container {
+    margin-top: 6em;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.label-bar {
+    padding: 1em;
+    width:auto;
+    height:max-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* margin: 1em; */
+    align-items: right;
+}
+
+.label {
+    padding-left: 1em;
+}
+
+.button {
+    background-color: white;
+    border: none;
+    padding: 1em;
+    cursor: pointer;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+.user-response {
+    padding-left: 4em;
+    padding-right: 4em;
+}
+
+.model-review {
+    padding-left: 4em;
+    padding-right: 4em;
+}
+
+.graphs {
+    padding-left: 4em;
+    padding-right: 4em;
+    padding-bottom: 1em;
+    width:auto;
+    height:max-content;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 1em;
+}
+
+.pie-graph {
+    height:max-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+}
+
+.pie-name {
+    margin-top: 1em;
+}
+

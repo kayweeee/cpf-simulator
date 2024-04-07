@@ -1,44 +1,72 @@
 .top-nav-menu {
-    background-color: #0A6160;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    width: 100%;
-    
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    padding-left: 10%;
-  }
-  
-  .nav-text {
-    font-weight: bold;
-    margin-left: 10px;
-    color: white !important;
-    font-size: 14px; 
-  }
+  background-color: #0A6160;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+  position: fixed;
+  height: 10%;
+  left: 0;
+  top: 0;
+  z-index: 5;
+}
 
-  
-  .logout {
-    padding: 10px;
-    padding-right: 10%;
-    color: #FFFFFF;
-  }
-  
-  .nav-links {
-    display: flex;
-    align-items: center; 
-    margin-left: -60px;
-  }
-  
-  .nav-links div {
-    padding: 0 10px;
-    font-size: 14px;
-  }
-  .nav-links div a {
-    color: white; 
-  }
-  
+.header {
+  display: flex;
+  align-items: center;
+  padding-left: 10%;
+}
+
+.login {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  margin-right: 10%;
+  color: #FFFFFF;
+}
+
+.avatar-icon {
+  margin-right: 10px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding-left: 10%;
+}
+
+.nav-text {
+  font-weight: bold;
+  margin-left: 10px;
+  color: white !important;
+  font-size: 14px;
+}
+
+.logout {
+  padding: 10px;
+  padding-right: 10%;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.logout a {
+  color: #FFFFFF;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+
+}
+
+.nav-links div {
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+.nav-links div a {
+  color: white;
+}
