@@ -18,4 +18,7 @@ class AttemptModel(Base):
     precision_score: Mapped[int] = Column(Integer, nullable=False)
     accuracy_score: Mapped[int] = Column(Integer, nullable=False)
     tone_score: Mapped[int] = Column(Integer, nullable=False)
+    accuracy_feedback: Mapped[str] = Column(String(1000), nullable=False)
+    precision_feedback: Mapped[int] = Column(String(1000), nullable=False)
+    tone_feedback: Mapped[str] = Column(String(1000), nullable=False)
     feedback: Mapped[str] = Column(String(3000), nullable=False)

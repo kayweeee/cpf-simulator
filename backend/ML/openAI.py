@@ -38,11 +38,33 @@ vectorstore = Chroma.from_documents(documents=docs, embedding=embeddings)
 retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
 
 def process_response(res):
-    json_object = json.loads(res)
-    format_dict = {'accuracy_score': json_object.get('Accuracy'), 
-                  'precision_score': json_object.get('Precision'), 
-                  'tone_score': json_object.get('Tone'), 
-                  'feedback': json_object.get('Feedback')}
+    try:
+        try:
+            json_object = json.loads(res)
+            format_dict = {'accuracy_score': json_object.get('Accuracy'), 
+                        'precision_score': json_object.get('Precision'), 
+                        'tone_score': json_object.get('Tone'), 
+                        'accuracy_feedback': json_object.get('Accuracy Feedback'), 
+                        'precision_feedback': json_object.get('Precision Feedback'), 
+                        'tone_feedback': json_object.get('Tone Feedback'), 
+                        'feedback': json_object.get('Feedback')}
+        except:
+            json_object = json.loads('{'+ res +'}')
+            format_dict = {'accuracy_score': json_object.get('Accuracy'), 
+                        'precision_score': json_object.get('Precision'), 
+                        'tone_score': json_object.get('Tone'), 
+                        'accuracy_feedback': json_object.get('Accuracy Feedback'), 
+                        'precision_feedback': json_object.get('Precision Feedback'), 
+                        'tone_feedback': json_object.get('Tone Feedback'), 
+                        'feedback': json_object.get('Feedback')}
+    except:
+        format_dict = {'accuracy_score': 0, 
+                        'precision_score':0, 
+                        'tone_score': 0, 
+                        'accuracy_feedback': "No feedback", 
+                        'precision_feedback': "No feedback",
+                        'tone_feedback': "No feedback",
+                        'feedback': "No feedback"}
     
     return format_dict
 
@@ -65,15 +87,17 @@ def openAI_response(question, response, ideal):
     # Prompt
     prompt_template = PromptTemplate.from_template(
     """
-    I will give you a question, a customer service trainee's response to that question, as well as the ideal response to that question. 
-    I would like you to help me assess the trainee's response to the question. Do not actually answer the question, but evaluate the answer only using the context given and the ideal answer.
-    Please give the trainee's response a score out of 5 for accuracy, precision and tone. Accuracy refers to if the factually correct answers were provided, precision refers to whether the answer was clear and concise, and tone refers to whether the tone of the answer was appropriate.
+    I will give you a question, a customer service trainee's response to that question, and the ideal response to that question. 
+    Please assess the trainee's response to the question. Do not actually answer the question, but evaluate the answer only using the context given and the ideal answer.
+    Please give the trainee's response a score out of 5 for accuracy, precision and tone. Accuracy refers to if the factually correct answers were provided, precision refers to whether the answer has enough details and is concise, and tone refers to whether the tone of the answer is respectful and professional. 
+    Please take note that the ideal response scored 5 for accuracy, precision and tone and use it as a point of reference.
     Please also give some general feedback for improvement.
 
     It is acceptable to give the trainee full marks if they answered similarly to the ideal response, and if you do not have improvements to give, please give a score of 5. Do not mention the existence of the ideal response when providing your feedback.
 
-    Please give your response in this JSON format, where score is an integer and feedback_reponse is a string: 
-    "Accuracy": score, "Precision": score, "Tone": score, "Feedback": feedback_response
+    Please give your response in this JSON format, where score is an integer and all feedbacks are a string: 
+    "Accuracy": score, "Precision": score, "Tone": score, "Accuracy Feedback": accuracy_feedback, "Precision Feedback": precision_feedback, "Tone Feedback": tone_feedback ,"Feedback": feedback_response
+    Do not include backticks and do wrap the feedback in quotation marks.
 
     Question: {question}
     Trainee's response: {response}
