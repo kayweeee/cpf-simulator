@@ -13,18 +13,14 @@ function authenticated() {
 
 export default function isAuth(Component) {
   return function IsAuth(props) {
-    const auth = authenticated();
     const router = useRouter();
 
     useEffect(() => {
+      const auth = authenticated();
       if (!auth) {
         router.push("/");
       }
-    }, []);
-
-    if (!auth) {
-      return null;
-    }
+    }, [router]);
 
     return <Component {...props} />;
   };

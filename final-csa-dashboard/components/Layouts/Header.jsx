@@ -1,3 +1,5 @@
+"use client";
+
 // framework
 import Image from "next/image";
 import Link from "next/link";
@@ -8,28 +10,9 @@ import cpfImage from "../../public/cpf_image.png";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoIosLogOut } from "react-icons/io";
 
-export default function Header() {
-  const [user, setUser] = useState();
-
+export default function Header({ user, setUser }) {
   const pathname = usePathname();
   const router = useRouter();
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedUser");
-    if (loggedUserJSON) {
-      // const loggedUser = JSON.parse(loggedUserJSON);
-      const loggedUser = loggedUserJSON;
-      setUser(loggedUser);
-    }
-  }, []);
-
-  const handleLogin = () => {
-    event.preventDefault();
-
-    window.localStorage.setItem("loggedUser", JSON.stringify("{hi}"));
-    setUser("loggedin");
-    router.push("/profile");
-  };
 
   const handleLogout = () => {
     event.preventDefault();
@@ -89,13 +72,10 @@ export default function Header() {
           </button>
         </div>
       ) : (
-        <button
-          className="flex flex-row items-center gap-2"
-          onClick={handleLogin}
-        >
+        <Link href="/login" className="flex flex-row items-center gap-2">
           <AiOutlineUser size={20} />
           Log In
-        </button>
+        </Link>
       )}
     </div>
   );
