@@ -8,7 +8,7 @@ from models.question import QuestionModel
 from session import create_session, engine
 from schemas.attempt import AttemptBase
 from schemas.user import UserBase, UserEmailInput, UserResponseSchema
-from schemas.scheme import SchemeBase
+from schemas.scheme import SchemeBase, SchemeInput
 from schemas.question import QuestionBase
 from config import Base
 from sqlalchemy import func
@@ -115,7 +115,6 @@ async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_se
         db.commit()
     else:
         # If the scheme doesn't exist, create a new scheme and add the user to it
-
         user = db.query(UserModel).filter(UserModel.uuid == scheme.user_id).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
@@ -124,6 +123,32 @@ async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_se
         db.add(new_scheme)
         db.commit()
     
+@app.put("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
+async def update_user_schemes(scheme_input: SchemeInput, db: Session = Depends(create_session)):
+    # Check if user exists
+    user = db.query(UserModel).filter(UserModel.uuid == scheme_input.user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Get existing schemes for the user
+    existing_schemes = {scheme.scheme_name for scheme in user.scheme}
+
+    for scheme in scheme_input.schemesList:
+        if scheme not in existing_schemes:
+            db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme).first()
+            db_scheme.users.append(user)
+            db.commit()
+            
+    
+    # Delete schemes that are no longer in the new scheme list
+    for scheme in user.scheme.copy():
+        if scheme.scheme_name not in scheme_input.schemesList:
+            # Remove from association table
+            user.scheme.remove(scheme)
+            db.delete(scheme)
+            db.commit()
+
+    return {"message": "Schemes updated successfully"}
 
 @app.get("/scheme", status_code=status.HTTP_201_CREATED)
 async def get_scheme_names(db: Session = Depends(create_session)):
