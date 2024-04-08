@@ -72,7 +72,7 @@ async def get_all_users(db: Session = Depends(create_session)):
 @app.get("/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def read_user(user_id:str, db: Session = Depends(create_session)):
     db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
-    # db_schemes = db.query(SchemeModel).filter(SchemeModel.user_id == user_id).all
+
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
         # Query the schemes associated with the user
@@ -96,7 +96,8 @@ async def get_scheme(user_id: str, db: Session = Depends(create_session)):
     db_scheme = db.query(SchemeModel).filter(SchemeModel.user_id == user_id).all()
     if db_scheme is None:
         raise HTTPException(status_code=404, detail="User schema not found")
-    return db_scheme
+  
+    return db_user.scheme
 
 
 @app.post("/scheme", status_code=status.HTTP_201_CREATED)
@@ -109,16 +110,23 @@ async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_se
         user = db.query(UserModel).filter(UserModel.uuid == scheme.user_id).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
+        print(scheme.scheme_name, user.scheme)
         
-        # Add the user to the scheme
-        db_scheme.users.append(user)
-        db.commit()
+        # Check if the user is already associated with the scheme
+        if user in db_scheme.users:
+            print("User is already associated with the scheme")
+            raise HTTPException(status_code=404, detail="User is already associated with the scheme")
+        
+        else:
+            # Add the user to the scheme
+            db_scheme.users.append(user)
+            db.commit()
     else:
         # If the scheme doesn't exist, create a new scheme and add the user to it
         user = db.query(UserModel).filter(UserModel.uuid == scheme.user_id).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
-        
+        print('add new scheme to user')
         new_scheme = SchemeModel(scheme_name=scheme.scheme_name, users=[user], user_id=user.uuid)
         db.add(new_scheme)
         db.commit()
@@ -131,24 +139,51 @@ async def update_user_schemes(scheme_input: SchemeInput, db: Session = Depends(c
         raise HTTPException(status_code=404, detail="User not found")
     
     # Get existing schemes for the user
-    existing_schemes = {scheme.scheme_name for scheme in user.scheme}
-
-    for scheme in scheme_input.schemesList:
-        if scheme not in existing_schemes:
-            db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme).first()
-            db_scheme.users.append(user)
-            db.commit()
-            
+    existing_schemes = [scheme.scheme_name for scheme in user.scheme]
+    # existing_schemes = db.query(SchemeModel).filter(SchemeModel.user_id == scheme_input.user_id).all()
     
-    # Delete schemes that are no longer in the new scheme list
-    for scheme in user.scheme.copy():
-        if scheme.scheme_name not in scheme_input.schemesList:
-            # Remove from association table
-            user.scheme.remove(scheme)
-            db.delete(scheme)
-            db.commit()
+    print(existing_schemes, scheme_input.schemesList)
+    schemes_to_add = (set(scheme_input.schemesList) - set(existing_schemes))
+    schemes_to_delete = (set(existing_schemes) - set(scheme_input.schemesList))
+    print('schemes to add', schemes_to_add)
+    print("schemes to delete", schemes_to_delete)
 
-    return {"message": "Schemes updated successfully"}
+    try:
+        for scheme_name in schemes_to_add:
+            # Check if scheme exists in the database
+            db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
+            print(scheme_name,db_scheme)
+            if db_scheme:
+                # If the scheme exists, add the user to it
+                db_scheme.users.append(user)
+                print('added user to scheme')
+            else:
+                # If the scheme doesn't exist, create a new scheme and add the user to it
+                new_scheme = SchemeModel(scheme_name=scheme_name, users=[user], user_id=user.uuid)
+                db.add(new_scheme)
+
+        for scheme_name in schemes_to_delete:
+            
+            # Check if scheme exists in the database
+            db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
+            
+            if db_scheme:
+                # user exists in db
+                while user in db_scheme.users:
+                    db_scheme.users.remove(user)
+                    # Optionally, delete the scheme if no users are associated with it
+                    if not db_scheme.users:
+                        db.delete(db_scheme)
+
+        db.commit()
+        
+        return {"message": "Schemes updated successfully"}
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+    
 
 @app.get("/scheme", status_code=status.HTTP_201_CREATED)
 async def get_scheme_names(db: Session = Depends(create_session)):

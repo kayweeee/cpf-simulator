@@ -12,7 +12,8 @@ export const getStaticProps= (async (context) => {
   })
 
 export default function AddProfile(schemes){
-    console.log(schemes)
+    console.log(schemes['schemes'])
+    const schemeNames = schemes['schemes']
     const [LoginId, setLoginId] = useState();
     // const schemes = ["scheme 1", "scheme 2", "scheme 3"] # dummy data
     const accessRights = ['member','admin']
@@ -58,7 +59,7 @@ export default function AddProfile(schemes){
                 <ButtonGroup variant="flat" className="flex flex-wrap md:flex-nowrap gap-4 px-1 m-2 items-center"> {/* Ensured all items are centered */}
                     <Button>Scheme: </Button>
                     <div className='border border-sage-green p-2 mx-2 w-48 justify-between flex '> {/* Adjusted styles for centered items */}
-                        <span>{schemes[selectedSchemeIndex]}</span>
+                        <span>{schemeNames[selectedSchemeIndex]}</span>
                         <Dropdown>
                             <DropdownTrigger placement="bottom-end">
                                 <Button isIconOnly className='px-2'>
@@ -69,22 +70,21 @@ export default function AddProfile(schemes){
 
                             <DropdownMenu
                                 disallowEmptySelection
-                                aria-label={schemes[selectedSchemeIndex]}
+                                aria-label={schemeNames[selectedSchemeIndex]}
                                 selectedKey={[selectedSchemeIndex]}
                                 selectionMode="single"
                                 className='place-items-center block bg-light-green'
 
                             >
-                                {/* {schemes.map((scheme, index) => (
+                                {schemeNames.map((scheme, index) => (
                                     <DropdownItem className='p-1 m-1 hover:bg-white/50 outline-none rounded w-full' key={index} onAction={() => handleSchemeSelection(index)}>
                                         {scheme}
                                     </DropdownItem>
-                                ))} */}
+                                ))}
                             </DropdownMenu>
                         </Dropdown>
                     </div>
                 </ButtonGroup>
-
                 <ButtonGroup variant="flat" className="flex flex-wrap md:flex-nowrap gap-4 px-1 m-2 items-center"> {/* Ensured all items are centered */}
                     <Button>Access:    </Button>
                     <div className='border border-sage-green p-2 mx-2 w-48 justify-between flex items-center'> {/* Adjusted styles for centered items */}
