@@ -31,6 +31,39 @@ export default function Profile() {
         }
     ];
 
+    const tabledata = [
+        {
+            id:'1',
+            title: 'Retirement Scenario 5',
+            time: 'Jan 25, 2024 01:32 PM',
+        },
+        {
+            id:'2',
+            title: 'Retirement Scenario 4',
+            time: 'Jan 23, 2024 02:42 PM',
+        },
+        {
+            id:'3',
+            title: 'Retirement Scenario 3',
+            time: 'Jan 22, 2024 01:20 PM',
+        },
+        {
+            id:'4',
+            title: 'Retirement Scenario 2',
+            time: 'Jan 22, 2024 02:00 PM',
+        },
+        {
+            id:'5',
+            title: 'Retirement Scenario 1',
+            time: 'Jan 22, 2024 01:00 PM',
+        },
+        {
+            id:'6',
+            title: 'Housing Scenario 6',
+            time: 'Jan 22, 2024 12:00 PM',
+        },
+    ];
+
 
     return (
         <>
@@ -58,7 +91,7 @@ export default function Profile() {
                     <div className="bg-light-gray rounded-lg w-1/2 ml-4 mt-4">
                         <h3 className='pl-5 pt-5'>Past Exercises</h3>
                         <div className='rounded-lg p-4 h-full flex items-center m-4'>
-                            <CustomTable />
+                            <CustomTable rows={tabledata}/>
                         </div>
                     </div>
                 </div>

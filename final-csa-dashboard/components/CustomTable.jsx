@@ -10,10 +10,11 @@ import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import Link from 'next/link';
 
-export default function TableCustomized() {
+export default function TableCustomized({rows}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+  
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -42,13 +43,12 @@ export default function TableCustomized() {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row) => (
-            <tr key={row.title}>
+            <tr key={row.id}>
               <td>{row.title}</td>
               <td style={{ width: 240 }} align="right">
                 {row.time}
               </td>
               <td style={{ width: 120 }} align="right">
-                {/* <Link href={`/review/${row.link}`}>Review</Link> */}
                 <Link href={`/review`}>Review</Link>                
               </td>
             </tr>
@@ -92,28 +92,6 @@ export default function TableCustomized() {
     </Root>
   );
 }
-
-function createData(title, time, link) {
-  return { title, time, link };
-}
-
-const rows = [
-  createData('Retirement: Scenario 5', "Jan 25, 2024 01:32 PM", 37),
-  createData('Retirement: Scenario 4', "Jan 23, 2024 02:42 PM", 250),
-  createData('Retirement: Scenario 3', "Jan 22, 2024 01:20 PM", 160),
-  createData('Retirement: Scenario 2', "Jan 22, 2024 02:00 PM", 60),
-  createData('Retirement: Scenario 1', "Jan 21, 2024 02:22 PM", 160),
-  createData('Retirement: Scenario 5', "Jan 25, 2024 01:32 PM", 37),
-  createData('Retirement: Scenario 4', "Jan 23, 2024 02:42 PM", 250),
-  createData('Retirement: Scenario 3', "Jan 22, 2024 01:20 PM", 160),
-  createData('Retirement: Scenario 2', "Jan 22, 2024 02:00 PM", 0),
-  createData('Retirement: Scenario 1', "Jan 21, 2024 02:22 PM", 160),
-  createData('Retirement: Scenario 5', "Jan 25, 2024 01:32 PM", 37),
-  createData('Retirement: Scenario 4', "Jan 23, 2024 02:42 PM", 250),
-  createData('Retirement: Scenario 3', "Jan 22, 2024 01:20 PM", 160),
-  createData('Retirement: Scenario 2', "Jan 22, 2024 02:00 PM", 60),
-  createData('Retirement: Scenario 1', "Jan 21, 2024 02:22 PM", 160),
-];
 
 const blue = {
   50: '#F0F7FF',
