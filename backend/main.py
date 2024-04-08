@@ -7,7 +7,7 @@ from models.scheme import SchemeModel
 from models.question import QuestionModel
 from session import create_session, engine
 from schemas.attempt import AttemptBase
-from schemas.user import UserBase, UserEmailInput
+from schemas.user import UserBase, UserEmailInput, UserResponseSchema
 from schemas.scheme import SchemeBase
 from schemas.question import QuestionBase
 from config import Base
@@ -51,11 +51,23 @@ async def read_user(user_input: UserEmailInput, db: Session = Depends(create_ses
 async def get_all_users(db: Session = Depends(create_session)):
     users = db.query(UserModel).options(joinedload(UserModel.scheme)).all()
 
-    # If no scheme names are found, raise an HTTPException with status code 404
+    # If no users are found, raise an HTTPException with status code 404
     if not users:
         raise HTTPException(status_code=404, detail="No users found")
     
-    return users
+    user_responses = []
+    for user in users:
+        schemes = [scheme.scheme_name for scheme in user.scheme]
+        user_response = UserResponseSchema(
+            uuid=user.uuid,
+            email=user.email,
+            name=user.name,
+            access_rights=user.access_rights,
+            schemes=schemes
+        )
+        user_responses.append(user_response)
+    
+    return user_responses
 
 @app.get("/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def read_user(user_id:str, db: Session = Depends(create_session)):

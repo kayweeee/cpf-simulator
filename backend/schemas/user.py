@@ -9,3 +9,9 @@ class UserBase(BaseModel):
 class UserEmailInput(BaseModel):
     email: str
 
+class UserResponseSchema(BaseModel):
+    uuid: str
+    email: str
+    name: str
+    access_rights: str
+    schemes: List[str]
