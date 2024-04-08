@@ -78,6 +78,9 @@ async def create_user(user: UserBase, db: Session = Depends(create_session)):
     
 @app.get("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
 async def get_scheme(user_id: str, db: Session = Depends(create_session)):
+    db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
     db_scheme = db.query(SchemeModel).filter(SchemeModel.user_id == user_id).all()
     if db_scheme is None:
         raise HTTPException(status_code=404, detail="User schema not found")
