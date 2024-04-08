@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, status, HTTPException
-from sqlalchemy.orm  import Session
+from sqlalchemy.orm  import Session, joinedload
 from sqlalchemy import select, distinct
 from models.user import UserModel
 from models.attempt import AttemptModel
@@ -46,6 +46,16 @@ async def read_user(user_input: UserEmailInput, db: Session = Depends(create_ses
     db_schemes = db.query(SchemeModel).filter(SchemeModel.user_id == db_user.uuid).all()
     db_user.schemes = db_schemes
     return db_user
+
+@app.get("/user", status_code=status.HTTP_201_CREATED)
+async def get_all_users(db: Session = Depends(create_session)):
+    users = db.query(UserModel).options(joinedload(UserModel.scheme)).all()
+
+    # If no scheme names are found, raise an HTTPException with status code 404
+    if not users:
+        raise HTTPException(status_code=404, detail="No users found")
+    
+    return users
 
 @app.get("/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def read_user(user_id:str, db: Session = Depends(create_session)):
