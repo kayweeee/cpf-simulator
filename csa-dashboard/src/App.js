@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import './pages/[traineeId]/schemes.css';
+import './pages/schemes.css';
 import './app/[[...slug]]/index.css';
 import Link from 'next/link';
 import Topnavbar from './components/Topnavbar.js';
