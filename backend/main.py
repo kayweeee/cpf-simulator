@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, status, HTTPException
+from fastapi import FastAPI, Depends, status, HTTPException, responses
 from sqlalchemy.orm  import Session, joinedload
 from sqlalchemy import select, distinct
 from models.user import UserModel
@@ -80,11 +80,15 @@ async def read_user(user_id:str, db: Session = Depends(create_session)):
     db_user.schemes = db_schemes
     return db_user
 
-@app.post("/user/", status_code=status.HTTP_201_CREATED)
-async def create_user(user: UserBase, db: Session = Depends(create_session)):
+@app.post("/user", status_code=status.HTTP_201_CREATED)
+async def createx_user(user: UserBase, db: Session = Depends(create_session)):
+    print("starting")
     db_user = UserModel(**user.dict())
+    print("user format is correct")
     db.add(db_user)
+    print("user is added in db")
     db.commit()
+    return responses.JSONResponse(content = {'message' : 'User added'}, status_code=201)
 
 ### SCHEME ROUTES ###
     
@@ -193,10 +197,8 @@ async def get_scheme_names(db: Session = Depends(create_session)):
     # If no scheme names are found, raise an HTTPException with status code 404
     if not schemes:
         raise HTTPException(status_code=404, detail="No scheme names found")
-    
     # Extract the scheme names from the query results to return a list of schemes
     scheme_name_list = [scheme_name[0] for scheme_name in schemes]
-    
     return scheme_name_list
 
 ## QUESTION ROUTES ##
