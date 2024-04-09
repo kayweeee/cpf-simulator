@@ -15,14 +15,12 @@ export default function AddProfile(schemes){
     const schemeNames = schemes['schemes']
     const [email, setEmail] = useState();
     const [name, setName] = useState();
-    // const schemes = ["scheme 1", "scheme 2", "scheme 3"] # dummy data
     const accessRights = ['member','admin']
     const [selectedSchemeIndex, setSelectedSchemeIndex] = useState(0);
     const [selectedAccessIndex, setSelectedAccessIndex] = useState(0);
 
     async function addUser (email, access_rights, name) {
-        // const add_user_request = {email: email, access_rights: access_rights, name: name}
-        console.log(JSON.stringify({email: email, access_rights: access_rights, name: name}))
+
         try {
             const response = await fetch('http://127.0.0.1:8000/user', {
                 method: 'POST',
@@ -98,9 +96,9 @@ export default function AddProfile(schemes){
                         />
                     </div>
 
-                    <ButtonGroup variant="flat" className="flex flex-row md:flex-nowrap flex-wrap gap-4 px-1 m-2 items-center"> {/* Ensured all items are centered */}
+                    <ButtonGroup variant="flat" className="flex flex-row md:flex-nowrap flex-wrap gap-4 px-1 m-2 items-center">
                         <Button>Scheme: </Button>
-                        <div className='border border-sage-green p-1 m-2 w-48 justify-between flex '> {/* Adjusted styles for centered items */}
+                        <div className='border border-sage-green p-1 m-2 w-48 justify-between flex '> 
                             <span className='flex w-1/4'>{schemeNames[selectedSchemeIndex]}</span>
                             <Dropdown>
                                 <DropdownTrigger placement="bottom-end">
