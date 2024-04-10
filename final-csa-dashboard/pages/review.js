@@ -1,5 +1,7 @@
 import RadialGraph from "../components/PieGraph.jsx";
 import Download from "@mui/icons-material/SimCardDownloadOutlined";
+import QuestionBar from "../components/QuestionBar";
+import ActionBar from "../components/ActionBar";
 
 export default function ReviewPage() {
   const attempt = {
@@ -49,6 +51,7 @@ export default function ReviewPage() {
     <>
       {/* TODO: Add in top bar */}
       <div className="bg-light-green p-4">
+        <QuestionBar />
         <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
           <div className="text-2xl">Feedback</div>
 
@@ -76,8 +79,8 @@ export default function ReviewPage() {
             </div>
           ))}
         </div>
+        <ActionBar review={true} />
       </div>
-      {/* TODO: add bottom bar */}
     </>
   );
 }
