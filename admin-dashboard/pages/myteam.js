@@ -1,7 +1,7 @@
 import SchemeTags from "../components/SchemeTags";
-import { IoMdSearch } from "react-icons/io";
 
 import SchemeFilter from "../components/SchemeFilter";
+import SearchBar from "../components/SearchBar";
 import { useEffect, useState } from "react";
 
 export const getServerSideProps = async () => {
@@ -23,7 +23,9 @@ export default function MyTeam({ teamMembers, allSchemes }) {
   const [allTeamMembers, setAllTeamMembers] = useState(teamMembers);
   const [displayMembers, setDisplayMembers] = useState(teamMembers);
   const [schemeFilter, setSchemeFilter] = useState("All");
+  const [search, setSearch] = useState("");
 
+  // for filtering
   useEffect(() => {
     if (schemeFilter === "All") {
       setDisplayMembers(allTeamMembers);
@@ -32,7 +34,19 @@ export default function MyTeam({ teamMembers, allSchemes }) {
         allTeamMembers.filter((member) => member.schemes.includes(schemeFilter))
       );
     }
-  }, [schemeFilter]);
+
+    if (search !== "") {
+      setDisplayMembers((prevDisplayMembers) =>
+        prevDisplayMembers.filter(
+          (member) =>
+            member.name.toLowerCase().includes(search) ||
+            member.email.toLowerCase().includes(search)
+        )
+      );
+    } else {
+      setDisplayMembers((prevDisplayMembers) => prevDisplayMembers);
+    }
+  }, [schemeFilter, search]);
 
   const updateTeamMembers = async () => {
     // get all team members
@@ -50,11 +64,7 @@ export default function MyTeam({ teamMembers, allSchemes }) {
         {/* Search bars */}
         <div className="flex flex-row justify-between">
           <div className="flex flex-row gap-3">
-            <input
-              className="bg-light-gray pl-3 pr-14 rounded-md py-1 "
-              type="text"
-              placeholder="Search by Name or Email"
-            />
+            <SearchBar setSearch={setSearch} />
             <SchemeFilter
               schemeFilter={schemeFilter}
               setSchemeFilter={setSchemeFilter}
