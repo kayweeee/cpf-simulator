@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }) {
   return (
     <div className="overflow-y-scroll overflow-x-clip scrollbar-hide">
       <Header user={user} setUser={setUser} />
-      <Component {...pageProps} setUser={setUser} />
+      <Component {...pageProps} user={user} setUser={setUser} />
       <Footer />
     </div>
   );
