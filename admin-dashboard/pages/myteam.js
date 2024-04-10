@@ -149,7 +149,7 @@ export default function MyTeam({ teamMembers, allSchemes }) {
                     schemes={i.schemes}
                     allSchemes={allSchemes}
                     user_id={i.uuid}
-                    updateTeamMembers={updateTeamMembers} // try removing update team members
+                    updateTeamMembers={updateTeamMembers}
                     editState={editState}
                   />
                 </td>
