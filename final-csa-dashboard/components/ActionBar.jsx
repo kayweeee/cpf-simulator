@@ -1,9 +1,32 @@
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-export default function ActionBar({review}) {
-    // const review = false
+export default function ActionBar({ review }) {
+    const router = useRouter();
+    const [id, setId] = useState(null);
+
+    useEffect(() => {
+        if (router.isReady) {
+            setId(router.query.slug)
+        }
+    }, [router.isReady, id]);
+
     async function onClick() {
+        review
+            ? ( 
+                router.back()
+            )
+            : (   
+                router.push({
+                    pathname: `/${id}/review`,
+                    query: { data: JSON.stringify({
+                        question: document.getElementById("question-content").innerHTML,
+                        response: document.getElementById("user-response").value
+                    })},
+                })
 
+            )
     }
 
     return (
