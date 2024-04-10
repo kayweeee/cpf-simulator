@@ -7,7 +7,7 @@ import housingimage from "../public/housing.png";
 // components
 import SchemeCard from "../components/SchemeCard";
 
-export default function Home() {
+export default function Schemes() {
     // scheme card example data (to be replaced with api call)
     const exampleData = [
       {
