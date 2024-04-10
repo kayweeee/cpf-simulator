@@ -7,7 +7,7 @@ import housingimage from "../public/housing.png";
 // components
 import SchemeCard from "../components/SchemeCard";
 
-export default function Home() {
+export default function Schemes() {
   // scheme card example data (to be replaced with api call)
   const exampleData = [
     {
@@ -34,7 +34,7 @@ export default function Home() {
     <div className="text-base">
       <div>
         {/* Header */}
-        <div className="w-screen h-auto flex flex-row justify-between items-center px-20 py-5 text-black">
+        <div className="w-screen h-auto flex flex-row justify-between items-center px-20 pt-10 pb-10 text-black">
           <div className="font-bold text-3xl">Schemes</div>
         </div>
         <div className="flex flex-col gap-y-5 min-h-screen">
