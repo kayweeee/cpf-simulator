@@ -33,7 +33,8 @@ class Config(BaseSettings):
 
     database: DatabaseConfig = DatabaseConfig()
     token_key: str = ""
-
+    upload_path: str = "data"
+    
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
