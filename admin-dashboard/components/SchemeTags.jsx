@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
 
-export default function SchemeTags({ schemes, allSchemes, user_id }) {
+export default function SchemeTags({
+  schemes,
+  allSchemes,
+  user_id,
+  updateTeamMembers,
+}) {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState([...schemes].sort());
 
   useEffect(() => {
+    setChecked([...schemes].sort());
+  }, [schemes]);
+
+  // update backend
+  useEffect(() => {
     const updateSchemeBackend = async () => {
-      // update backend
       try {
         const res = await fetch(`http://127.0.0.1:8000/scheme/${user_id}`, {
           method: "PUT",
@@ -21,6 +30,7 @@ export default function SchemeTags({ schemes, allSchemes, user_id }) {
     };
 
     updateSchemeBackend();
+    updateTeamMembers();
   }, [checked]);
 
   const handleCheckboxChange = async (event) => {
@@ -59,6 +69,8 @@ export default function SchemeTags({ schemes, allSchemes, user_id }) {
         >
           + Add Scheme
         </button>
+
+        {/* dropdown options */}
         {open ? (
           <div className="z-10 bg-light-blue absolute top-6 rounded-b-lg w-full p-2">
             <ul className="space-y-3">
