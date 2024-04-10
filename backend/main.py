@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, status, HTTPException, responses
+from fastapi import FastAPI, Depends, status, HTTPException, responses, File, UploadFile
 from sqlalchemy.orm  import Session, joinedload
 from sqlalchemy import select, distinct
 from models.user import UserModel
@@ -10,11 +10,13 @@ from schemas.attempt import AttemptBase
 from schemas.user import UserBase, UserEmailInput, UserResponseSchema
 from schemas.scheme import SchemeBase, SchemeInput
 from schemas.question import QuestionBase
-from config import Base
+from config import Base, config
 from sqlalchemy import func
 from fastapi.middleware.cors import CORSMiddleware
-from collections import Counter
 from ML.openAI import process_response, openAI_response
+import shutil
+import uuid
+import os
 
 app = FastAPI()
 # Base.metadata.drop_all(bind=engine)
@@ -41,10 +43,8 @@ async def read_user(user_input: UserEmailInput, db: Session = Depends(create_ses
     email = user_input.email
     db_user = db.query(UserModel).filter(UserModel.email == email).first()
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    # Query the schemes associated with the user
-    db_schemes = db.query(SchemeModel).filter(SchemeModel.user_id == db_user.uuid).all()
-    db_user.schemes = db_schemes
+        raise HTTPException(status_code=404, detail= "User not found")
+
     return db_user
 
 @app.get("/user", status_code=status.HTTP_201_CREATED)
@@ -72,26 +72,40 @@ async def get_all_users(db: Session = Depends(create_session)):
 @app.get("/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def read_user(user_id:str, db: Session = Depends(create_session)):
     db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
-
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-        # Query the schemes associated with the user
-    db_schemes = db.query(SchemeModel).filter(SchemeModel.user_id == user_id).all()
-    db_user.schemes = db_schemes
+
     return db_user
 
+@app.delete("/user/{user_id}", status_code=status.HTTP_201_CREATED)
+async def delete_user(user_id: str, db: Session = Depends(create_session)):
+    db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    else:
+        try:
+            db_user_attempts= db.query(AttemptModel).filter(AttemptModel.user_id == user_id).all()
+            if db_user_attempts: 
+                for user_attempt in db_user_attempts:
+                    db.delete(user_attempt)
+                    db.commit()
+                    
+            # Delete the user
+            db.delete(db_user)
+            db.commit()
+            return responses.JSONResponse(content = {'message' : 'User deleted'}, status_code=201)
+        except Exception as e:
+            db.rollback()
+            raise responses.JSONResponse(content = {'message' : 'Unable to delete user'}, status_code=500)
+
 @app.post("/user", status_code=status.HTTP_201_CREATED)
-async def createx_user(user: UserBase, db: Session = Depends(create_session)):
-    print("starting")
+async def create_user(user: UserBase, db: Session = Depends(create_session)):
     db_user = UserModel(**user.dict())
-    print("user format is correct")
     db.add(db_user)
-    print("user is added in db")
     db.commit()
     return responses.JSONResponse(content = {'message' : 'User added'}, status_code=201)
 
 ### SCHEME ROUTES ###
-    
 @app.get("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
 async def get_scheme(user_id: str, db: Session = Depends(create_session)):
     db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
@@ -103,38 +117,48 @@ async def get_scheme(user_id: str, db: Session = Depends(create_session)):
   
     return db_user.scheme
 
+async def save_image_locally(file):
+    unique_str = str(uuid.uuid4())[:5]
+    filename, file_extension = os.path.splitext(file.filename)
 
-@app.post("/scheme", status_code=status.HTTP_201_CREATED)
-async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_session)):
+    file_path = os.path.join(config.upload_path, f"{filename}_{unique_str}{file_extension}")
+    file.filename = f"{filename}_{unique_str}{file_extension}"
+    # Save the file locally
+    with open(file_path, "wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    return file_path
+
+@app.post('/scheme/', status_code=status.HTTP_201_CREATED)
+async def add_scheme_image(scheme_name: str, user_id: str, file: UploadFile = File(None), db: Session = Depends(create_session)):
+    user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
     # Check if the scheme with the provided scheme_name exists
-    db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme.scheme_name).first()
+    db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
     
     if db_scheme:
-        # If the scheme exists, add the user to it
-        user = db.query(UserModel).filter(UserModel.uuid == scheme.user_id).first()
-        if not user:
-            raise HTTPException(status_code=404, detail="User not found")
-        print(scheme.scheme_name, user.scheme)
-        
         # Check if the user is already associated with the scheme
         if user in db_scheme.users:
-            print("User is already associated with the scheme")
             raise HTTPException(status_code=404, detail="User is already associated with the scheme")
-        
         else:
-            # Add the user to the scheme
             db_scheme.users.append(user)
             db.commit()
-    else:
-        # If the scheme doesn't exist, create a new scheme and add the user to it
-        user = db.query(UserModel).filter(UserModel.uuid == scheme.user_id).first()
-        if not user:
-            raise HTTPException(status_code=404, detail="User not found")
-        print('add new scheme to user')
-        new_scheme = SchemeModel(scheme_name=scheme.scheme_name, users=[user], user_id=user.uuid)
-        db.add(new_scheme)
-        db.commit()
+
+        return responses.JSONResponse(content={"message": "Added user successfully"})
     
+    else:
+        try:
+            updated_filepath = await save_image_locally(file)
+            new_scheme = SchemeModel(scheme_name= scheme_name, scheme_img_path = updated_filepath, users=[user], user_id=user.uuid)
+            db.add(new_scheme)
+            db.commit()
+        except:
+            raise HTTPException(status_code=404, detail= "Please upload an image")
+
+    return responses.JSONResponse(content={"message": "File uploaded successfully", "filename": file.filename})
+
 @app.put("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
 async def update_user_schemes(scheme_input: SchemeInput, db: Session = Depends(create_session)):
     # Check if user exists
@@ -144,50 +168,35 @@ async def update_user_schemes(scheme_input: SchemeInput, db: Session = Depends(c
     
     # Get existing schemes for the user
     existing_schemes = [scheme.scheme_name for scheme in user.scheme]
-    # existing_schemes = db.query(SchemeModel).filter(SchemeModel.user_id == scheme_input.user_id).all()
-    
-    print(existing_schemes, scheme_input.schemesList)
     schemes_to_add = (set(scheme_input.schemesList) - set(existing_schemes))
     schemes_to_delete = (set(existing_schemes) - set(scheme_input.schemesList))
-    print('schemes to add', schemes_to_add)
-    print("schemes to delete", schemes_to_delete)
-
+    print(schemes_to_add, schemes_to_delete)
     try:
         for scheme_name in schemes_to_add:
             # Check if scheme exists in the database
             db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
-            print(scheme_name,db_scheme)
             if db_scheme:
                 # If the scheme exists, add the user to it
                 db_scheme.users.append(user)
-                print('added user to scheme')
+                
             else:
-                # If the scheme doesn't exist, create a new scheme and add the user to it
-                new_scheme = SchemeModel(scheme_name=scheme_name, users=[user], user_id=user.uuid)
-                db.add(new_scheme)
+               raise HTTPException(status_code=404, detail="Scheme not found")
 
         for scheme_name in schemes_to_delete:
-            
             # Check if scheme exists in the database
             db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
-            
             if db_scheme:
-                # user exists in db
-                while user in db_scheme.users:
+                if user in db_scheme.users:
                     db_scheme.users.remove(user)
-                    # Optionally, delete the scheme if no users are associated with it
+                    # delete the scheme if no users are associated with it
                     if not db_scheme.users:
                         db.delete(db_scheme)
-
         db.commit()
-        
         return {"message": "Schemes updated successfully"}
     
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail="Internal server error")
-
-    
 
 @app.get("/scheme", status_code=status.HTTP_201_CREATED)
 async def get_scheme_names(db: Session = Depends(create_session)):
