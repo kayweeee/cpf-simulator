@@ -3,8 +3,14 @@ import { useRouter } from "next/navigation";
 
 export default function Login({ setUser }) {
   const [email, setEmail] = useState("");
+  const [notification, setNotification] = useState("");
 
   const router = useRouter();
+
+  function handleNotification(noti) {
+    setNotification(noti);
+    setTimeout(() => setNotification(""), 3000);
+  }
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -19,14 +25,14 @@ export default function Login({ setUser }) {
       });
 
       if (!res.ok) {
-        throw new Error("failed to login");
+        handleNotification("Invalid email");
+      } else {
+        const data = await res.json();
+        window.localStorage.setItem("loggedUser", JSON.stringify(data));
+        setUser(data);
+
+        router.push("/profile");
       }
-
-      const data = await res.json();
-      window.localStorage.setItem("loggedUser", JSON.stringify(data));
-      setUser(data);
-
-      router.push("/profile");
     } catch (e) {
       console.log(e);
     }
@@ -54,6 +60,7 @@ export default function Login({ setUser }) {
                 className="px-3 py-2 rounded-md border border-gray-300 sm:w-[300px]  placeholder:text-xs  md:placeholder:text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
+            <div className="text-red-600 text-sm">{notification}</div>
             <button
               type="submit"
               id="login"
