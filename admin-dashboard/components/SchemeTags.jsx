@@ -55,13 +55,12 @@ export default function SchemeTags({
   };
 
   return (
-    <div className="flex flex-row flex-wrap px-2 py-1 gap-2">
+    <div className="flex flex-row flex-wrap px-2 py-1 gap-2 min-h-10">
       {checked.map((name, idx) => (
         <SchemeTag key={idx} schemeName={name} />
       ))}
 
       {/* Add new schemes */}
-
       {editState ? (
         <div className="relative">
           <button

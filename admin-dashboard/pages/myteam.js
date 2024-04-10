@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import SchemeTags from "../components/SchemeTags";
 import SchemeFilter from "../components/SchemeFilter";
 import SearchBar from "../components/SearchBar";
+// icons
+import { FaRegTrashCan } from "react-icons/fa6";
 
 export const getServerSideProps = async () => {
   // get all team members
@@ -64,6 +66,28 @@ export default function MyTeam({ teamMembers, allSchemes }) {
     setAllTeamMembers(teamMembers);
   };
 
+  async function handleDelete(user_id) {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/user/${user_id}`, {
+        method: "DELETE",
+        body: JSON.stringify({ user_id: user_id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res) {
+        setAllTeamMembers(
+          allTeamMembers.filter((member) => member.uuid !== user_id)
+        );
+        setDisplayMembers(
+          displayMembers.filter((member) => member.uuid !== user_id)
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
     <div className=" w-screen bg-light-green flex items-center justify-center p-4">
       <div className="bg-white min-w-full rounded-md p-6">
@@ -112,6 +136,7 @@ export default function MyTeam({ teamMembers, allSchemes }) {
               <th className={`${tableCellStyle} bg-dark-grey w-1/2`}>
                 Schemes
               </th>
+              <th className="w-[0px] p-0" />
             </tr>
           </thead>
           <tbody>
@@ -124,9 +149,19 @@ export default function MyTeam({ teamMembers, allSchemes }) {
                     schemes={i.schemes}
                     allSchemes={allSchemes}
                     user_id={i.uuid}
-                    updateTeamMembers={updateTeamMembers}
+                    updateTeamMembers={updateTeamMembers} // try removing update team members
                     editState={editState}
                   />
+                </td>
+                <td>
+                  {editState ? (
+                    <button className="flex items-center">
+                      <FaRegTrashCan
+                        className=" text-red-500 ml-0.5"
+                        onClick={() => handleDelete(i.uuid)}
+                      />
+                    </button>
+                  ) : null}
                 </td>
               </tr>
             ))}
