@@ -16,13 +16,14 @@ export default function Question({ question_id }) {
 
   return (
     <>
+
       <div className="bg-light-green p-4">
         <QuestionBar />
         <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
           {question_data.title}
         </div>
         <div className="border-4 border-solid border-dark-green rounded-lg p-10 h-max-content flex items-start justify-center text-black mt-30 flex-col ml-20 mr-20 mb-5">
-          <div className="flex flex-row items-center mb-3">
+          <div className="flex flex-row items-center mb-3 ">
             <Avatar className="w-10 h-10 mr-3">
               <PersonIcon />
             </Avatar>
@@ -33,14 +34,15 @@ export default function Question({ question_id }) {
           </div>
           <p>{question_data.content}</p>
         </div>
-        <div className="border-4 border-solid border-dark-green rounded-lg p-5 mt-30 flex-col ml-20 mr-20 overflow-auto" style={{"height":300}}>
+        <div className="border-4 border-solid border-dark-green rounded-lg p-5 mt-30 flex-col ml-20 mr-20 overflow-auto" style={{ "height": 300 }}>
           <textarea
             placeholder="Please enter your reply here"
             className="w-full h-full bg-transparent"
           />
         </div>
-        <ActionBar />
+        <ActionBar review={false}/>
       </div>
+
     </>
   );
 }
