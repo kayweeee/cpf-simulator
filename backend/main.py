@@ -77,6 +77,27 @@ async def read_user(user_id:str, db: Session = Depends(create_session)):
 
     return db_user
 
+@app.delete("/user/{user_id}", status_code=status.HTTP_201_CREATED)
+async def delete_user(user_id: str, db: Session = Depends(create_session)):
+    db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    else:
+        try:
+            db_user_attempts= db.query(AttemptModel).filter(AttemptModel.user_id == user_id).all()
+            if db_user_attempts: 
+                for user_attempt in db_user_attempts:
+                    db.delete(user_attempt)
+                    db.commit()
+                    
+            # Delete the user
+            db.delete(db_user)
+            db.commit()
+            return responses.JSONResponse(content = {'message' : 'User deleted'}, status_code=201)
+        except Exception as e:
+            db.rollback()
+            raise responses.JSONResponse(content = {'message' : 'Unable to delete user'}, status_code=500)
+
 @app.post("/user", status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserBase, db: Session = Depends(create_session)):
     db_user = UserModel(**user.dict())
@@ -105,9 +126,6 @@ async def save_image_locally(file):
     # Save the file locally
     with open(file_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
-        
-    # async with aiofiles.open(file_path, "wb") as f:
-    #     await f.write(await file.read())
 
     return file_path
 
