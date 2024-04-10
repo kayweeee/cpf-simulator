@@ -5,6 +5,7 @@ export default function SchemeTags({
   allSchemes,
   user_id,
   updateTeamMembers,
+  editState,
 }) {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState([...schemes].sort());
@@ -60,36 +61,39 @@ export default function SchemeTags({
       ))}
 
       {/* Add new schemes */}
-      <div className="relative">
-        <button
-          className={`flex justify-center items-center bg-light-blue px-2 py-1 text-dark-blue rounded-t-lg ${
-            open ? "rounded-b-none" : "rounded-b-lg"
-          }`}
-          onClick={() => setOpen(!open)}
-        >
-          + Add Scheme
-        </button>
 
-        {/* dropdown options */}
-        {open ? (
-          <div className="z-10 bg-light-blue absolute top-6 rounded-b-lg w-full p-2">
-            <ul className="space-y-3">
-              {allSchemes.map((scheme) => (
-                <li key={scheme} className="flex items-center w-full gap-2">
-                  <input
-                    type="checkbox"
-                    value={scheme}
-                    className="w-4 h-4"
-                    checked={checked.includes(scheme)}
-                    onChange={handleCheckboxChange}
-                  />
-                  <label>{scheme}</label>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
-      </div>
+      {editState ? (
+        <div className="relative">
+          <button
+            className={`flex justify-center items-center bg-light-blue px-2 py-1 text-dark-blue rounded-t-lg ${
+              open ? "rounded-b-none" : "rounded-b-lg"
+            }`}
+            onClick={() => setOpen(!open)}
+          >
+            + Add Scheme
+          </button>
+
+          {/* dropdown options */}
+          {open ? (
+            <div className="z-10 bg-light-blue absolute top-6 rounded-b-lg w-full p-2">
+              <ul className="space-y-3">
+                {allSchemes.map((scheme) => (
+                  <li key={scheme} className="flex items-center w-full gap-2">
+                    <input
+                      type="checkbox"
+                      value={scheme}
+                      className="w-4 h-4"
+                      checked={checked.includes(scheme)}
+                      onChange={handleCheckboxChange}
+                    />
+                    <label>{scheme}</label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }

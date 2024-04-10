@@ -1,8 +1,10 @@
+// framework
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+//components
 import SchemeTags from "../components/SchemeTags";
-
 import SchemeFilter from "../components/SchemeFilter";
 import SearchBar from "../components/SearchBar";
-import { useEffect, useState } from "react";
 
 export const getServerSideProps = async () => {
   // get all team members
@@ -20,8 +22,13 @@ export const getServerSideProps = async () => {
 
 export default function MyTeam({ teamMembers, allSchemes }) {
   const tableCellStyle = `text-start py-2 px-3 border`;
+  const router = useRouter();
+
   const [allTeamMembers, setAllTeamMembers] = useState(teamMembers);
   const [displayMembers, setDisplayMembers] = useState(teamMembers);
+  // edit state?
+  const [editState, setEditState] = useState(false);
+  // for filtering
   const [schemeFilter, setSchemeFilter] = useState("All");
   const [search, setSearch] = useState("");
 
@@ -71,18 +78,40 @@ export default function MyTeam({ teamMembers, allSchemes }) {
               allSchemes={allSchemes}
             />
           </div>
-          <button className="text-white bg-dark-green px-4 rounded-md ">
-            Edit
-          </button>
+          {editState ? (
+            <div className="flex flex-row gap-2">
+              <button
+                className="text-white bg-dark-green px-4 rounded-md "
+                onClick={() => router.push("/addprofile")}
+              >
+                Add new profile
+              </button>
+              <button
+                className="text-white bg-dark-green px-4 rounded-md "
+                onClick={() => setEditState(false)}
+              >
+                Save
+              </button>
+            </div>
+          ) : (
+            <button
+              className="text-white bg-dark-green px-4 rounded-md "
+              onClick={() => setEditState(true)}
+            >
+              Edit
+            </button>
+          )}
         </div>
 
         {/* Table */}
-        <table className=" w-full table-auto border border-collapse border-slate-200 mt-2">
+        <table className=" w-full table-fixed border border-collapse border-slate-200 mt-2">
           <thead>
             <tr>
               <th className={`${tableCellStyle} bg-dark-grey`}>Name</th>
               <th className={`${tableCellStyle} bg-dark-grey`}>Email</th>
-              <th className={`${tableCellStyle} bg-dark-grey`}>Schemes</th>
+              <th className={`${tableCellStyle} bg-dark-grey w-1/2`}>
+                Schemes
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -96,6 +125,7 @@ export default function MyTeam({ teamMembers, allSchemes }) {
                     allSchemes={allSchemes}
                     user_id={i.uuid}
                     updateTeamMembers={updateTeamMembers}
+                    editState={editState}
                   />
                 </td>
               </tr>
