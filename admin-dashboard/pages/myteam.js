@@ -35,14 +35,17 @@ export default function MyTeam({ teamMembers, allSchemes }) {
               <th className={`${tableCellStyle}`}>Schemes</th>
             </tr>
           </thead>
-
           <tbody>
-            {teamMembers.map((i) => (
-              <tr>
+            {teamMembers.map((i, idx) => (
+              <tr key={idx}>
                 <td className={`${tableCellStyle}`}>{i.name}</td>
                 <td className={`${tableCellStyle}`}>{i.email}</td>
                 <td className={`${tableCellStyle}`}>
-                  <SchemeTags schemes={i.schemes} allSchemes={allSchemes} />
+                  <SchemeTags
+                    schemes={i.schemes}
+                    allSchemes={allSchemes}
+                    user_id={i.uuid}
+                  />
                 </td>
               </tr>
             ))}

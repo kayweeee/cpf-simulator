@@ -1,16 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function SchemeTags({ schemes, allSchemes }) {
-  const [open, setOpen] = useState(true);
+export default function SchemeTags({ schemes, allSchemes, user_id }) {
+  const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState([...schemes].sort());
 
-  const [checked, setChecked] = useState([...schemes]);
+  useEffect(() => {
+    const updateSchemeBackend = async () => {
+      // update backend
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/scheme/${user_id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_id: user_id, schemesList: checked }),
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
-  const handleCheckboxChange = (event) => {
+    updateSchemeBackend();
+  }, [checked]);
+
+  const handleCheckboxChange = async (event) => {
     const isChecked = event.target.checked;
     const schemeName = event.target.value;
 
+    // update state
     if (isChecked) {
-      setChecked([...checked, schemeName]);
+      setChecked([...checked, schemeName].sort());
     } else {
       setChecked(checked.filter((name) => name !== schemeName));
     }
@@ -26,8 +45,8 @@ export default function SchemeTags({ schemes, allSchemes }) {
 
   return (
     <div className="flex flex-row flex-wrap px-2 py-1 gap-2">
-      {checked.map((name) => (
-        <SchemeTag schemeName={name} />
+      {checked.map((name, idx) => (
+        <SchemeTag key={idx} schemeName={name} />
       ))}
 
       {/* Add new schemes */}
@@ -41,12 +60,11 @@ export default function SchemeTags({ schemes, allSchemes }) {
           + Add Scheme
         </button>
         {open ? (
-          <div className="bg-light-blue absolute top-6 rounded-b-lg w-full p-2">
+          <div className="z-10 bg-light-blue absolute top-6 rounded-b-lg w-full p-2">
             <ul className="space-y-3">
               {allSchemes.map((scheme) => (
-                <li className="flex items-center w-full gap-2">
+                <li key={scheme} className="flex items-center w-full gap-2">
                   <input
-                    id={scheme}
                     type="checkbox"
                     value={scheme}
                     className="w-4 h-4"
