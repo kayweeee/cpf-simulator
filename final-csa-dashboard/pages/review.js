@@ -1,5 +1,7 @@
 import RadialGraph from '../components/PieGraph.jsx';
 import Download from '@mui/icons-material/SimCardDownloadOutlined';
+import QuestionBar from "../components/QuestionBar";
+import ActionBar from "../components/ActionBar";
 
 export default function ReviewPage() {
     const piedata = [
@@ -29,13 +31,14 @@ export default function ReviewPage() {
 
     return (
         <>
-        {/* TODO: Add in top bar */}
+
             <div className='bg-light-green p-4'>
+                <QuestionBar />
                 <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
                     Feedback
                     <button type="button" className='button'>
-                    <Download fontSize='medium' />
-                    Download
+                        <Download fontSize='medium' />
+                        Download
                     </button>
                 </div>
                 <div className='pl-4 pr-4 mb-4'>
@@ -57,8 +60,9 @@ export default function ReviewPage() {
                     <RadialGraph data={piedata[2]} label={"Conciseness"} />
                     <RadialGraph data={piedata[3]} label={"Tone"} />
                 </div>
+                <ActionBar review={true}/>
             </div>
-            {/* TODO: add bottom bar */}
+
         </>
     )
 }
