@@ -1,5 +1,7 @@
 import Avatar from "@mui/material/Avatar";
 import PersonIcon from "@mui/icons-material/Person";
+import QuestionBar from "../components/QuestionBar";
+import ActionBar from "../components/ActionBar";
 
 export default function Question({ question_id }) {
   question_id = "08f7da7f-c423-4f4a-bd84-92b21b091006";
@@ -15,6 +17,7 @@ export default function Question({ question_id }) {
   return (
     <>
       <div className="bg-light-green p-4">
+        <QuestionBar />
         <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
           {question_data.title}
         </div>
@@ -36,6 +39,7 @@ export default function Question({ question_id }) {
             className="w-full h-full bg-transparent"
           />
         </div>
+        <ActionBar />
       </div>
     </>
   );
