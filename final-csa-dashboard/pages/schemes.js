@@ -20,7 +20,7 @@ export default function Schemes() {
       scheme_name: "Medisave",
       questions: 20,
       scheme_img: medisaveimage,
-      enabled: true,
+      enabled: false,
     },
     {
       scheme_name: "Housing",
@@ -28,10 +28,6 @@ export default function Schemes() {
       scheme_img: housingimage,
       enabled: false,
     },
-
-
-
-
   ];
 
   return (
@@ -39,12 +35,10 @@ export default function Schemes() {
       <div>
         {/* Header */}
         <div className="w-screen h-auto flex flex-row justify-between items-center px-20 pt-10 pb-10 text-black">
-          <div className="font-bold text-3xl">
-            Schemes
-          </div>
+          <div className="font-bold text-3xl">Schemes</div>
         </div>
         <div className="flex flex-col gap-y-5 min-h-screen">
-          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7 my-8">
+          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7 mb-8">
             {exampleData.map((i) => (
               <SchemeCard
                 key={i.scheme_name}
@@ -54,11 +48,9 @@ export default function Schemes() {
                 scheme_button={true}
                 enabled={i.enabled}
               />
-            )
-            )}
+            ))}
           </div>
         </div>
-
       </div>
     </div>
   );
