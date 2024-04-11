@@ -22,3 +22,19 @@ class AttemptModel(Base):
     precision_feedback: Mapped[int] = Column(String(1000), nullable=False)
     tone_feedback: Mapped[str] = Column(String(1000), nullable=False)
     feedback: Mapped[str] = Column(String(3000), nullable=False)
+    
+    def to_dict(self):
+        return {
+            "attempt_id": self.attempt_id,
+            "user_id": self.user_id,
+            "question_id": self.question_id,
+            'answer': self.answer,
+            'date': self.date,
+            'precision_score': self.precision_score,
+            'accuracy_score': self.accuracy_score,
+            'tone_score': self.tone_score,
+            'accuracy_feedback': self.accuracy_feedback,
+            'precision_feedback': self.precision_feedback,
+            'tone_feedback': self.tone_feedback,
+            'feedback': self.feedback
+        }
