@@ -1,33 +1,36 @@
-import RadialGraph from '../../components/PieGraph.jsx';
+import RadialGraph from '../../../components/PieGraph.jsx';
 import Download from '@mui/icons-material/SimCardDownloadOutlined';
-import QuestionBar from "../../components/QuestionBar.jsx";
-import ActionBar from "../../components/ActionBar.jsx";
+import QuestionBar from "../../../components/QuestionBar.jsx";
+import ActionBar from "../../../components/ActionBar.jsx";
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 export default function ReviewPage() {
     const router = useRouter();
-    const [id, setId] = useState(null);
-    // const [questionContent, setQuestionContent] = useState(null);
-    const [answerContent, setAnswerContent] = useState(null);
+    const [feedback, setFeedback] = useState({});
 
     useEffect(() => {
         if (router.isReady) {
-            var response = JSON.parse(router.query.attemptId)
-            setId(router.query.slug)
+            var responseid = JSON.parse(router.query.attemptId)
+            async function getData() {
+                try {
+                    const res = await fetch(`http://127.0.0.1:8000/attempt/${responseid}`);
+                    if (!res.ok) {
+                        throw new Error('Failed to fetch data')
+                    } else {
+                        const data = await res.json();
+                        setFeedback(data)
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+            getData();
         }
-    }, [router.isReady, id]);
-
-    const question_data = {
-        id: 1,
-        title: "Withdrawal From Retirement Account",
-        name: "Mdm Tan",
-        pic: "",
-        designation: "CPF Member",
-        content: "I would like to appeal to withdraw from my Retirement account about $5000. I am aware that if I withdraw my monthly payout will be much lesser. Please kindly assist me on my appeal soonest possible.",
-      }
+    }, [router.isReady, feedback]);
 
     const attempt = {
+        question_data: "placeholder for question",
         accuracy_feedback:
             "The response lacks specific details that could be included to improve accuracy.",
         accuracy_score: 2,
@@ -71,7 +74,7 @@ export default function ReviewPage() {
     return (
         <>
             <div className='bg-light-green p-4'>
-                <QuestionBar currentidx={id} review={true} />
+                <QuestionBar review={true} />
                 <div className='bg-light-gray rounded-md p-6 m-5 '>
                     <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
                         <div className="text-2xl">Feedback</div>
@@ -82,7 +85,7 @@ export default function ReviewPage() {
                     </div>
                     <div className='pl-4 pr-4 mb-4'>
                         <h3 className='font-bold'>Question:</h3>
-                        <p>{question_data.content}</p>
+                        <p>{attempt.question_data}</p>
                     </div>
                     <div className='pl-4 pr-4 mb-4'>
                         <h3 className='font-bold'>Your Answer:</h3>

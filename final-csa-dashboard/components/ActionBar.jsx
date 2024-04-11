@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 export default function ActionBar({ review }) {
     const router = useRouter();
-    const [id, setId] = useState(null);
+    const [id, setId] = useState("");
 
     useEffect(() => {
         if (router.isReady) {
@@ -12,19 +12,39 @@ export default function ActionBar({ review }) {
         }
     }, [router.isReady, id]);
 
-    async function onClick() {
-        review
-            ? ( 
-                router.back()
-            )
-            : (   
-                router.push({
-                    pathname: `/${id}/review`,
-                    query: { attemptId: JSON.stringify( "123456"
-                    )},
-                })
+    async function onClick(event) {
+        event.preventDefault();
+        if (review) {
+            router.back()
+        } else {
+            // try {
+                // const res = await fetch("http://127.0.0.1:8000/attempt/", {
+                //     method: "POST",
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //     },
+                //     body: JSON.stringify({
+                //         "user_id": "12345", //TODO: change to user id
+                //         "question_id": router.query.id,
+                //         "answer": document.getElementById("user-response").value
+                //     }),
+                // });
 
-            )
+                // if (!res.ok) {
+                //     throw new Error('Failed to fetch data')
+                // } else {
+                    // const data = await res.json();
+                    // attemptid = data.attempt_id
+                    var attemptid = "464ffdd9-74d6-423b-ae89-ca0ca7d001da";
+                    router.push({
+                        pathname: `/${router.query.slug}/${router.query.id}/review`,
+                        query: { attemptId: JSON.stringify(attemptid) },
+                    })
+                // }
+            // } catch (e) {
+            //     console.log(e);
+            // }
+        }
     }
 
     return (
