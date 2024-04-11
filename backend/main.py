@@ -88,15 +88,14 @@ async def delete_user(user_id: str, db: Session = Depends(create_session)):
             if db_user_attempts: 
                 for user_attempt in db_user_attempts:
                     db.delete(user_attempt)
-                    db.commit()
                     
-            # Delete the user
             db.delete(db_user)
             db.commit()
             return responses.JSONResponse(content = {'message' : 'User deleted'}, status_code=201)
+        
         except Exception as e:
             db.rollback()
-            raise responses.JSONResponse(content = {'message' : 'Unable to delete user'}, status_code=500)
+            raise HTTPException(status_code=500, detail=f"Unable to delete user. {e}")
 
 @app.post("/user", status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserBase, db: Session = Depends(create_session)):
@@ -123,37 +122,50 @@ async def save_image_locally(file):
 
     file_path = os.path.join(config.upload_path, f"{filename}_{unique_str}{file_extension}")
     file.filename = f"{filename}_{unique_str}{file_extension}"
+    print(file_path)
     # Save the file locally
     with open(file_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
-
+    print("finished saving locally")
     return file_path
 
-@app.post('/scheme/', status_code=status.HTTP_201_CREATED)
-async def add_scheme_image(scheme_name: str, user_id: str, file: UploadFile = File(None), db: Session = Depends(create_session)):
-    user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
+@app.post("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
+async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_session)):
+    user = db.query(UserModel).filter(UserModel.uuid == scheme.user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-        
     # Check if the scheme with the provided scheme_name exists
-    db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
+    db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme.scheme_name).first()
     
     if db_scheme:
-        # Check if the user is already associated with the scheme
+        # If the scheme exists, add the user to it
+        user = db.query(UserModel).filter(UserModel.uuid == scheme.user_id).first()
         if user in db_scheme.users:
             raise HTTPException(status_code=404, detail="User is already associated with the scheme")
+        
         else:
             db_scheme.users.append(user)
             db.commit()
+            return {"message": "Scheme has been updated successfully"}
+    
+    raise HTTPException(status_code=404, detail="This is not an existing scheme")
 
-        return responses.JSONResponse(content={"message": "Added user successfully"})
+@app.post('/scheme/', status_code=status.HTTP_201_CREATED)
+async def add_new_scheme(scheme_name: str, file: UploadFile = File(...), db: Session = Depends(create_session)):
+    # Check if the scheme with the provided scheme_name exists
+    db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
+    if db_scheme:
+        return responses.JSONResponse(content={"message": "This is an exisiting scheme"})
     
     else:
         try:
             updated_filepath = await save_image_locally(file)
-            new_scheme = SchemeModel(scheme_name= scheme_name, scheme_img_path = updated_filepath, users=[user], user_id=user.uuid)
+            
+            new_scheme = SchemeModel(scheme_name=scheme_name, scheme_img_path = updated_filepath)
+            print('new scheme initialised')
             db.add(new_scheme)
             db.commit()
+
         except:
             raise HTTPException(status_code=404, detail= "Please upload an image")
 
@@ -188,9 +200,7 @@ async def update_user_schemes(scheme_input: SchemeInput, db: Session = Depends(c
             if db_scheme:
                 if user in db_scheme.users:
                     db_scheme.users.remove(user)
-                    # delete the scheme if no users are associated with it
-                    if not db_scheme.users:
-                        db.delete(db_scheme)
+
         db.commit()
         return {"message": "Schemes updated successfully"}
     
