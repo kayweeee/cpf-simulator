@@ -15,3 +15,12 @@ class SchemeModel(Base):
     
     users: Mapped[list["UserModel"]] = relationship("UserModel", secondary=user_scheme_association, back_populates="scheme")
     questions: Mapped[list["QuestionModel"]] = relationship("QuestionModel", back_populates="scheme")
+    
+    def to_dict(self):
+        return {
+            'scheme_name': self.scheme_name,
+            'scheme_img_path': self.scheme_img_path,
+            'user_id': self.user_id,
+            'users': self.users,
+            'questions': self.questions 
+        }
