@@ -9,9 +9,9 @@ from models.association_tables import user_scheme_association
 
 class SchemeModel(Base):
     __tablename__ = "scheme"
-    # scheme_id: Mapped[str] = Column(String(255), primary_key=True,  default = generate_uuid)
     scheme_name: Mapped[str] = Column(String(255), primary_key=True, nullable=False )
     scheme_img_path: Mapped[str] = Column(String(255), nullable= True)
-    user_id: Mapped[str] = Column(String(255), ForeignKey("user.uuid"), nullable=False )
+    user_id: Mapped[str] = Column(String(255), ForeignKey("user.uuid"), nullable=True )
+    
     users: Mapped[list["UserModel"]] = relationship("UserModel", secondary=user_scheme_association, back_populates="scheme")
     questions: Mapped[list["QuestionModel"]] = relationship("QuestionModel", back_populates="scheme")

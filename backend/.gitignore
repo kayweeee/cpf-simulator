@@ -4,3 +4,6 @@ venv
 __pycache__/
 *.py[cod]
 *$py.class
+*$pyc.class
+
+scheme_imgs/*

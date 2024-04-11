@@ -18,5 +18,5 @@ class UserModel(Base):
     access_rights: Mapped[str] = Column(String(255), nullable=False)
     
     # relationships
-    scheme: Mapped[list[SchemeModel]] = relationship(SchemeModel, secondary=user_scheme_association, back_populates="users")
+    scheme: Mapped[list[SchemeModel]] = relationship(SchemeModel, secondary=user_scheme_association, cascade="all, delete", back_populates="users")
 

@@ -11,7 +11,7 @@ class AttemptModel(Base):
     __tablename__ = "attempt"
     attempt_id: Mapped[str] = Column(String(255), primary_key=True, default=generate_uuid)
     user_id: Mapped[str] = Column(String(255), ForeignKey("user.uuid"), nullable=False)
-    question_id: Mapped[int] = Column(String(255), ForeignKey("question.question_id"), nullable=False)
+    question_id: Mapped[int] = Column(Integer, ForeignKey("question.question_id"), nullable=False)
     answer: Mapped[str] = Column(String(3000), nullable=False)
     date: Mapped[DateTime] = Column(DateTime, default=func.now(), nullable=False)
     # scores
