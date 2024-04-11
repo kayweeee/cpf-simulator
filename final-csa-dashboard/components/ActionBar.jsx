@@ -20,10 +20,8 @@ export default function ActionBar({ review }) {
             : (   
                 router.push({
                     pathname: `/${id}/review`,
-                    query: { data: JSON.stringify({
-                        question: document.getElementById("question-content").innerHTML,
-                        response: document.getElementById("user-response").value
-                    })},
+                    query: { attemptId: JSON.stringify( "123456"
+                    )},
                 })
 
             )
