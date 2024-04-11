@@ -1,7 +1,7 @@
 import RadialGraph from "../../components/PieGraph.jsx";
 import Download from "@mui/icons-material/SimCardDownloadOutlined";
 import QuestionBar from "../../components/QuestionBar.jsx";
-import ActionBar from "../../components/ActionBar.jsx";
+
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -22,8 +22,6 @@ export default function ReviewPage() {
     }
     getAttempt();
   }, [router.isReady]);
-
-  console.log(attempt);
 
   const feedbackData = [
     {
@@ -46,11 +44,17 @@ export default function ReviewPage() {
     },
   ];
 
+  function handleQuestionNav(question_id) {
+    router.push(`/${question_id}/question`, undefined, {
+      shallow: true,
+    });
+  }
+
   return (
     <>
       <div className="bg-light-green p-4">
         <QuestionBar currentidx={attempt.id} review={true} />
-        <div className="bg-light-gray rounded-md p-6 m-5 ">
+        <div className="bg-light-gray rounded-md px-6 pb-12 pt-6 m-5 ">
           <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
             <div className="text-2xl">Feedback</div>
             <button type="button" className="button">
@@ -59,9 +63,8 @@ export default function ReviewPage() {
             </button>
           </div>
           <div className="pl-4 pr-4 mb-4">
-            {/* NEED TO CHANGE */}
             <h3 className="font-bold">Question:</h3>
-            <p>{attempt.answer}</p>
+            <p>{attempt.question_details}</p>
           </div>
           <div className="pl-4 pr-4 mb-4">
             <h3 className="font-bold">Your Answer:</h3>
@@ -71,8 +74,11 @@ export default function ReviewPage() {
             Overall Scores
           </h3>
           <div className="pb-4 w-full w-max-screen flex justify-between items-center gap-10 px-5">
-            {feedbackData.map((i) => (
-              <div className="flex flex-col justify-center w-1/3 h-auto">
+            {feedbackData.map((i, idx) => (
+              <div
+                className="flex flex-col justify-center w-1/3 h-auto"
+                key={idx}
+              >
                 <div className="p-4">
                   <RadialGraph data={i} label={i.label} />
                 </div>
@@ -81,7 +87,16 @@ export default function ReviewPage() {
             ))}
           </div>
         </div>
-        <ActionBar review={true} />
+
+        <hr className="mt-5 border-grey" />
+        <div className="p-5 flex flex-row justify-center">
+          <button
+            className="border-4 border-solid border-transparent rounded-lg bg-dark-green pl-3 pr-3 pt-1 pb-1 text-white transition duration-300 hover:bg-light-green hover:text-gray-600"
+            onClick={() => handleQuestionNav(attempt.question_id)}
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     </>
   );
