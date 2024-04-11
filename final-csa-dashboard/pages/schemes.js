@@ -1,8 +1,10 @@
+// framework
+import { useEffect, useState } from "react";
 // components
 import SchemeCard from "../components/SchemeCard";
-import { useEffect, useState } from "react";
+import isAuth from "../components/isAuth";
 
-export default function Schemes({ user }) {
+function Schemes({ user }) {
   const [schemes, setSchemes] = useState([]);
 
   useEffect(() => {
@@ -45,3 +47,5 @@ export default function Schemes({ user }) {
     </div>
   );
 }
+
+export default isAuth(Schemes);
