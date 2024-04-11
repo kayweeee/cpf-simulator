@@ -1,10 +1,14 @@
+// framework
 import Image from "next/image";
-import tickimage from "../../public/tickimage.png";
-import { ChevronLeft } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+// images and icons
+import tickimage from "../../public/tickimage.png";
+import { ChevronLeft } from "@mui/icons-material";
+// components
+import isAuth from "../../components/isAuth";
 
-export default function Exercises() {
+function Exercises() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [allQuestions, setAllQuestions] = useState([]);
@@ -20,7 +24,6 @@ export default function Exercises() {
         const questions = await res.json();
         setAllQuestions(questions);
         setName(scheme_name.charAt(0).toUpperCase() + scheme_name.slice(1));
-        console.log(questions);
       }
     }
 
@@ -41,8 +44,8 @@ export default function Exercises() {
 
   // Change table height according to image height
   const imageHeight = tickimage.height;
-  const tableCellStyle = `text-start py-6 px-8 border`;
-  const tableCenterCellStyle = `text-center py-6 px-8 border`;
+  const tableCellStyle = `text-start py-6 border px-5`;
+  const tableCenterCellStyle = `text-center py-6 border`;
 
   const getdifficultyColor = (difficulty) => {
     switch (difficulty) {
@@ -125,9 +128,7 @@ export default function Exercises() {
                   </td>
                   <td
                     className={`${tableCenterCellStyle} hover:underline hover:underline-offset-2 `}
-                    onClick={() =>
-                      handleReviewNav("bb1c2cbb-5970-488a-b2d3-97e97d9fd790")
-                    }
+                    onClick={() => handleReviewNav(question.attempt)}
                   >
                     {question.attempt ? "View Here" : null}
                   </td>
@@ -140,3 +141,5 @@ export default function Exercises() {
     </div>
   );
 }
+
+export default isAuth(Exercises);
