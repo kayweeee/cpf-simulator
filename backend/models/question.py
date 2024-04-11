@@ -25,7 +25,7 @@ class QuestionModel(Base):
             'ideal': self.ideal,
             'title': self.title,
             'scheme_name': self.scheme,
-            'scheme': self.scheme
+            # 'scheme': self.scheme
         }
     
     
