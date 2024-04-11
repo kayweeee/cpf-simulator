@@ -133,7 +133,7 @@ export default function MyTeam({ teamMembers, allSchemes }) {
         <table className=" w-full table-fixed border border-collapse border-slate-200 mt-2">
           <thead>
             <tr>
-              <th className={`${tableCellStyle} bg-dark-grey`}>Name</th>
+              <th className={`${tableCellStyle} bg-dark-grey `}>Name</th>
               <th className={`${tableCellStyle} bg-dark-grey`}>Email</th>
               <th className={`${tableCellStyle} bg-dark-grey w-1/2`}>
                 Schemes
@@ -143,8 +143,15 @@ export default function MyTeam({ teamMembers, allSchemes }) {
           </thead>
           <tbody>
             {displayMembers.map((i, idx) => (
-              <tr key={idx}>
-                <td className={`${tableCellStyle}`}>{i.name}</td>
+              <tr
+                className=" hover:bg-light-gray hover:cursor-pointer"
+                key={idx}
+              >
+                <td
+                  className={`${tableCellStyle} hover:underline hover:underline-offset-2`}
+                >
+                  {i.name}
+                </td>
                 <td className={`${tableCellStyle}`}>{i.email}</td>
                 <td className={`${tableCellStyle}`}>
                   <SchemeTags
