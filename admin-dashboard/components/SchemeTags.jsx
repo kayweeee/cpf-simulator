@@ -48,7 +48,7 @@ export default function SchemeTags({
 
   const SchemeTag = ({ schemeName }) => {
     return (
-      <div className="flex justify-center items-center bg-light-blue px-2 py-1 rounded-lg text-dark-blue">
+      <div className="flex justify-center items-center bg-light-blue px-2 py-1 rounded-lg text-dark-blue ">
         {schemeName}
       </div>
     );

@@ -52,17 +52,7 @@ export default function Header({ user, setUser }) {
                   : "font-normal no-underline"
               }`}
             >
-              Get Started
-            </Link>
-            <Link
-              href="/faq"
-              className={`${
-                pathname == "/faq"
-                  ? "font-bold underline underline-offset-3 decoration-white"
-                  : "font-normal no-underline"
-              }`}
-            >
-              FAQ
+              Schemes
             </Link>
           </div>
           <button className="flex items-center gap-2" onClick={handleLogout}>

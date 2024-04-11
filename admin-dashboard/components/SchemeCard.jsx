@@ -31,7 +31,7 @@ export default function SchemeCard({
             onClick={onClick}
             className="bg-dark-green text-white py-2 px-4 rounded-md hover:bg-darker-green"
           >
-            Start Course
+            View Questions
           </button>
         </div>
       ) : null}

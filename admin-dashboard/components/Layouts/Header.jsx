@@ -45,9 +45,9 @@ export default function Header({ user, setUser }) {
               My Team
             </Link>
             <Link
-              href="/"
+              href="/schemes"
               className={`${
-                pathname == "/"
+                pathname == "/schemes"
                   ? "font-bold underline underline-offset-3 decoration-white"
                   : "font-normal no-underline"
               }`}
