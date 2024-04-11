@@ -259,7 +259,7 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
     inputs = dict(schema)
     # Get question details
     db_question = db.query(QuestionModel).filter(QuestionModel.question_id == inputs['question_id']).first()
-
+    print('found question')
     if db_question is None: 
         raise HTTPException(status_code=404, detail="question does not exist")
     
@@ -273,23 +273,29 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
         ideal=ideal
         )
     
-    print(response)
     response = process_response(response)
-
-    # Save to db
     inputs.update(response)
-    db_schema = AttemptModel(**inputs)
-    db.add(db_schema)
+    
+    db_attempt = AttemptModel(**inputs)
+    
+    db.add(db_attempt)
     db.commit() 
 
     return response
 
 @app.get("/attempt/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def get_user_attempts(user_id: str, db: Session = Depends(create_session)):
-    db_user = db.query(AttemptModel).filter(AttemptModel.user_id == user_id).all()
-    if db_user is None:
+    db_attempts= db.query(AttemptModel).filter(AttemptModel.user_id == user_id).all()
+    if db_attempts is None:
         raise HTTPException(status_code=404, detail="Attempts not found")
-    return db_user    
+    
+    # for db_attempt in db_attempts:
+    #     db_question = db.query(QuestionModel).filter(QuestionModel.question_id == db_attempt.question_id)
+    #     question_title = db_question.title
+    #     print(question_title)
+    
+    
+    return db_attempts    
 
 @app.get("/attempt/user/{user_id}/average_scores", status_code=200)
 async def get_user_average_scores(user_id: str, db: Session = Depends(create_session)):

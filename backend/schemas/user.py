@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import List
 
 class UserBase(BaseModel):
+    uuid: str
     email: str
     access_rights: str
     name: str
