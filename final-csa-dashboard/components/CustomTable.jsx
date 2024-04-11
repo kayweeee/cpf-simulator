@@ -8,11 +8,12 @@ import FirstPageRoundedIcon from "@mui/icons-material/FirstPageRounded";
 import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 export default function TableCustomized({ rows }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const router = useRouter();
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
