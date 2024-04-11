@@ -361,10 +361,14 @@ async def get_table_details_of_user_for_scheme(scheme_name: str, user_id: str, d
 ## ATTEMPT ROUTES ##
 @app.get("/attempt/{attempt_id}", status_code=status.HTTP_201_CREATED)
 async def read_attempt(attempt_id: str, db: Session = Depends(create_session)):
-    db_schema = db.query(AttemptModel).filter(AttemptModel.attempt_id == attempt_id).first()
-    if db_schema is None:
+    db_attempt = db.query(AttemptModel).filter(AttemptModel.attempt_id == attempt_id).first()
+    if db_attempt is None:
         raise HTTPException(status_code=404, detail="Attempt not found")
-    return db_schema
+    attempt_dict = db_attempt.to_dict()
+    question_details = db.query(QuestionModel.question_details).filter(QuestionModel.question_id==attempt_dict['question_id']).first()
+    if question_details:
+        attempt_dict['question_details'] = str(question_details[0])
+    return attempt_dict
 
 @app.post("/attempt/", status_code=status.HTTP_201_CREATED)
 async def create_attempt(schema: AttemptBase , db: Session = Depends(create_session)):
