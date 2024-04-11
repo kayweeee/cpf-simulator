@@ -9,7 +9,6 @@ import SchemeCard from "../components/SchemeCard";
 
 export default function Schemes() {
   // scheme card example data (to be replaced with api call)
-
   const exampleData = [
     {
       scheme_name: "Retirement",
@@ -27,7 +26,7 @@ export default function Schemes() {
       scheme_name: "Housing",
       questions: 20,
       scheme_img: housingimage,
-      enabled: true,
+      enabled: false,
     },
   ];
 
