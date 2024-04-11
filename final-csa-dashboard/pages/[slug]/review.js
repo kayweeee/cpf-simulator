@@ -8,17 +8,24 @@ import { useEffect, useState } from 'react';
 export default function ReviewPage() {
     const router = useRouter();
     const [id, setId] = useState(null);
-    const [questionContent, setQuestionContent] = useState(null);
+    // const [questionContent, setQuestionContent] = useState(null);
     const [answerContent, setAnswerContent] = useState(null);
 
     useEffect(() => {
         if (router.isReady) {
-            var response = JSON.parse(router.query.data)
-            setQuestionContent(response.question)
-            setAnswerContent(response.response)
+            var response = JSON.parse(router.query.attemptId)
             setId(router.query.slug)
         }
-    }, [router.isReady, id, questionContent, answerContent]);
+    }, [router.isReady, id]);
+
+    const question_data = {
+        id: 1,
+        title: "Withdrawal From Retirement Account",
+        name: "Mdm Tan",
+        pic: "",
+        designation: "CPF Member",
+        content: "I would like to appeal to withdraw from my Retirement account about $5000. I am aware that if I withdraw my monthly payout will be much lesser. Please kindly assist me on my appeal soonest possible.",
+      }
 
     const attempt = {
         accuracy_feedback:
@@ -75,11 +82,11 @@ export default function ReviewPage() {
                     </div>
                     <div className='pl-4 pr-4 mb-4'>
                         <h3 className='font-bold'>Question:</h3>
-                        <p>{questionContent}</p>
+                        <p>{question_data.content}</p>
                     </div>
                     <div className='pl-4 pr-4 mb-4'>
                         <h3 className='font-bold'>Your Answer:</h3>
-                        <p>{answerContent}</p>
+                        <p>{attempt.answer}</p>
                     </div>
                     <h3 className="px-4 py-2 w-auto h-max-content flex justify-between items-center font-bold">
                         Overall Scores

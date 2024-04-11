@@ -8,7 +8,8 @@ export default function SchemeCard({ scheme_name, scheme_img, questions, scheme_
   const router = useRouter()
 
   function onClick() {
-    router.push(`/${scheme_name}/exercises`, undefined, { shallow: true })
+    var pagename = scheme_name.toLowerCase()
+    router.push(`/${pagename}/exercises`, undefined, { shallow: true })
   }
 
 
