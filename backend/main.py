@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, status, HTTPException, responses, File, UploadFile
 from sqlalchemy.orm  import Session, joinedload
-from sqlalchemy import select, distinct
+from sqlalchemy import select, distinct, desc
 from models.user import UserModel
 from models.attempt import AttemptModel
 from models.scheme import SchemeModel
@@ -10,6 +10,7 @@ from schemas.attempt import AttemptBase
 from schemas.user import UserBase, UserEmailInput, UserResponseSchema
 from schemas.scheme import SchemeBase, SchemeInput
 from schemas.question import QuestionBase
+from schemas.table import TableBase
 from config import Base, config
 from sqlalchemy import func
 from fastapi.middleware.cors import CORSMiddleware
@@ -122,12 +123,14 @@ async def save_image_locally(file):
 
     file_path = os.path.join(config.upload_path, f"{filename}_{unique_str}{file_extension}")
     file.filename = f"{filename}_{unique_str}{file_extension}"
-    print(file_path)
+
     # Save the file locally
     with open(file_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
-    print("finished saving locally")
-    return file_path
+        
+    absolute_path = os.path.abspath(file_path)
+
+    return absolute_path
 
 @app.post("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
 async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_session)):
@@ -160,9 +163,7 @@ async def add_new_scheme(scheme_name: str, file: UploadFile = File(...), db: Ses
     else:
         try:
             updated_filepath = await save_image_locally(file)
-            
             new_scheme = SchemeModel(scheme_name=scheme_name, scheme_img_path = updated_filepath)
-            print('new scheme initialised')
             db.add(new_scheme)
             db.commit()
 
@@ -208,7 +209,7 @@ async def update_user_schemes(scheme_input: SchemeInput, db: Session = Depends(c
         db.rollback()
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@app.get("/scheme", status_code=status.HTTP_201_CREATED)
+@app.get("/scheme/names", status_code=status.HTTP_201_CREATED)
 async def get_scheme_names(db: Session = Depends(create_session)):
     # Query for scheme names
     schemes= db.query(distinct(SchemeModel.scheme_name)).all()
@@ -219,6 +220,23 @@ async def get_scheme_names(db: Session = Depends(create_session)):
     # Extract the scheme names from the query results to return a list of schemes
     scheme_name_list = [scheme_name[0] for scheme_name in schemes]
     return scheme_name_list
+
+@app.get("/scheme", status_code=status.HTTP_201_CREATED)
+async def get_all_schemes(db: Session = Depends(create_session)):
+    db_schemes= db.query(distinct(SchemeModel.scheme_name)).all()
+    if not db_schemes:
+        raise HTTPException(status_code=404, detail="No scheme names found")
+    scheme_list = []
+    for scheme in db_schemes:
+        scheme_name = scheme[0]
+        db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
+        
+        scheme_dict = db_scheme.to_dict()
+        question_number = len(scheme_dict['questions'])
+        scheme_dict.update({'number_of_questions': question_number})
+        scheme_list.append(scheme_dict)
+    return scheme_list
+
 
 ## QUESTION ROUTES ##
 @app.get("/question/{scheme_name}", status_code=status.HTTP_201_CREATED)
@@ -245,6 +263,31 @@ async def add_question_to_scheme(question: QuestionBase, db: Session = Depends(c
     else:
         # If the scheme doesn't exist, create a new scheme and add the user to it
         raise HTTPException(status_code=404, detail="Scheme not found")
+    
+## TABLE ROUTE ##
+@app.get("/table/{user_id}/{scheme_name}", status_code=status.HTTP_201_CREATED)
+async def get_scheme_question(scheme_name: str, user_id: str, db: Session = Depends(create_session)):
+    question_list = []
+    db_questions = db.query(QuestionModel).filter(QuestionModel.scheme_name == scheme_name).all()
+    
+    if db_questions is None:
+        raise HTTPException(status_code=404, detail="No questions found for the given scheme")
+
+    for db_question in db_questions:
+        question_dict = db_question.to_dict()
+        db_attempt = db.query(AttemptModel).filter(AttemptModel.user_id == user_id).filter(AttemptModel.question_id == db_question.question_id).order_by(desc(AttemptModel.date)).first()
+  
+        if db_attempt is None:
+            db_attempt = ""
+            status = 'uncompleted'
+        else:
+            db_attempt = db_attempt.to_dict()['attempt_id']
+            status = 'completed'
+            
+        question_dict.update({"status": status, "attempt": db_attempt})
+        question_list.append(question_dict)
+        
+    return question_list
 
 ## ATTEMPT ROUTES ##
 @app.get("/attempt/{attempt_id}", status_code=status.HTTP_201_CREATED)
@@ -259,12 +302,11 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
     inputs = dict(schema)
     # Get question details
     db_question = db.query(QuestionModel).filter(QuestionModel.question_id == inputs['question_id']).first()
-    print('found question')
     if db_question is None: 
         raise HTTPException(status_code=404, detail="question does not exist")
     
     question = db_question.question_details
-    ideal = db_question.ideal   
+    ideal = db_question.ideal
 
     # Get model answer and process
     response = openAI_response(
@@ -286,16 +328,18 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
 @app.get("/attempt/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def get_user_attempts(user_id: str, db: Session = Depends(create_session)):
     db_attempts= db.query(AttemptModel).filter(AttemptModel.user_id == user_id).all()
+    attempts_list = []
     if db_attempts is None:
         raise HTTPException(status_code=404, detail="Attempts not found")
-    
-    # for db_attempt in db_attempts:
-    #     db_question = db.query(QuestionModel).filter(QuestionModel.question_id == db_attempt.question_id)
-    #     question_title = db_question.title
-    #     print(question_title)
-    
-    
-    return db_attempts    
+
+    for db_attempt in db_attempts:
+        db_question = db.query(QuestionModel).filter(QuestionModel.question_id == db_attempt.question_id).first()
+        question_title = db_question.to_dict()['title']
+        attempt_dict = db_attempt.to_dict()
+        attempt_dict.update({'question_title':question_title})
+        attempts_list.append(attempt_dict)
+
+    return attempts_list
 
 @app.get("/attempt/user/{user_id}/average_scores", status_code=200)
 async def get_user_average_scores(user_id: str, db: Session = Depends(create_session)):

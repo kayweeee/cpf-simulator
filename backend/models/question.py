@@ -17,3 +17,15 @@ class QuestionModel(Base):
     
     scheme_name: Mapped[str] = Column(String(255), ForeignKey("scheme.scheme_name"), nullable=False)
     scheme: Mapped["SchemeModel"] = relationship("SchemeModel", back_populates="questions")
+    
+    def to_dict(self):
+        return {
+            'question_id': self.question_id,
+            'question_difficulty': self.question_difficulty,
+            'ideal': self.ideal,
+            'title': self.title,
+            'scheme_name': self.scheme,
+            # 'scheme': self.scheme
+        }
+    
+    
