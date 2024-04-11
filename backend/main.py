@@ -318,6 +318,15 @@ async def get_questions_by_scheme_name(scheme_name: str, db: Session = Depends(c
         raise HTTPException(status_code=404, detail="No questions found for the given scheme")
     return db_question
 
+# @app.get("/question/all", status_code=status.HTTP_201_CREATED)
+# async def get_all_questions(db: Session = Depends(create_session)):
+#     db_question = db.query(QuestionModel).all()
+#     questions = []
+#     for question in db_question:
+#         question_dict = question.to_dict()
+#         questions.append(question_dict)
+#     return questions
+
 @app.post("/question", status_code=status.HTTP_201_CREATED)
 async def add_question_to_scheme(question: QuestionBase, db: Session = Depends(create_session)):
 
@@ -330,6 +339,7 @@ async def add_question_to_scheme(question: QuestionBase, db: Session = Depends(c
             db_question= QuestionModel(**question.dict())
             db.add(db_question)
             db.commit()    
+            return db_question.question_id
     else:
         raise HTTPException(status_code=404, detail="Scheme not found")
     
@@ -392,7 +402,7 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
     db.add(db_attempt)
     db.commit() 
 
-    return response
+    return db_attempt.attempt_id
 
 @app.get("/attempt/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def get_user_attempts(user_id: str, db: Session = Depends(create_session)):

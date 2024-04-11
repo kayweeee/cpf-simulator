@@ -1,6 +1,7 @@
 
 import requests
 import os
+import json
 
 URL = "http://127.0.0.1:8000"
 
@@ -25,9 +26,9 @@ directory = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(directory, "retirement.png")
 
 schemes = [
-    {"scheme_name": "scheme 1", "file": open(file_path, 'rb')},
-    {"scheme_name": "scheme 2", "file": open(file_path, 'rb')},
-    {"scheme_name": "scheme 3", "file": open(file_path, 'rb')}]
+    {"scheme_name": "Retirement", "file": open(file_path, 'rb')},
+    {"scheme_name": "Savings", "file": open(file_path, 'rb')},
+    {"scheme_name": "Taxes", "file": open(file_path, 'rb')}]
 
 
 for scheme in schemes:
@@ -44,39 +45,51 @@ for scheme in schemes:
     
 # add questions to scheme
 
-question = """Is the FRS amount based upon the year at which age that 55. So if my dad is 69
+question7= """Is the FRS amount based upon the year at which age that 55. So if my dad is 69
 years now, the FRS amount is still based on the amount when he is at 55yrs?
 Do you have the chart under RSS scheme for FRS to check back against when he was 55 yrs?
 """
 
-ideal = """
+ideal7= """
 The Full Retirement Sum (FRS) applicable to your father depends on the year he turned 55.
 You can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the retirement sums applicable to me?  
 """
 
+question5= """please advise how I can withdraw my entire OA savings. I am 75 yrs old"""
+
+ideal5 = """
+"FAQs: How can I withdraw my CPF savings? (https://www.cpf.gov.sg/member/faq/retirement-income/retirement-withdrawals/how-can-i-withdraw-my-cpf-savings)
+Can I choose which CPF account to withdraw from? (https://www.cpf.gov.sg/member/faq/retirement-income/retirement-withdrawals/can-i-choose-which-cpf-account-to-withdraw-from)"
+"""
+
 questions = [
-    {"title": "Title 1","question_difficulty": "Easy", "question_details": question ,"ideal": ideal , "scheme_name": "scheme 1"},
+    {"title": "FRS amount","question_difficulty": "Easy", "question_details": question7 ,"ideal": ideal7 , "scheme_name": "Retirement"},
+     {"title": "CPF withdrawal","question_difficulty": "Easy", "question_details": question5 ,"ideal": ideal5 , "scheme_name": "Retirement"},
 ]
 
+question_ids = []
 for question in questions:
     response = requests.post(
         f"{URL}/question",
         json=question
     )
-    print(response.text)
+    response = response.text[1:-1]
+    question_ids.append(response)
+    
+print(question_ids)
 
     
 # add user to schemes
 users_to_be_added = [{
   "user_id": "1",
-  "scheme_name": "scheme 1"
+  "scheme_name": "Retirement"
 }, 
   {                 
   "user_id": "2",
-  "scheme_name": "scheme 1"
+  "scheme_name": "Retirement"
 },{
   "user_id": "3",
-  "scheme_name": "scheme 1"
+  "scheme_name": "Retirement"
 }, ]
 
 for user in users_to_be_added:
@@ -90,18 +103,18 @@ for user in users_to_be_added:
 attempts = [
     {
   "user_id": "1",
-  "question_id": 1,
-  "answer": "The answer to your question can be found on the FAQ websites"
+  "answer": "The answer to your question can be found on the FAQ websites",
+  'question_id': "49e92e21-9a17-417f-8ece-f76c4d075f39"
 },
     {
   "user_id": "2",
-  "question_id": 1,
-  "answer": "The answer to your question can be found on the FAQ websites"
+  "answer": "The answer to your question can be found on the FAQ websites",
+  'question_id': "49e92e21-9a17-417f-8ece-f76c4d075f39"
 },
     {
   "user_id": "3",
-  "question_id": 1,
-  "answer": "The answer to your question can be found on the FAQ websites"
+  "answer": "The answer to your question can be found on the FAQ websites",
+  'question_id': "49e92e21-9a17-417f-8ece-f76c4d075f39"
 }]
 
 
