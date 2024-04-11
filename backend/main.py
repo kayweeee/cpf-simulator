@@ -5,6 +5,7 @@ from models.user import UserModel
 from models.attempt import AttemptModel
 from models.scheme import SchemeModel
 from models.question import QuestionModel
+from models.association_tables import user_scheme_association
 from session import create_session, engine
 from schemas.attempt import AttemptBase
 from schemas.user import UserBase, UserEmailInput, UserResponseSchema
@@ -104,6 +105,62 @@ async def create_user(user: UserBase, db: Session = Depends(create_session)):
     db.add(db_user)
     db.commit()
     return responses.JSONResponse(content = {'message' : 'User added'}, status_code=201)
+
+@app.get("/user/{user_id}/schemes", status_code=status.HTTP_201_CREATED)
+async def get_all_user_schemes(user_id:str, db: Session = Depends(create_session)):
+
+    db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    schemes =  db.query(SchemeModel)\
+            .join(user_scheme_association, SchemeModel.scheme_name == user_scheme_association.c.scheme_table_name)\
+            .filter(user_scheme_association.c.user_table_id == user_id).all()
+    
+    if not schemes:
+        raise HTTPException(status_code=404, detail="No scheme names found")
+    
+    results = []
+    
+    for scheme in schemes:
+        num_attempted_questions = db.query(func.count(func.distinct(AttemptModel.question_id))) \
+                    .filter(AttemptModel.user_id == user_id) \
+                    .filter(AttemptModel.question_id.in_([question.question_id for question in scheme.questions])) \
+                    .scalar()
+        
+        num_questions = db.query(func.count(QuestionModel.question_id)).filter(QuestionModel.scheme_name == scheme.scheme_name).scalar()
+        scheme_attempt_info = {
+            "scheme_name": scheme.scheme_name,
+            "num_attempted_questions": num_attempted_questions,
+            "num_questions": num_questions
+        }
+        results.append(scheme_attempt_info)
+    return results
+
+@app.get("/user/{user_id}/{scheme_name}", status_code=status.HTTP_201_CREATED)
+async def get_user_scheme(user_id:str, scheme_name:str, db: Session = Depends(create_session)):
+    db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
+    
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    db_questions = db.query(QuestionModel).filter(QuestionModel.scheme_name == scheme_name).all()
+    if db_questions is None:
+        raise HTTPException(status_code=404, detail="No questions found for the scheme")
+
+    num_attempted_questions = db.query(func.count(func.distinct(AttemptModel.question_id))) \
+                        .filter(AttemptModel.user_id == user_id) \
+                        .filter(AttemptModel.question_id.in_([question.question_id for question in db_questions])) \
+                        .scalar()
+    num_questions = db.query(func.count(QuestionModel.question_id)).filter(QuestionModel.scheme_name == scheme_name).scalar()
+    # Create a dictionary containing the scheme name and the number of attempted questions
+    scheme_attempt_info = {
+        "scheme_name": scheme_name,
+        "num_attempted_questions": num_attempted_questions,
+        "num_questions": num_questions
+    }
+    return scheme_attempt_info
+
 
 ### SCHEME ROUTES ###
 @app.get("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
