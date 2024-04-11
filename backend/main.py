@@ -168,26 +168,46 @@ async def get_scheme_by_user_id(user_id: str, db: Session = Depends(create_sessi
     db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    db_scheme = db.query(SchemeModel).filter(SchemeModel.user_id == user_id).all()
-    if db_scheme is None:
-        raise HTTPException(status_code=404, detail="User schema not found")
-  
-    return db_user.scheme
+
+    scheme_list = []
+    for scheme in db_user.scheme:  # Iterate over schemes through the relationship
+        scheme_dict = scheme.to_dict()
+        num_questions = db.query(func.count(QuestionModel.question_id)).filter(QuestionModel.scheme_name == scheme.scheme_name).scalar()
+        scheme_dict.update({"num_questions": num_questions})
+        scheme_list.append(scheme_dict)
+
+    return scheme_list
 
 async def save_image_locally(file):
     unique_str = str(uuid.uuid4())[:5]
     filename, file_extension = os.path.splitext(file.filename)
-
-    file_path = os.path.join(config.upload_path, f"{filename}_{unique_str}{file_extension}")
     file.filename = f"{filename}_{unique_str}{file_extension}"
+    
+    # Save file for admin dashboard
+    admin_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../admin-dashboard/public"))
+    admin_upload_path = os.path.join(admin_path, "uploads")
+    os.makedirs(admin_upload_path, exist_ok=True)
+    admin_file_path = os.path.join(admin_upload_path, file.filename)
 
-    # Save the file locally
-    with open(file_path, "wb") as f:
-        shutil.copyfileobj(file.file, f)
+    with open(admin_file_path, "wb") as f_admin:
+        file.file.seek(0)  # Reset file pointer to start of the file
+        shutil.copyfileobj(file.file, f_admin)
         
-    absolute_path = os.path.abspath(file_path)
+    # Save file for final-csa-dashboard
+    csa_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../final-csa-dashboard/public"))
+    csa_upload_path = os.path.join(csa_path, "uploads")  
+    os.makedirs(csa_upload_path, exist_ok=True)
+    csa_file_path = os.path.join(csa_upload_path, file.filename)  
 
-    return absolute_path
+    with open(csa_file_path, "wb") as f_csa:
+        file.file.seek(0)  
+        shutil.copyfileobj(file.file, f_csa)
+    
+    # Get the relative path of the saved files
+    rel_admin_path = os.path.relpath(admin_file_path, admin_path)
+    rel_csa_path = os.path.relpath(csa_file_path, csa_path)
+    
+    return rel_admin_path, rel_csa_path
 
 @app.post("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
 async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_session)):
@@ -219,8 +239,8 @@ async def add_new_scheme(scheme_name: str, file: UploadFile = File(...), db: Ses
     
     else:
         try:
-            updated_filepath = await save_image_locally(file)
-            new_scheme = SchemeModel(scheme_name=scheme_name, scheme_img_path = updated_filepath)
+            csa_filepath, admin_filepath = await save_image_locally(file)
+            new_scheme = SchemeModel(scheme_name=scheme_name, scheme_csa_img_path=csa_filepath, scheme_admin_img_path= admin_filepath)
             db.add(new_scheme)
             db.commit()
 
@@ -283,7 +303,6 @@ async def get_all_schemes(db: Session = Depends(create_session)):
     for scheme in db_schemes:
         scheme_name = scheme[0]
         db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
-        
         scheme_dict = db_scheme.to_dict()
         question_number = len(scheme_dict['questions'])
         scheme_dict.update({'number_of_questions': question_number})

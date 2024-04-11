@@ -10,7 +10,8 @@ from models.association_tables import user_scheme_association
 class SchemeModel(Base):
     __tablename__ = "scheme"
     scheme_name: Mapped[str] = Column(String(255), primary_key=True, nullable=False )
-    scheme_img_path: Mapped[str] = Column(String(255), nullable= True)
+    scheme_csa_img_path: Mapped[str] = Column(String(255), nullable= True)
+    scheme_admin_img_path: Mapped[str] = Column(String(255), nullable= True)
     user_id: Mapped[str] = Column(String(255), ForeignKey("user.uuid"), nullable=True )
     
     users: Mapped[list["UserModel"]] = relationship("UserModel", secondary=user_scheme_association, back_populates="scheme")
@@ -19,8 +20,8 @@ class SchemeModel(Base):
     def to_dict(self):
         return {
             'scheme_name': self.scheme_name,
-            'scheme_img_path': self.scheme_img_path,
-            'user_id': self.user_id,
-            'users': self.users,
+            'scheme_csa_img_path': self.scheme_csa_img_path,
+            'scheme_admin_img_path': self.scheme_admin_img_path,
+            'users': [user.uuid for user in self.users], 
             'questions': self.questions 
         }
