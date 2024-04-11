@@ -18,7 +18,7 @@ export default function Exercises() {
     }, [router.isReady]);
 
     function onClick(question) {
-        router.push(`/${question.member.id}/question`, undefined, { shallow: true })
+        router.push(`/${question.member.scheme.toLowerCase()}/${question.member.id}/question`, undefined, { shallow: true })
     }
 
     // Change table height according to image height
@@ -28,21 +28,21 @@ export default function Exercises() {
 
     // Dummy data to be changed
     const teamMembers = [
-        { id: 1, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 2, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 3, status: 'not completed', title: 'Medisave Balance', difficulty: 'Medium', scheme: 'Medisave', remark: '' },
+        { id: 1, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 2, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 3, status: 'not completed', title: 'Medisave Balance', difficulty: 'Medium', scheme: 'Housing', remark: '' },
         { id: 4, status: 'not completed', title: 'Withdrawing from Retirement Fund', difficulty: 'Hard', scheme: 'Retirement', remark: '' },
-        { id: 5, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 6, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 7, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 8, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 9, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 10, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 11, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 12, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 13, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 14, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
-        { id: 15, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Medisave', remark: '' },
+        { id: 5, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 6, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 7, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 8, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 9, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 10, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 11, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 12, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 13, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 14, status: 'completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
+        { id: 15, status: 'not completed', title: 'Help with Medisave', difficulty: 'Easy', scheme: 'Housing', remark: '' },
     ];
 
     const getdifficultyColor = (difficulty) => {

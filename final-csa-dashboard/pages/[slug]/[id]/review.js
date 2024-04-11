@@ -1,7 +1,7 @@
-import RadialGraph from '../../components/PieGraph.jsx';
+import RadialGraph from '../../../components/PieGraph.jsx';
 import Download from '@mui/icons-material/SimCardDownloadOutlined';
-import QuestionBar from "../../components/QuestionBar.jsx";
-import ActionBar from "../../components/ActionBar.jsx";
+import QuestionBar from "../../../components/QuestionBar.jsx";
+import ActionBar from "../../../components/ActionBar.jsx";
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 

@@ -18,10 +18,9 @@ export default function ActionBar({ review }) {
                 router.back()
             )
             : (   
-                router.push({
-                    pathname: `/${id}/review`,
-                    query: { attemptId: JSON.stringify( "123456"
-                    )},
+                router.push({ // loading screen
+                    pathname: `/${router.query.slug}/${router.query.id}/review`,
+                    query: { attemptId: JSON.stringify( "123456" )},
                 })
 
             )
