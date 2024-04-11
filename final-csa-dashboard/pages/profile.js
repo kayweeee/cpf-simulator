@@ -1,11 +1,12 @@
+// framework
+import { useEffect, useState } from "react";
+// components
 import CustomTable from "../components/CustomTable.jsx";
 import RadialGraph from "../components/PieGraph.jsx";
-import { useEffect, useState } from "react";
 import isAuth from "../components/isAuth.jsx";
 import ProgressBar from "../components/ProgressBar.jsx";
 
 function Profile({ user }) {
-  console.log(user);
   const [attempts, setAttempts] = useState([]);
   const [averageScores, setAverageScores] = useState([]);
   const [subCat, setSubCat] = useState([]);

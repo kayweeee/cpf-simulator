@@ -2,26 +2,25 @@
 import { useEffect, useState } from "react";
 // components
 import SchemeCard from "../components/SchemeCard";
-import isAuth from "../components/isAuth";
+// import isAuth from "../components/isAuth";
 
-function Schemes({ user }) {
+function Schemes() {
   const [schemes, setSchemes] = useState([]);
 
   useEffect(() => {
     async function getSchemes() {
-      if (user) {
-        try {
-          const res = await fetch(`http://127.0.0.1:8000/scheme/${user.uuid}`);
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/scheme`);
 
-          const schemeData = await res.json();
-          setSchemes(schemeData);
-        } catch (e) {
-          console.log(e);
-        }
+        const schemeData = await res.json();
+        setSchemes(schemeData);
+      } catch (e) {
+        console.log(e);
       }
     }
+
     getSchemes();
-  }, [user]);
+  }, []);
 
   return (
     <div className="text-base">
@@ -36,7 +35,7 @@ function Schemes({ user }) {
               <SchemeCard
                 key={i.scheme_name}
                 scheme_name={i.scheme_name}
-                scheme_img={i.scheme_csa_img_path}
+                scheme_img={i.scheme_admin_img_path}
                 questions={i.questions.length}
                 scheme_button={true}
               />
@@ -48,4 +47,4 @@ function Schemes({ user }) {
   );
 }
 
-export default isAuth(Schemes);
+export default Schemes;

@@ -15,7 +15,9 @@ export const getServerSideProps = async () => {
   const teamMembers = await res.json();
 
   // get all schemes
-  const res2 = await fetch("http://127.0.0.1:8000/scheme", { method: "GET" });
+  const res2 = await fetch("http://127.0.0.1:8000/distinct/scheme", {
+    method: "GET",
+  });
 
   const allSchemes = await res2.json();
 
