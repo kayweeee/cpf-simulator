@@ -22,7 +22,6 @@ class SchemeModel(Base):
             'scheme_name': self.scheme_name,
             'scheme_csa_img_path': self.scheme_csa_img_path,
             'scheme_admin_img_path': self.scheme_admin_img_path,
-            'user_id': self.user_id,
-            'users': self.users,
+            'users': [user.uuid for user in self.users], 
             'questions': self.questions 
         }

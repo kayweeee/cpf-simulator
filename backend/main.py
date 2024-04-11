@@ -168,11 +168,15 @@ async def get_scheme_by_user_id(user_id: str, db: Session = Depends(create_sessi
     db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    db_scheme = db.query(SchemeModel).filter(SchemeModel.user_id == user_id).all()
-    if db_scheme is None:
-        raise HTTPException(status_code=404, detail="User schema not found")
-  
-    return db_user.scheme
+
+    scheme_list = []
+    for scheme in db_user.scheme:  # Iterate over schemes through the relationship
+        scheme_dict = scheme.to_dict()
+        num_questions = db.query(func.count(QuestionModel.question_id)).filter(QuestionModel.scheme_name == scheme.scheme_name).scalar()
+        scheme_dict.update({"num_questions": num_questions})
+        scheme_list.append(scheme_dict)
+
+    return scheme_list
 
 async def save_image_locally(file):
     unique_str = str(uuid.uuid4())[:5]
@@ -299,7 +303,6 @@ async def get_all_schemes(db: Session = Depends(create_session)):
     for scheme in db_schemes:
         scheme_name = scheme[0]
         db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
-        
         scheme_dict = db_scheme.to_dict()
         question_number = len(scheme_dict['questions'])
         scheme_dict.update({'number_of_questions': question_number})
