@@ -1,20 +1,19 @@
-import * as React from 'react';
-import { styled } from '@mui/system';
+import * as React from "react";
+import { styled } from "@mui/system";
 import {
   TablePagination,
   tablePaginationClasses as classes,
-} from '@mui/base/TablePagination';
-import FirstPageRoundedIcon from '@mui/icons-material/FirstPageRounded';
-import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import Link from 'next/link';
+} from "@mui/base/TablePagination";
+import FirstPageRoundedIcon from "@mui/icons-material/FirstPageRounded";
+import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
+import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import Link from "next/link";
 
-export default function TableCustomized({rows}) {
+export default function TableCustomized({ rows }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -28,8 +27,14 @@ export default function TableCustomized({rows}) {
     setPage(0);
   };
 
+  function handleReviewNav(review_id) {
+    router.push(`/${review_id}/review`, undefined, {
+      shallow: true,
+    });
+  }
+
   return (
-    <Root sx={{ maxWidth: '100%', width: '100%' }}>
+    <Root sx={{ maxWidth: "100%", width: "100%" }}>
       <table aria-label="custom pagination table">
         <thead>
           <tr>
@@ -42,14 +47,19 @@ export default function TableCustomized({rows}) {
           {(rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
-          ).map((row) => (
-            <tr key={row.id}>
-              <td>{row.title}</td>
+          ).map((row, idx) => (
+            <tr key={idx}>
+              <td>{row.question_title}</td>
               <td style={{ width: 240 }} align="right">
-                {row.time}
+                {row.date}
               </td>
-              <td style={{ width: 120 }} align="right">
-                <Link href={`/review`}>Review</Link>                
+              <td
+                style={{ width: 120 }}
+                align="right"
+                className="hover:underline hover:underline-offset-2"
+                onClick={() => handleReviewNav(row.attempt_id)}
+              >
+                Review
               </td>
             </tr>
           ))}
@@ -70,7 +80,7 @@ export default function TableCustomized({rows}) {
               page={page}
               slotProps={{
                 select: {
-                  'aria-label': 'rows per page',
+                  "aria-label": "rows per page",
                 },
                 actions: {
                   showFirstButton: true,
@@ -94,29 +104,29 @@ export default function TableCustomized({rows}) {
 }
 
 const blue = {
-  50: '#F0F7FF',
-  200: '#A5D8FF',
-  400: '#3399FF',
-  900: '#003A75',
+  50: "#F0F7FF",
+  200: "#A5D8FF",
+  400: "#3399FF",
+  900: "#003A75",
 };
 
 const grey = {
-  50: '#F3F6F9',
-  100: '#E5EAF2',
-  200: '#DAE2ED',
-  300: '#C7D0DD',
-  400: '#B0B8C4',
-  500: '#9DA8B7',
-  600: '#6B7A90',
-  700: '#434D5B',
-  800: '#303740',
-  900: '#1C2025',
+  50: "#F3F6F9",
+  100: "#E5EAF2",
+  200: "#DAE2ED",
+  300: "#C7D0DD",
+  400: "#B0B8C4",
+  500: "#9DA8B7",
+  600: "#6B7A90",
+  700: "#434D5B",
+  800: "#303740",
+  900: "#1C2025",
 };
 
-const Root = styled('div')(
+const Root = styled("div")(
   ({ theme }) => `
   border-radius: 12px;
-  border: 1px solid ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
+  border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]};
   overflow: clip;
 
   table {
@@ -130,12 +140,12 @@ const Root = styled('div')(
 
   td,
   th {
-    border: 1px solid ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
+    border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]};
     text-align: left;
     padding: 8px;
   }
 
-  `,
+  `
 );
 
 const CustomTablePagination = styled(TablePagination)(
@@ -164,19 +174,21 @@ const CustomTablePagination = styled(TablePagination)(
   & .${classes.select}{
     font-family: 'IBM Plex Sans', sans-serif;
     padding: 2px 0 2px 4px;
-    border: 1px solid ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
+    border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]};
     border-radius: 6px; 
     background-color: transparent;
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
     transition: all 100ms ease;
 
     &:hover {
-      background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
-      border-color: ${theme.palette.mode === 'dark' ? grey[600] : grey[300]};
+      background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]};
+      border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
     }
 
     &:focus {
-      outline: 3px solid ${theme.palette.mode === 'dark' ? blue[400] : blue[200]};
+      outline: 3px solid ${
+        theme.palette.mode === "dark" ? blue[400] : blue[200]
+      };
       border-color: ${blue[400]};
     }
   }
@@ -203,8 +215,8 @@ const CustomTablePagination = styled(TablePagination)(
     border: transparent;
     border-radius: 50%;
     background-color: transparent;
-    border: 1px solid ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]};
+    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
     transition: all 120ms ease;
 
     > svg {
@@ -212,22 +224,26 @@ const CustomTablePagination = styled(TablePagination)(
     }
 
     &:hover {
-      background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
-      border-color: ${theme.palette.mode === 'dark' ? grey[600] : grey[300]};
+      background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]};
+      border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
     }
 
     &:focus {
-      outline: 3px solid ${theme.palette.mode === 'dark' ? blue[400] : blue[200]};
+      outline: 3px solid ${
+        theme.palette.mode === "dark" ? blue[400] : blue[200]
+      };
       border-color: ${blue[400]};
     }
 
     &:disabled {
       opacity: 0.3;
       &:hover {
-        border: 1px solid ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
+        border: 1px solid ${
+          theme.palette.mode === "dark" ? grey[800] : grey[200]
+        };
         background-color: transparent;
       }
     }
   }
-  `,
+  `
 );
