@@ -29,12 +29,6 @@ schemes = [
     {"scheme_name": "scheme 2", "file": open(file_path, 'rb')},
     {"scheme_name": "scheme 3", "file": open(file_path, 'rb')}]
 
-# for scheme in schemes:
-#     response = requests.post(
-#         f"{URL}/scheme/",
-#         json=scheme
-#     )
-#     print(response)
 
 for scheme in schemes:
     files = {'file': scheme["file"]}
@@ -73,7 +67,6 @@ for question in questions:
 
     
 # add user to schemes
-
 users_to_be_added = [{
   "user_id": "1",
   "scheme_name": "scheme 1"
@@ -85,6 +78,13 @@ users_to_be_added = [{
   "user_id": "3",
   "scheme_name": "scheme 1"
 }, ]
+
+for user in users_to_be_added:
+    response = requests.post(
+        f"{URL}/scheme/{user['user_id']}",
+        json=user
+    )
+    print(response.text)
 
 # add attempts
 attempts = [
