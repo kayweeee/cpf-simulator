@@ -4,8 +4,14 @@ import {Input, Dropdown, DropdownMenu, DropdownTrigger, Button, ButtonGroup, Dro
 import { AiFillCaretDown } from "react-icons/ai";
 import { IoIosArrowBack } from "react-icons/io";
 
-export default function AddQuestions(){
-  
+export const getServerSideProps = async () => {
+    // get all team schemes
+    const res = await fetch("http://127.0.0.1:8000/scheme", { method: "GET" });
+    const allSchemes = await res.json();
+    return { props: {allSchemes} };
+  };
+
+export default function AddQuestions({allSchemes}){
     const [title, setTitle] = useState("");
     const [question_details, setDetails] = useState("");
     const [ideal, setIdeal] = useState("");
@@ -13,11 +19,10 @@ export default function AddQuestions(){
     const [selectedDifficulty, setSelectedDifficulty] = useState(0);
     const router = useRouter();
     //should change name to GET method from schemes
-    const name = ["Retirement", "Medisave","Housing"];
+    const name = allSchemes.map(scheme => scheme.scheme_name);
     const [selectedName, setSelectedName] = useState(0);
 
     async function addquestions(title, question_difficulty, question_details,ideal,scheme_name) {
-        console.log("addquestions arguments:", title, question_difficulty, question_details, ideal, scheme_name);
         try {
           const response = await fetch("http://127.0.0.1:8000/question", {
             method: "POST",
@@ -27,7 +32,6 @@ export default function AddQuestions(){
               question_details : question_details,
               ideal : ideal ,
               scheme_name : scheme_name,
-
             }),
             headers: {
               "Content-Type": "application/json",
@@ -36,13 +40,13 @@ export default function AddQuestions(){
           });
     
           if (!response.ok) {
-            throw new Error("Failed to create question");
+            throw new Error("Failed to add question");
           }
           // Handle response if necessary
           const data = await response.json();
           return data;
         } catch (error) {
-          console.error("Error creating user:", error);
+          console.error("Error adding question:", error);
           throw error;
         }
       }
@@ -51,10 +55,6 @@ export default function AddQuestions(){
         addquestions(title, difficulty[selectedDifficulty], question_details, ideal, name[selectedName]);
         // router.push("/index");
       }
-
-      console.log(title)
-      console.log(question_details)
-      console.log(ideal)
 
     return (
         <div className='flex flex-col h-dvh'>
@@ -159,7 +159,7 @@ export default function AddQuestions(){
                 <div className='flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2  '>
                     <span className='flex items-center pr-3 '> Question </span>
                    <textarea
-                    isRequired
+                    required={true}
                     id="ideal-question"
                     rows="4"
                    
@@ -184,7 +184,7 @@ export default function AddQuestions(){
             className="flex-1 w-full h-full text-clip"
         /> */}
         <textarea
-            isRequired
+            required={true}
             // defaultValue=""
             id="ideal-answer"
             rows="4"
