@@ -1,34 +1,25 @@
-// framework
-import Image from "next/image";
-// icons and images
-import retirementimage from "../public/retirement.png";
-import medisaveimage from "../public/medisave.png";
-import housingimage from "../public/housing.png";
 // components
 import SchemeCard from "../components/SchemeCard";
+import { useEffect, useState } from "react";
 
-export default function Schemes() {
-  // scheme card example data (to be replaced with api call)
-  const exampleData = [
-    {
-      scheme_name: "Retirement",
-      questions: 20,
-      scheme_img: retirementimage,
-      enabled: true,
-    },
-    {
-      scheme_name: "Medisave",
-      questions: 20,
-      scheme_img: medisaveimage,
-      enabled: false,
-    },
-    {
-      scheme_name: "Housing",
-      questions: 20,
-      scheme_img: housingimage,
-      enabled: false,
-    },
-  ];
+export default function Schemes({ user }) {
+  const [schemes, setSchemes] = useState([]);
+
+  useEffect(() => {
+    async function getSchemes() {
+      if (user) {
+        try {
+          const res = await fetch(`http://127.0.0.1:8000/scheme/${user.uuid}`);
+
+          const schemeData = await res.json();
+          setSchemes(schemeData);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+    getSchemes();
+  }, [user]);
 
   return (
     <div className="text-base">
@@ -38,15 +29,14 @@ export default function Schemes() {
           <div className="font-bold text-3xl">Schemes</div>
         </div>
         <div className="flex flex-col gap-y-5 min-h-screen">
-          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7 mb-8">
-            {exampleData.map((i) => (
+          <div className="flex flex-row flex-wrap px-20 justify-around gap-y-7 mb-8">
+            {schemes.map((i) => (
               <SchemeCard
                 key={i.scheme_name}
                 scheme_name={i.scheme_name}
-                scheme_img={i.scheme_img}
-                questions={i.questions}
+                scheme_img={i.scheme_csa_img_path}
+                questions={i.questions.length}
                 scheme_button={true}
-                enabled={i.enabled}
               />
             ))}
           </div>
