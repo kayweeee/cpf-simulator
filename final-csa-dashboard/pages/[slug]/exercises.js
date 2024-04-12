@@ -30,20 +30,16 @@ function Exercises() {
     getQuestions();
   }, [router.isReady]);
 
+  console.log(allQuestions);
+
   function handleQuestionNav(question_id) {
-    router.replace({
-      pathname: `/${question_id}/question`,
-      query: {scheme_name: name}
-      }, undefined, {
+    router.push(`/${question_id}/question`, undefined, {
       shallow: true,
     });
   }
 
   function handleReviewNav(review_id) {
-    router.push({
-      pathname: `/${review_id}/review`,
-      query: { review:true, submit: false, profile:false }}, 
-      undefined, {
+    router.push(`/${review_id}/review`, undefined, {
       shallow: true,
     });
   }
@@ -68,7 +64,7 @@ function Exercises() {
 
   return (
     <div className="text-base bg-light-green">
-      <button className="button-btm" onClick={(submit)=>{submit?router.push(`/schemes`):router.back()}}>
+      <button className="button-btm" onClick={() => router.back()}>
         <div className="hover:text-gray-600 flex flex-row pl-5 pt-5">
           <ChevronLeft style={{ verticalAlign: "middle" }} />
           <span className="back-text">Back to Schemes</span>
