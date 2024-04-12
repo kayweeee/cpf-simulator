@@ -75,20 +75,19 @@ cwd = os.getcwd()
 file_path = os.path.abspath(os.path.join(cwd,'backend/mock_db/questions.csv'))
 data = pd.read_csv(file_path)
 data = data.dropna()
-
+print(data)
 for index, row in data.iterrows():
     try:
         question = row['Enquiry']
         ideal = row['Reply'] 
         difficulty = row['Difficulty level']
+        title = row["Title"]
         request = {'question_details': question, 
                 'ideal': ideal,
-                'title': "Title",
+                'title': title,
                 'question_difficulty':difficulty,
                 "scheme_name": "Retirement"
                 }
-        
-        response = response.text[1:-1]
     except:
         request = question[0]
         
@@ -97,9 +96,10 @@ for index, row in data.iterrows():
             f"{URL}/question",
             json=request
         )
-     
-        question_ids.append(response)
-        
+    
+        response = response.text
+        print(response[1:-1])
+        question_ids.append(response[1:-1])
 print(question_ids)
 
 # add user to schemes
@@ -127,19 +127,16 @@ attempts = [
     {
   "user_id": "1",
   "answer": "The answer to your question can be found on the FAQ websites",
-  'question_id': "49e92e21-9a17-417f-8ece-f76c4d075f39"
-},
-    {
+  'question_id': question_ids[6]
+},{
   "user_id": "2",
   "answer": "The answer to your question can be found on the FAQ websites",
-  'question_id': "49e92e21-9a17-417f-8ece-f76c4d075f39"
-},
-    {
+  'question_id': question_ids[6]
+  }, {
   "user_id": "3",
   "answer": "The answer to your question can be found on the FAQ websites",
-  'question_id': "49e92e21-9a17-417f-8ece-f76c4d075f39"
+  'question_id': question_ids[6]
 }]
-
 
 for attempt in attempts:
     response = requests.post(

@@ -1,11 +1,11 @@
-S/N,Difficulty level,Case ID,Enquiry,Reply,Remarks
+S/N,Difficulty level,Case ID,Enquiry,Reply,Title
 0,"i.e. Easy, Medium, Hard",e.g. S-2024…,,,
 1,Medium,S-20240061587,"Dear Officers,
 I would like to appeal to withdraw from my Retirement account about $5000. I am aware that if I withdraw my monthly payout will be much lesser. Please kindly assist me on my appeal soonest possible.","Dear <member name>
 We refer to your appeal of 6 February 2024 to withdraw a lump sum from your Retirement Account (RA).
 The primary objective of setting aside CPF savings in the RA is to provide members with a regular income in their retirement years. With the aging population and longer life expectancy, CPF savings must be carefully managed to see members through a longer retirement period. 
 Based on your current RA balance, we are unable to accede to your request to withdraw from your RA. Withdrawing a lump sum from the RA would deplete your RA savings prematurely, which affects the amount of funds you have for later years.
-You will continue to receive your monthly payouts till your RA balances are depleted.","did not specify reason for appeal, nil balance in OA and SA. Straight forward rejection of RA withdrawal"
+You will continue to receive your monthly payouts till your RA balances are depleted.",Appeal to withdraw CPF
 2,Medium,S-20240061939,"I am appealing to you to let me withdraw some of my funds from special and ordinary account. My wife and I both have not been working and have no income to live off of, and I require funds for daily expenses. If you could let me withdraw a small amount of my funds, I would be most grateful.","Dear <member name>
 
 We refer to your request of 6 February 2024 to withdraw a lump sum from your Ordinary and Special Accounts for your daily expenses.
@@ -29,7 +29,7 @@ Address: Blk 261C Sengkang East Way, #01-506, S(543261)
 Telephone (ComCare Hotline): 1800-222-0000
 Email: Ask_SSO@msf.gov.sg
 
-I would be pleased to help if you require further clarification. For more information on CPF, please visit cpf.gov.sg.","reject OSA withdrawal due to retirement sum shortfall, withdrew first $5,000, before PEA not eligible for monthly payouts yet"
+I would be pleased to help if you require further clarification. For more information on CPF, please visit cpf.gov.sg.",Appeal to withdraw from OA and SA
 3,Hard,S-20240071326 ,"1. So if I pledge my property then only the BRS will be transferred to the RA? Or will the FRS be transferred first and
 only after BRS is locked-in then the balance returned back to OA/SA?
 2. Assuming the above will any remaining amount in my SA is allowed to be withdrawn either in lump sum or at any
@@ -55,7 +55,7 @@ You can withdraw them partially or fully at any time in future.
 If you would like to set aside the BRS and withdraw the RA savings (excluding interest earned, any government grants received and topups made under the Retirement Sum Topping-up Scheme) above the BRS using your property, you may wish to do so before starting your CPF LIFE payouts (between age 65 and 70).
 Once your payouts start, all your RA savings (depends on which plan) may be deducted for your CPF LIFE premium. Once deducted, these
 monies will then be “locked” for your payouts and cannot be withdrawn in a lumpsum.
-At your convenience, you can complete this online application form (any time from age 55) to set aside the BRS and apply for withdrawal using your property",need to clear member's misconception that he can maintain BRS in RA and keep the remaining savings in his OA and SA
+At your convenience, you can complete this online application form (any time from age 55) to set aside the BRS and apply for withdrawal using your property",Enqury about BRS withdrawal
 4,Hard,S-20240061929,"I'm turning 55 this year and have some queries regarding CPF life.
 
 1. If I opt for BRS and the standard plan will my remaining OA and SA balances remain in CPF earning interest till whenever I choose to withdraw even past 80yo?
@@ -85,9 +85,9 @@ You may be keen to view your personalised retirement planner online, which is an
 55th birthday.
 If you would like to attend a CPF Retirement Planning Service (CRPS) in person, you can book a CRPS appointment here or by calling the
 CRPS hotline (6202 3176).
-We would be pleased to help if you require further assistance. For more information on CPF, please visit cpf.gov.sg.",need to inform member that he will not be joining CPF LIFE at age 55
+We would be pleased to help if you require further assistance. For more information on CPF, please visit cpf.gov.sg.",Enquiry about CPF Life
 5,Easy,S-20240070604,please advise how I can withdraw my entire OA savings. I am 75 yrs old,"FAQs: How can I withdraw my CPF savings? (https://www.cpf.gov.sg/member/faq/retirement-income/retirement-withdrawals/how-can-i-withdraw-my-cpf-savings)
-Can I choose which CPF account to withdraw from? (https://www.cpf.gov.sg/member/faq/retirement-income/retirement-withdrawals/can-i-choose-which-cpf-account-to-withdraw-from)",FAQ reply
+Can I choose which CPF account to withdraw from? (https://www.cpf.gov.sg/member/faq/retirement-income/retirement-withdrawals/can-i-choose-which-cpf-account-to-withdraw-from)",OA withdrawal
 6,Medium,S-20240066410,"Hi there
 1. Once I reach 55 years old, I can continue to top up my Enhanced Retirement Sum (ERS) until I reach which age, 65 years old?
 2. To top up my Enhanced Retirement Sum (ERS), can I top with cash, my SA or OA money?
@@ -131,16 +131,16 @@ The CPF LIFE Estimator is a tool designed for members between 55 and 79 to estim
 
 Meanwhile, younger members like yourself, who wish to have a rough estimate can assume that you are turning 55 in the year, when using the CPF LIFE Estimator.
 
-For example, you can indicate the age as 55 (born in 1969), when using the Estimator and RA balance of $205,800 which is the current Full Retirement Sum or $308,700 which is the current ERS.",below 55 member enquiring on scenarios of topping up to RA and monthly payout
+For example, you can indicate the age as 55 (born in 1969), when using the Estimator and RA balance of $205,800 which is the current Full Retirement Sum or $308,700 which is the current ERS.",Enquiry about ERS
 7,Easy,S-20240066904,"Is the FRS amount based upon the year at which age that 55. So if my dad is 69
 years now, the FRS amount is still based on the amount when he is at 55yrs?
 Do you have the chart under RSS scheme for FRS to check back against when he was 55 yrs?","The Full Retirement Sum (FRS) applicable to your father depends on the year he turned 55.
-You can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the retirement sums applicable to me?  ",FAQ reply
+You can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the retirement sums applicable to me?  ",Enquiry about FRS withdrawal
 8,Medium,S-20240068127,"My POSB account ending 1632 has been closed. please use this new posb account.
 XXX-XXX416-7","We note that you have updated your bank account recently. Your monthly payout of $5,XXX will be credited to your DBS bank account ending with 4167 from March 2024 onwards.
 Your February’s payout was credited to your Ordinary Account (OA). You can check your CPF account’s Transaction History with your Singpass.
-If you would like to withdraw from your OA, you can apply directly via cpf.gov.sg/A55. If you make a partial withdrawal, your Special Account savings will be paid first, followed by your OA savings",monthly payout was credited to OA 
-9,Easy,S-20240067590,"At the moment I’m reaching 65, just want to check with you whether I still can top up cash $600 to my RA and government give another $600 like my last year ?","Dear <member name>
+If you would like to withdraw from your OA, you can apply directly via cpf.gov.sg/A55. If you make a partial withdrawal, your Special Account savings will be paid first, followed by your OA savings",Bank Account Closure
+9,Easy,S-20240067590,"At the moment I am reaching 65, just want to check with you whether I still can top up cash $600 to my RA and government give another $600 like my last year ?","Dear <member name>
 
 We refer to your enquiry of 8 February 2024.
 
@@ -152,7 +152,7 @@ You may also wish to refer to the following:
 Who is eligible for the Matched Retirement Savings Scheme?
 How do I check if I am eligible for the Matched Retirement Savings Scheme? 
 What do I need to do to receive the matching grant under the Matched Retirement Savings Scheme?
-How do I make a cash top-up to receive the matching grant under Matched Retirement Savings Scheme? ",
+How do I make a cash top-up to receive the matching grant under Matched Retirement Savings Scheme? ",RA Topup
 10,Medium,S-20240068940,"Hi,
 
 I am born in 1967. Currently my MA account:68.5k RA account:324k.
@@ -190,7 +190,7 @@ Does my CPF LIFE premium continue to earn interest?
 
 What happens to the interest earned on my CPF LIFE premium?
 
-I would be pleased to help if you require further assistance. For more information on CPF, please visit cpf.gov.sg.","member is not in CPF LIFE yet, can advise to use Estimator"
+I would be pleased to help if you require further assistance. For more information on CPF, please visit cpf.gov.sg.",Monthly Payout Amount
 11,Easy,S-20240063638,"Hi, trying to find out if my dad still has a valid retirement account and can i made top up to his account. Thanks","Dear <member name>
 Thank you for writing to us on 7 February 2024.
 You can guide your father to check his current CPF balance, by logging in at cpf.gov.sg with his Singpass and view
@@ -200,7 +200,7 @@ Please refer to our website FAQs on the topping up of RA.
 How do I apply to make a top-up?
 What is the maximum amount of top-ups I can receive?
 How will the top-ups to my retirement savings be used?
-I would be pleased to help if you require further assistance. For more information on CPF, please visit cpf.gov.sg.",
+I would be pleased to help if you require further assistance. For more information on CPF, please visit cpf.gov.sg.",Valid Retirement Account
 12,Hard,S-20240035284,"Appreciate you read in detail & answer accordingly. DO NOT ask me to read the website or provide a general answer.
 
 Is CPF LIFE like an annuity plan?
@@ -244,7 +244,7 @@ The interest accumulated on her CPF LIFE premium, along with the premiums of oth
 ensures that she can continue receiving payouts no matter how long she lives, even if her CPF LIFE premium
 balance is depleted.
 2.
-I would be pleased to help if you require further clarification. For more information on CPF, please visit cpf.gov.sg.","member specifically mentioned she did not want to read the website, give the information instead of giving website FAQ links"
+I would be pleased to help if you require further clarification. For more information on CPF, please visit cpf.gov.sg.",CPF Life
 13,,,,,
 14,,,,,
 15,,,,,
