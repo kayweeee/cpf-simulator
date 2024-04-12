@@ -4,42 +4,29 @@ import { useRouter } from "next/router";
 
 export default function Question({ user }) {
   const router = useRouter();
-  // const [question, setQuestion] = useState([]);
+  const [question, setQuestion] = useState([]);
   const [answer, setAnswer] = useState("");
 
-  // useEffect(() => {
-  //   async function getData() {
-  //     if (router.isReady) {
-  //       try {
-  //         const res = await fetch(
-  //           `http://127.0.0.1:8000/question/${router.query.slug}`
-  //         );
-  //         if (!res.ok) {
-  //           throw new Error("Failed to fetch data");
-  //         } else {
-  //           const data = await res.json();
-  //           setQuestion(data[router.query.id - 1]);
-  //         }
-  //       } catch (e) {
-  //         console.log(e);
-  //       }
-  //     }
-  //   }
-  //   getData();
-  // }, [router.isReady]);
-
-  // console.log(question);
-
-  const question = {
-    ideal:
-      "\nThe Full Retirement Sum (FRS) applicable to your father depends on the year he turned 55.\nYou can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the retirement sums applicable to me?  \n",
-    question_id: "175c6195-f864-4b9e-8111-48bb514ffe64",
-    title: "Title 1",
-    question_details:
-      "Is the FRS amount based upon the year at which age that 55. So if my dad is 69\nyears now, the FRS amount is still based on the amount when he is at 55yrs?\nDo you have the chart under RSS scheme for FRS to check back against when he was 55 yrs?\n",
-    question_difficulty: "Easy",
-    scheme_name: "Retirement",
-  };
+  useEffect(() => {
+    async function getData() {
+      if (router.isReady) {
+        try {
+          const res = await fetch(
+            `http://127.0.0.1:8000/question/${router.query.slug}`
+          );
+          if (!res.ok) {
+            throw new Error("Failed to fetch data");
+          } else {
+            const data = await res.json();
+            setQuestion(data[0]);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+    getData();
+  }, [router.isReady]);
 
   function handleReviewNav(review_id) {
     router.push(`/${review_id}/review`, undefined, {
