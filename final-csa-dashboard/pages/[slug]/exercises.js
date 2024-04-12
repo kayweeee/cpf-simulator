@@ -10,6 +10,7 @@ import isAuth from "../../components/isAuth";
 
 function Exercises() {
   const router = useRouter();
+  const { submit } = router.query;
   const [name, setName] = useState("");
   const [allQuestions, setAllQuestions] = useState([]);
 
@@ -18,6 +19,7 @@ function Exercises() {
       const user_id = 1;
       if (router.isReady) {
         const scheme_name = router.query.slug;
+        window.localStorage.setItem("schemeName", scheme_name);
         const res = await fetch(
           `http://127.0.0.1:8000/table/${user_id}/${scheme_name}`
         );
@@ -42,7 +44,7 @@ function Exercises() {
   function handleReviewNav(review_id) {
     router.push({
       pathname: `/${review_id}/review`,
-      query: { review:true, submit: false, profile:false }}, 
+      query: { review: true, submit: false, profile: false }}, 
       undefined, {
       shallow: true,
     });
