@@ -6,6 +6,7 @@ export default function Question({ user }) {
   const router = useRouter();
   const [question, setQuestion] = useState([]);
   const [answer, setAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getData() {
@@ -35,6 +36,7 @@ export default function Question({ user }) {
   }
 
   const handleSubmit = async () => {
+    setLoading(true);
     const res = await fetch(`http://127.0.0.1:8000/attempt`, {
       method: "POST",
       headers: {
@@ -51,6 +53,7 @@ export default function Question({ user }) {
       const data = await res.json();
       handleReviewNav(data);
     }
+    setLoading(false);
   };
 
   return (
@@ -87,6 +90,14 @@ export default function Question({ user }) {
           </button>
         </div>
       </div>
+      {loading && (
+        <div className="full-screen-overlay">
+          <div className="overlay-content">
+            <div className="loading-circle"></div>
+            <div className="loading-text">Submitting...</div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
