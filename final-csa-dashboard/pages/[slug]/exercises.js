@@ -31,7 +31,7 @@ function Exercises() {
   }, [router.isReady]);
 
   function handleQuestionNav(question_id) {
-    router.replace({
+    router.push({
       pathname: `/${question_id}/question`,
       query: {scheme_name: name}
       }, undefined, {
