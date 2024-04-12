@@ -82,7 +82,7 @@ function Exercises() {
                   Status
                 </th>
                 <th className={`${tableCellStyle} w-1/3 bg-dark-grey`}>
-                  Title
+                  Question
                 </th>
                 <th className={`${tableCenterCellStyle} bg-dark-grey`}>
                   Difficulty
