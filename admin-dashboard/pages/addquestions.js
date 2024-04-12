@@ -4,20 +4,22 @@ import {Input, Dropdown, DropdownMenu, DropdownTrigger, Button, ButtonGroup, Dro
 import { AiFillCaretDown } from "react-icons/ai";
 import { IoIosArrowBack } from "react-icons/io";
 
-export default function AddQuestions(){
-  
+export const getServerSideProps = async () => {
+    const res = await fetch("http://127.0.0.1:8000/scheme", { method: "GET" });
+    const allSchemes = await res.json();
+    return { props: {allSchemes} };
+  };
+
+export default function AddQuestions({allSchemes}){
     const [title, setTitle] = useState("");
     const [question_details, setDetails] = useState("");
     const [ideal, setIdeal] = useState("");
     const difficulty = ["Easy", "Medium","Difficult"];
     const [selectedDifficulty, setSelectedDifficulty] = useState(0);
     const router = useRouter();
-    //should change name to GET method from schemes
-    const name = ["Retirement", "Medisave","Housing"];
+    const name = allSchemes.map(scheme => scheme.scheme_name);
     const [selectedName, setSelectedName] = useState(0);
-
     async function addquestions(title, question_difficulty, question_details,ideal,scheme_name) {
-        console.log("addquestions arguments:", title, question_difficulty, question_details, ideal, scheme_name);
         try {
           const response = await fetch("http://127.0.0.1:8000/question", {
             method: "POST",
@@ -27,7 +29,6 @@ export default function AddQuestions(){
               question_details : question_details,
               ideal : ideal ,
               scheme_name : scheme_name,
-
             }),
             headers: {
               "Content-Type": "application/json",
@@ -36,30 +37,44 @@ export default function AddQuestions(){
           });
     
           if (!response.ok) {
-            throw new Error("Failed to create question");
+            throw new Error("Failed to add question");
           }
-          // Handle response if necessary
+          
           const data = await response.json();
           return data;
         } catch (error) {
-          console.error("Error creating user:", error);
+          console.error("Error adding question:", error);
           throw error;
         }
       }
     
-      function handleSaveQuestion() {
-        addquestions(title, difficulty[selectedDifficulty], question_details, ideal, name[selectedName]);
-        // router.push("/index");
-      }
-
-      console.log(title)
-      console.log(question_details)
-      console.log(ideal)
-
+      async function handleSaveQuestion() {
+        try {
+            await addquestions(title, difficulty[selectedDifficulty], question_details, ideal, name[selectedName]);
+            router.push("/index");
+        } catch (error) {
+            console.error("Error adding question:", error);
+            
+            setTimeout(() => {
+                
+                router.push("/index");
+            }, 5000);
+        }
+    }
+      function handleCancel() {
+        setTitle("");
+        setDetails("");
+        setIdeal("");
+        setSelectedDifficulty(0);
+        setSelectedName(0);    
+        router.push("/index");}
+        
     return (
         <div className='flex flex-col h-dvh'>
             <div className='flex flex-row '>
-                <Button startContent={<IoIosArrowBack/>} className='flex items-center m-1 mx-5'>Back</Button>
+                <Button startContent={<IoIosArrowBack/>} className='flex items-center m-1 mx-5'
+                onClick={handleCancel}
+                >Back</Button>
             </div>
 
 
@@ -159,7 +174,7 @@ export default function AddQuestions(){
                 <div className='flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2  '>
                     <span className='flex items-center pr-3 '> Question </span>
                    <textarea
-                    isRequired
+                    required={true}
                     id="ideal-question"
                     rows="4"
                    
@@ -176,16 +191,8 @@ export default function AddQuestions(){
                 <div className='flex flex-row md:flex-nowrap flex-wrap gap-4 px-1 m-2 p-1 mr-5'>
     <span className='flex items-center text-nowrap'>Ideal Answer</span>
     
-        {/* <Input
-            isRequired
-            placeholder="Enter ideal answer"
-            defaultValue=""
-            // onValueChange={(value) => updateLogin(value)}
-            className="flex-1 w-full h-full text-clip"
-        /> */}
         <textarea
-            isRequired
-            // defaultValue=""
+            required={true}
             id="ideal-answer"
             rows="4"
             className="block p-2.5 w-full text-sm text-gray-900 text-wrap flex border p-1 h-[200px] 
@@ -200,7 +207,9 @@ export default function AddQuestions(){
     
 </div>
                     <div className='flex flex-row md:flex-nowrap flex-wrap  px-1 m-2 p-1 ml-10 '>
-                    <Button className='bg-dark-green p-1 px-2 rounded-lg text-white m-4 mb-20'>Cancel</Button>
+                    <Button 
+                    onClick={handleCancel}
+                    className='bg-dark-green p-1 px-2 rounded-lg text-white m-4 mb-20'>Cancel</Button>
                     <Button 
                     onClick={() => handleSaveQuestion()}
                     className='bg-dark-green p-1 px-4 rounded-lg text-white m-4  mb-20'>Save         
