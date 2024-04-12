@@ -1,11 +1,14 @@
-import RadialGraph from "../../components/PieGraph.jsx";
-import Download from "@mui/icons-material/SimCardDownloadOutlined";
-import QuestionBar from "../../components/QuestionBar.jsx";
-
+// framework
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+// components
+import RadialGraph from "../../components/PieGraph.jsx";
+import QuestionBar from "../../components/QuestionBar.jsx";
+import isAuth from "../../components/isAuth.jsx";
+// icons
+import Download from "@mui/icons-material/SimCardDownloadOutlined";
 
-export default function ReviewPage() {
+function ReviewPage() {
   const router = useRouter();
   const [attempt, setAttempt] = useState([]);
 
@@ -101,3 +104,5 @@ export default function ReviewPage() {
     </>
   );
 }
+
+export default isAuth(ReviewPage);
