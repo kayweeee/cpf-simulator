@@ -31,7 +31,7 @@ export default function AverageScores({ user }) {
             total: 5,
           },
           {
-            label: "Precision",
+            label: "Comprehension",
             value: allAvg.precision_score_avg,
             total: 5,
           },
@@ -60,7 +60,7 @@ export default function AverageScores({ user }) {
         total: 5,
       },
       {
-        label: "Precision",
+        label: "Comprehension",
         value: allAvg.precision_score_avg,
         total: 5,
       },
@@ -75,7 +75,7 @@ export default function AverageScores({ user }) {
     <div className="bg-light-gray rounded-lg w-auto h-1/2 flex flex-col mt-4 p-5">
       {/* title + filter */}
       <div className="flex flex-row items-center gap-4">
-        <h3 className="font-bold">Overall Scores</h3>
+        <h3 className="font-bold">Overall Average Scores</h3>
 
         <div className="relative">
           <button

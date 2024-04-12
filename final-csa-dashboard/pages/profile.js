@@ -48,7 +48,7 @@ function Profile({ user }) {
 
         <div className="h-max-content flex flex-row items-start">
           <div className="bg-light-gray rounded-lg w-1/2 mt-4 mr-4 py-5">
-            <h3 className="pl-5 font-bold">Subcategory Mastery</h3>
+            <h3 className="pl-5 font-bold">Scheme Mastery</h3>
             <div className="rounded-lg p-5 w-full h-full flex flex-col justify-center items-center gap-5">
               {subCat.map((cat, idx) => (
                 <ProgressBar
@@ -61,7 +61,7 @@ function Profile({ user }) {
             </div>
           </div>
           <div className="bg-light-gray rounded-lg w-1/2 mt-4">
-            <h3 className="pl-5 pt-5 font-bold">Exercise Board</h3>
+            <h3 className="pl-5 pt-5 font-bold">Attempts</h3>
             <div className="rounded-lg py-4 px-4 h-full flex items-center ">
               <CustomTable rows={attempts} />
             </div>

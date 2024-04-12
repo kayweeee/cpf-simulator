@@ -34,7 +34,7 @@ function ReviewPage() {
       feedback: attempt.accuracy_feedback,
     },
     {
-      label: "Precision",
+      label: "Comprehension",
       value: attempt.precision_score,
       total: 5,
       feedback: attempt.precision_feedback,
