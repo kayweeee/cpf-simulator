@@ -8,9 +8,10 @@ URL = "http://127.0.0.1:8000"
 
 # add user
 users = [
-    {"uuid": "1", "email": "member1@email.com","access_rights": "Member","name": "member1"},
-    {"uuid": "2", "email": "member2@email.com","access_rights": "Member","name": "member2"},     {"uuid": "3", "email": "admin1@email.com","access_rights": "admin","name": "admin1"},
+    {"uuid": "1", "email": "trainee1@email.com","access_rights": "Trainee","name": "trainee1"},
+    {"uuid": "2", "email": "trainee2@email.com","access_rights": "Trainee","name": "trainee2"},
     {"uuid": "3", "email": "admin1@email.com","access_rights": "Admin","name": "admin1"},
+    {"uuid": "4", "email": "trainee4@email.com","access_rights": "Trainee","name": "trainee3"},
 ]
 
 for user in users:
@@ -73,7 +74,7 @@ question_ids = []
 
 cwd = os.getcwd()
 file_path = os.path.abspath(os.path.join(cwd,'questions.csv'))
-data = pd.read_csv(file_path)
+data = pd.read_csv(file_path, encoding='latin1')
 data = data.dropna()
 print(data)
 for index, row in data.iterrows():
@@ -102,6 +103,7 @@ for index, row in data.iterrows():
         print(response[1:-1])
         question_ids.append(response[1:-1])
 print(question_ids)
+
 
 # add user to schemes
 users_to_be_added = [{
