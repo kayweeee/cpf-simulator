@@ -47,11 +47,13 @@ export default function ReviewPage() {
 
   const question = "This is the question.";
 
+  const { review, submit, profile, scheme_name } = router.query;
+
   return (
     <>
       {/* TODO: Add in top bar */}
       <div className="bg-light-green p-4">
-        <QuestionBar />
+        <QuestionBar review={review} submit={submit} profile={profile} scheme_name={scheme_name}/>
         <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
           <div className="text-2xl">Feedback</div>
 

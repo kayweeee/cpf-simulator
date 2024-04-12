@@ -4,9 +4,11 @@ import { useRouter } from "next/router";
 
 export default function Question({ user }) {
   const router = useRouter();
+  const {scheme_name} = router.query;
   const [question, setQuestion] = useState([]);
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
+  const [submit, setSubmit] = useState(false);
 
   useEffect(() => {
     async function getData() {
@@ -30,13 +32,17 @@ export default function Question({ user }) {
   }, [router.isReady]);
 
   function handleReviewNav(review_id) {
-    router.push(`/${review_id}/review`, undefined, {
-      shallow: true,
+    router.push({
+      pathname: `/${review_id}/review`,
+      query: { review: false, submit: true, profile: false, scheme_name: scheme_name }},
+      undefined, {
+    shallow: true,
     });
   }
 
   const handleSubmit = async () => {
     setLoading(true);
+    setSubmit(true); 
     const res = await fetch(`http://127.0.0.1:8000/attempt`, {
       method: "POST",
       headers: {
@@ -59,7 +65,7 @@ export default function Question({ user }) {
   return (
     <>
       <div className="bg-light-green p-4">
-        <QuestionBar review={false} />
+        <QuestionBar review={false} submit={false} profile={false}/>
         <div className="bg-light-gray rounded-md p-6 m-5 ">
           <div className="border-4 border-solid border-dark-green rounded-lg p-10 h-max-content flex items-start justify-center text-black mt-30 flex-col ml-20 mr-20 mb-5">
             <div className="w-auto h-max-content flex justify-between items-center font-bold mb-5">
