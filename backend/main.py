@@ -384,6 +384,23 @@ async def read_attempt(attempt_id: str, db: Session = Depends(create_session)):
         attempt_dict['question_details'] = str(question_details[0])
     return attempt_dict
 
+@app.get("/attempt/user/{user_id}", status_code=status.HTTP_201_CREATED)
+async def get_user_attempts(user_id: str, db: Session = Depends(create_session)):
+    db_attempts= db.query(AttemptModel).filter(AttemptModel.user_id == user_id).all()
+    attempts_list = []
+    if db_attempts is None:
+        raise HTTPException(status_code=404, detail="Attempts not found")
+
+    for db_attempt in db_attempts:
+        db_question = db.query(QuestionModel).filter(QuestionModel.question_id == db_attempt.question_id).first()
+        question_title = db_question.to_dict()['title']
+        scheme_name = db_question.to_dict()['scheme_name']
+        attempt_dict = db_attempt.to_dict()
+        attempt_dict.update({'question_title':question_title, 'scheme_name': scheme_name.scheme_name})
+        attempts_list.append(attempt_dict)
+
+    return attempts_list
+
 @app.post("/attempt/", status_code=status.HTTP_201_CREATED)
 async def create_attempt(schema: AttemptBase , db: Session = Depends(create_session)):
     inputs = dict(schema)
