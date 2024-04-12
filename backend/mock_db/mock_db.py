@@ -82,11 +82,12 @@ for index, row in data.iterrows():
         ideal = row['Reply'] 
         difficulty = row['Difficulty level']
         title = row["Title"]
+        scheme = row["Scheme"]
         request = {'question_details': question, 
                 'ideal': ideal,
                 'title': title,
                 'question_difficulty':difficulty,
-                "scheme_name": "Retirement"
+                "scheme_name": scheme
                 }
     except:
         request = question[0]
@@ -110,10 +111,13 @@ users_to_be_added = [{
   {                 
   "user_id": "2",
   "scheme_name": "Retirement"
+},{                 
+  "user_id": "2",
+  "scheme_name": "Savings"
 },{
   "user_id": "3",
   "scheme_name": "Retirement"
-}, ]
+}]
 
 for user in users_to_be_added:
     response = requests.post(
@@ -123,19 +127,34 @@ for user in users_to_be_added:
     print(response.text)
 
 # add attempts
+# User 1: 2 same questions, and 2 questions within retirement scheme
 attempts = [
     {
   "user_id": "1",
-  "answer": """The Full Retirement Sum (FRS) applicable to your father depends on the year he turned 70. You can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the grant sums applicable to me?""",
-  'question_id': question_ids[6]
-},{
-  "user_id": "1",
   "answer": "The answer to your question can be found on the FAQ websites",
   'question_id': question_ids[6]
-  }, {
-  "user_id": "1",
-  "answer": "The Full Retirement Sum (FRS) applicable to your father depends on the year he turned 60. You can just find the exact sum on the CPF FAQ website.",
+},{"user_id": "1",
+  "answer": "The Full Retirement Sum (FRS) applicable to your father depends on the year he turned 70.You can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the grant sums applicable to me?",
   'question_id': question_ids[6]
+},{"user_id": "1",
+  "answer": "We note that you have updated your bank account recently. Your monthly payout will be credited to your DBS bank account ending with 4167 from March 2024 onwards.",
+  'question_id': question_ids[7]
+},{
+  "user_id": "2",
+  "answer": "The answer to your question can be found on the FAQ websites",
+  'question_id': question_ids[6]
+  }, 
+{"user_id": "2",
+  "answer": "You will not lose out on the interest when your employer pays late.",
+  'question_id': question_ids[12]
+  },{"user_id": "2",
+  "answer": "The interest will be credited to you when CPF Board recovers the CPF arrears from your employer.",
+  'question_id': question_ids[12]
+  },{
+  "user_id": "3",
+  "answer": "The answer to your question can be found on the FAQ websites",
+  'question_id': question_ids[6],
+  
 }]
 
 for attempt in attempts:
