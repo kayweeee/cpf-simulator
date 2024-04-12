@@ -2,6 +2,7 @@
 import requests
 import os
 import json
+import pandas as pd
 
 URL = "http://127.0.0.1:8000"
 
@@ -11,6 +12,7 @@ users = [
     {"uuid": "2", "email": "admin1@email.com","access_rights": "admin","name": "admin1"},
     {"uuid": "3", "email": "member1@email.com","access_rights": "member","name": "member1"},
     {"uuid": "4", "email": "member2@email.com","access_rights": "member","name": "member2"}]
+
 for user in users:
     response = requests.post(
         f"{URL}/user",
@@ -68,17 +70,38 @@ questions = [
 ]
 
 question_ids = []
-for question in questions:
-    response = requests.post(
-        f"{URL}/question",
-        json=question
-    )
-    response = response.text[1:-1]
-    question_ids.append(response)
-    
+
+cwd = os.getcwd()
+file_path = os.path.abspath(os.path.join(cwd,'backend/mock_db/questions.csv'))
+data = pd.read_csv(file_path)
+data = data.dropna()
+
+for index, row in data.iterrows():
+    try:
+        question = row['Enquiry']
+        ideal = row['Reply'] 
+        difficulty = row['Difficulty level']
+        request = {'question_details': question, 
+                'ideal': ideal,
+                'title': "Title",
+                'question_difficulty':difficulty,
+                "scheme_name": "Retirement"
+                }
+        
+        response = response.text[1:-1]
+    except:
+        request = question[0]
+        
+    finally:
+        response = requests.post(
+            f"{URL}/question",
+            json=request
+        )
+     
+        question_ids.append(response)
+        
 print(question_ids)
 
-    
 # add user to schemes
 users_to_be_added = [{
   "user_id": "1",

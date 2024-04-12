@@ -15,7 +15,9 @@ export default function RadialGraph({ data, label }) {
 
   return (
     <div className="flex flex-col items-center w-auto">
-      <p className="absolute mt-20 pt-20">{(data.value / data.total) * 100}%</p>
+      <p className="absolute mt-20 pt-20">
+        {Math.floor((data.value / data.total) * 100)}%
+      </p>
       <Doughnut data={piedata} />
       <p className="mt-5 font-medium">{label}</p>
     </div>
