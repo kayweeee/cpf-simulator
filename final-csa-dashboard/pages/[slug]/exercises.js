@@ -30,6 +30,8 @@ function Exercises() {
     getQuestions();
   }, [router.isReady]);
 
+  console.log(allQuestions);
+
   function handleQuestionNav(question_id) {
     router.push(`/${question_id}/question`, undefined, {
       shallow: true,
