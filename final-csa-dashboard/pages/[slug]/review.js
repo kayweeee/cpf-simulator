@@ -1,12 +1,15 @@
-import RadialGraph from "../../components/PieGraph.jsx";
-import Download from "@mui/icons-material/SimCardDownloadOutlined";
-import QuestionBar from "../../components/QuestionBar.jsx";
-
+// framework
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { saveAs } from 'file-saver';
+// components
+import RadialGraph from "../../components/PieGraph.jsx";
+import QuestionBar from "../../components/QuestionBar.jsx";
+import isAuth from "../../components/isAuth.jsx";
+// icons
+import Download from "@mui/icons-material/SimCardDownloadOutlined";
 
-export default function ReviewPage() {
+function ReviewPage() {
   const router = useRouter();
   const { review, submit, profile, scheme_name } = router.query;
   const [attempt, setAttempt] = useState([]);
@@ -35,7 +38,7 @@ export default function ReviewPage() {
       feedback: attempt.accuracy_feedback,
     },
     {
-      label: "Precision",
+      label: "Comprehension",
       value: attempt.precision_score,
       total: 5,
       feedback: attempt.precision_feedback,
@@ -128,3 +131,5 @@ export default function ReviewPage() {
     </>
   );
 }
+
+export default isAuth(ReviewPage);

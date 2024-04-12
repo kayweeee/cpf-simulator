@@ -9,6 +9,7 @@ import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import { useRouter } from "next/navigation";
+
 export default function TableCustomized({ rows }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -42,7 +43,7 @@ export default function TableCustomized({ rows }) {
       <table aria-label="custom pagination table">
         <thead>
           <tr>
-            <th>Title</th>
+            <th>Question</th>
             <th>Time Completed</th>
             <th>Transcript</th>
           </tr>

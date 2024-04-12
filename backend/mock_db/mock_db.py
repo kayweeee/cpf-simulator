@@ -8,10 +8,11 @@ URL = "http://127.0.0.1:8000"
 
 # add user
 users = [
-    {"uuid": "1", "email": "admin2@email.com","access_rights": "admin","name": "admin2"},
-    {"uuid": "2", "email": "admin1@email.com","access_rights": "admin","name": "admin1"},
-    {"uuid": "3", "email": "member1@email.com","access_rights": "member","name": "member1"},
-    {"uuid": "4", "email": "member2@email.com","access_rights": "member","name": "member2"}]
+    {"uuid": "1", "email": "trainee1@email.com","access_rights": "Trainee","name": "trainee1"},
+    {"uuid": "2", "email": "trainee2@email.com","access_rights": "Trainee","name": "trainee2"},
+    {"uuid": "3", "email": "admin1@email.com","access_rights": "Admin","name": "admin1"},
+    {"uuid": "4", "email": "trainee4@email.com","access_rights": "Trainee","name": "trainee3"},
+]
 
 for user in users:
     response = requests.post(
@@ -72,23 +73,23 @@ questions = [
 question_ids = []
 
 cwd = os.getcwd()
-file_path = os.path.abspath(os.path.join(cwd,'backend/mock_db/questions.csv'))
-data = pd.read_csv(file_path)
+file_path = os.path.abspath(os.path.join(cwd,'questions.csv'))
+data = pd.read_csv(file_path, encoding='latin1')
 data = data.dropna()
-
+print(data)
 for index, row in data.iterrows():
     try:
         question = row['Enquiry']
         ideal = row['Reply'] 
         difficulty = row['Difficulty level']
+        title = row["Title"]
+        scheme = row["Scheme"]
         request = {'question_details': question, 
                 'ideal': ideal,
-                'title': "Title",
+                'title': title,
                 'question_difficulty':difficulty,
-                "scheme_name": "Retirement"
+                "scheme_name": scheme
                 }
-        
-        response = response.text[1:-1]
     except:
         request = question[0]
         
@@ -97,10 +98,12 @@ for index, row in data.iterrows():
             f"{URL}/question",
             json=request
         )
-     
-        question_ids.append(response)
-        
+    
+        response = response.text
+        print(response[1:-1])
+        question_ids.append(response[1:-1])
 print(question_ids)
+
 
 # add user to schemes
 users_to_be_added = [{
@@ -110,10 +113,13 @@ users_to_be_added = [{
   {                 
   "user_id": "2",
   "scheme_name": "Retirement"
+},{                 
+  "user_id": "2",
+  "scheme_name": "Savings"
 },{
   "user_id": "3",
   "scheme_name": "Retirement"
-}, ]
+}]
 
 for user in users_to_be_added:
     response = requests.post(
@@ -123,23 +129,35 @@ for user in users_to_be_added:
     print(response.text)
 
 # add attempts
+# User 1: 2 same questions, and 2 questions within retirement scheme
 attempts = [
     {
   "user_id": "1",
   "answer": "The answer to your question can be found on the FAQ websites",
-  'question_id': "49e92e21-9a17-417f-8ece-f76c4d075f39"
-},
-    {
+  'question_id': question_ids[6]
+},{"user_id": "1",
+  "answer": "The Full Retirement Sum (FRS) applicable to your father depends on the year he turned 70.You can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the grant sums applicable to me?",
+  'question_id': question_ids[6]
+},{"user_id": "1",
+  "answer": "We note that you have updated your bank account recently. Your monthly payout will be credited to your DBS bank account ending with 4167 from March 2024 onwards.",
+  'question_id': question_ids[7]
+},{
   "user_id": "2",
   "answer": "The answer to your question can be found on the FAQ websites",
-  'question_id': "49e92e21-9a17-417f-8ece-f76c4d075f39"
-},
-    {
+  'question_id': question_ids[6]
+  }, 
+{"user_id": "2",
+  "answer": "You will not lose out on the interest when your employer pays late.",
+  'question_id': question_ids[12]
+  },{"user_id": "2",
+  "answer": "The interest will be credited to you when CPF Board recovers the CPF arrears from your employer.",
+  'question_id': question_ids[12]
+  },{
   "user_id": "3",
   "answer": "The answer to your question can be found on the FAQ websites",
-  'question_id': "49e92e21-9a17-417f-8ece-f76c4d075f39"
+  'question_id': question_ids[6],
+  
 }]
-
 
 for attempt in attempts:
     response = requests.post(

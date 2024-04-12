@@ -1,8 +1,11 @@
-import QuestionBar from "../../components/QuestionBar";
+// framework
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+// components
+import QuestionBar from "../../components/QuestionBar";
+import isAuth from "../../components/isAuth";
 
-export default function Question({ user }) {
+function Question({ user }) {
   const router = useRouter();
   const {scheme_name} = router.query;
   const [question, setQuestion] = useState([]);
@@ -107,3 +110,5 @@ export default function Question({ user }) {
     </>
   );
 }
+
+export default isAuth(Question);
