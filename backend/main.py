@@ -21,7 +21,7 @@ import uuid
 import os
 
 app = FastAPI()
-Base.metadata.drop_all(bind=engine)
+# Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 origins = [
@@ -408,40 +408,73 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
 
     return db_attempt.attempt_id
 
-@app.get("/attempt/user/{user_id}", status_code=status.HTTP_201_CREATED)
-async def get_user_attempts(user_id: str, db: Session = Depends(create_session)):
-    db_attempts= db.query(AttemptModel).filter(AttemptModel.user_id == user_id).all()
-    attempts_list = []
-    if db_attempts is None:
-        raise HTTPException(status_code=404, detail="Attempts not found")
-
-    for db_attempt in db_attempts:
-        db_question = db.query(QuestionModel).filter(QuestionModel.question_id == db_attempt.question_id).first()
-        question_title = db_question.to_dict()['title']
-        scheme_name = db_question.to_dict()['scheme_name']
-        attempt_dict = db_attempt.to_dict()
-        attempt_dict.update({'question_title':question_title, 'scheme_name': scheme_name.scheme_name})
-        attempts_list.append(attempt_dict)
-
-    return attempts_list
-
-@app.get("/attempt/user/{user_id}/average_scores", status_code=200)
+@app.get("/attempt/average_scores/user/{user_id}/", status_code=200)
 async def get_user_average_scores(user_id: str, db: Session = Depends(create_session)):
-    attempts = db.query(
-        func.avg(AttemptModel.precision_score),
-        func.avg(AttemptModel.accuracy_score),
-        func.avg(AttemptModel.tone_score)
-    ).filter(AttemptModel.user_id == user_id).first()
+    # Subquery to find the attempts with the maximum sum of scores for each question
+    attempts_with_max_sum_scores_subquery = (
+        db.query(
+            QuestionModel.scheme_name,
+            AttemptModel.question_id,
+            func.max(AttemptModel.precision_score + AttemptModel.accuracy_score + AttemptModel.tone_score).label("max_sum_scores")
+        )
+        .join(AttemptModel, AttemptModel.question_id == QuestionModel.question_id)
+        .filter(AttemptModel.user_id == user_id)  # Filter attempts by user_id
+        .group_by(QuestionModel.scheme_name, AttemptModel.question_id)
+        .subquery()
+    )
 
-    if not attempts:
+    # Query to get the average scores based on the attempts with the maximum sum of scores for each question and scheme
+    avg_scores_query = (
+        db.query(
+            QuestionModel.scheme_name,
+            func.avg(AttemptModel.precision_score).label("precision_score_avg"),
+            func.avg(AttemptModel.accuracy_score).label("accuracy_score_avg"),
+            func.avg(AttemptModel.tone_score).label("tone_score_avg")
+        )
+        .join(AttemptModel, AttemptModel.question_id == QuestionModel.question_id)
+        .filter(
+            QuestionModel.scheme_name == attempts_with_max_sum_scores_subquery.c.scheme_name,
+            AttemptModel.question_id == attempts_with_max_sum_scores_subquery.c.question_id,
+            AttemptModel.precision_score + AttemptModel.accuracy_score + AttemptModel.tone_score == attempts_with_max_sum_scores_subquery.c.max_sum_scores,
+            AttemptModel.user_id == user_id  # Filter attempts by user_id
+        )
+        .group_by(QuestionModel.scheme_name)
+        .all()
+    )
+
+    if not avg_scores_query:
         raise HTTPException(status_code=404, detail="Attempts not found")
 
-    precision_score_avg, accuracy_score_avg, tone_score_avg = attempts
+    scheme_average_scores = []
+    total_precision_score_avg = 0
+    total_accuracy_score_avg = 0
+    total_tone_score_avg = 0
 
-    return {
-        "precision_score_avg": precision_score_avg,
-        "accuracy_score_avg": accuracy_score_avg,
-        "tone_score_avg": tone_score_avg
-    }
+    for scheme_name, precision_score_avg, accuracy_score_avg, tone_score_avg in avg_scores_query:
+        scheme_average_scores.append({
+            "scheme_name": scheme_name,
+            "precision_score_avg": precision_score_avg,
+            "accuracy_score_avg": accuracy_score_avg,
+            "tone_score_avg": tone_score_avg
+        })
 
+        total_precision_score_avg += precision_score_avg
+        total_accuracy_score_avg += accuracy_score_avg
+        total_tone_score_avg += tone_score_avg
 
+    # Calculate total average scores across all schemes
+    total_scheme_count = len(avg_scores_query)
+    if total_scheme_count > 0:
+        total_precision_score_avg /= total_scheme_count
+        total_accuracy_score_avg /= total_scheme_count
+        total_tone_score_avg /= total_scheme_count
+
+    # Add total average scores across all schemes to the list
+    scheme_average_scores.append({
+        "scheme_name": "All",
+        "precision_score_avg": total_precision_score_avg,
+        "accuracy_score_avg": total_accuracy_score_avg,
+        "tone_score_avg": total_tone_score_avg
+    })
+
+    return scheme_average_scores
