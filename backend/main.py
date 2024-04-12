@@ -311,21 +311,25 @@ async def get_all_schemes(db: Session = Depends(create_session)):
 
 
 ## QUESTION ROUTES ##
-@app.get("/question/{scheme_name}", status_code=status.HTTP_201_CREATED)
+@app.get("/questions/scheme/{scheme_name}", status_code=status.HTTP_201_CREATED)
 async def get_questions_by_scheme_name(scheme_name: str, db: Session = Depends(create_session)):
     db_question = db.query(QuestionModel).filter(QuestionModel.scheme_name == scheme_name).all()
     if db_question is None:
         raise HTTPException(status_code=404, detail="No questions found for the given scheme")
     return db_question
 
-# @app.get("/question/all", status_code=status.HTTP_201_CREATED)
-# async def get_all_questions(db: Session = Depends(create_session)):
-#     db_question = db.query(QuestionModel).all()
-#     questions = []
-#     for question in db_question:
-#         question_dict = question.to_dict()
-#         questions.append(question_dict)
-#     return questions
+@app.get("/question/{question_id}", status_code=status.HTTP_201_CREATED)
+async def get_questions_by_question_id(question_id: str, db: Session = Depends(create_session)):
+    db_question = db.query(QuestionModel).filter(QuestionModel.question_id == question_id).all()
+    if db_question is None:
+        raise HTTPException(status_code=404, detail="No questions found for the given scheme")
+    return db_question
+
+@app.get("/questions/all", status_code=status.HTTP_201_CREATED)
+async def get_all_questions(db: Session = Depends(create_session)):
+    print('get all questions')
+    db_questions = db.query(QuestionModel).all()
+    return [question.to_dict() for question in db_questions]
 
 @app.post("/question", status_code=status.HTTP_201_CREATED)
 async def add_question_to_scheme(question: QuestionBase, db: Session = Depends(create_session)):

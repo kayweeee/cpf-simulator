@@ -11,6 +11,7 @@ users = [
     {"uuid": "2", "email": "admin1@email.com","access_rights": "admin","name": "admin1"},
     {"uuid": "3", "email": "member1@email.com","access_rights": "member","name": "member1"},
     {"uuid": "4", "email": "member2@email.com","access_rights": "member","name": "member2"}]
+
 for user in users:
     response = requests.post(
         f"{URL}/user",
