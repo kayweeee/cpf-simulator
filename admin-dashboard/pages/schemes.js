@@ -1,11 +1,13 @@
 // framework
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 // components
 import SchemeCard from "../components/SchemeCard";
 // import isAuth from "../components/isAuth";
 
 function Schemes() {
   const [schemes, setSchemes] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     async function getSchemes() {
@@ -28,6 +30,15 @@ function Schemes() {
         {/* Header */}
         <div className="w-screen h-auto flex flex-row justify-between items-center px-20 pt-10 pb-10 text-black">
           <div className="font-bold text-3xl">Schemes</div>
+          {/* Add Scheme Button */}
+          <div className="flex justify-end">
+            <button
+              className="bg-dark-green hover:bg-dark-green-700 text-white py-2 px-4"
+              onClick={() => router.push("/addscheme")}
+            >
+              Add Scheme
+            </button>
+          </div>
         </div>
         <div className="flex flex-col gap-y-5 min-h-screen">
           <div className="flex flex-row flex-wrap px-20 justify-around gap-y-7 mb-8">

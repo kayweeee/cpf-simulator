@@ -10,6 +10,7 @@ import Download from "@mui/icons-material/SimCardDownloadOutlined";
 
 function ReviewPage() {
   const router = useRouter();
+  const { review, submit, profile, scheme_name } = router.query;
   const [attempt, setAttempt] = useState([]);
 
   useEffect(() => {
@@ -56,7 +57,7 @@ function ReviewPage() {
   return (
     <>
       <div className="bg-light-green p-4">
-        <QuestionBar currentidx={attempt.id} review={true} />
+        <QuestionBar currentidx={attempt.id} review={review} submit={submit} profile={profile} scheme_name={scheme_name}/>
         <div className="bg-light-gray rounded-md px-6 pb-12 pt-6 m-5 ">
           <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
             <div className="text-2xl">Feedback</div>

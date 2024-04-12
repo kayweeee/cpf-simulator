@@ -30,7 +30,10 @@ export default function TableCustomized({ rows }) {
   };
 
   function handleReviewNav(review_id) {
-    router.push(`/${review_id}/review`, undefined, {
+    router.push({
+      pathname: `/${review_id}/review`,
+      query: { review: true, submit: false, profile: true  }}, 
+      {pathname:`/${review_id}/review`}, {
       shallow: true,
     });
   }
