@@ -1,10 +1,15 @@
-from sqlalchemy import Integer, Column, ForeignKey, String, DateTime, func, String
+from sqlalchemy import Integer, Column, ForeignKey, String, DateTime, String
 from sqlalchemy.orm import Mapped
 from config import Base
 import uuid
+import datetime
 
 def generate_uuid():
     return str(uuid.uuid4())
+
+def generate_date():
+    current_date = datetime.datetime.now()
+    return current_date.strftime('%Y-%m-%d %H:%M')
 
 
 class AttemptModel(Base):
@@ -13,7 +18,7 @@ class AttemptModel(Base):
     user_id: Mapped[str] = Column(String(255), ForeignKey("user.uuid"), nullable=False)
     question_id: Mapped[str] = Column(String(255), ForeignKey("question.question_id"), nullable=False)
     answer: Mapped[str] = Column(String(3000), nullable=False)
-    date: Mapped[DateTime] = Column(DateTime, default=func.now(), nullable=False)
+    date: Mapped[str] = Column(String(255), default=generate_date, nullable=False)
     # scores
     precision_score: Mapped[int] = Column(Integer, nullable=False)
     accuracy_score: Mapped[int] = Column(Integer, nullable=False)

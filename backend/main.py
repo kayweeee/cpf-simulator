@@ -226,8 +226,8 @@ async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_se
         else:
             db_scheme.users.append(user)
             db.commit()
-            return {"message": "Scheme has been updated successfully"}
-    
+            return responses.JSONResponse(content = {"message": "Scheme has been updated successfully"}, status_code=201)
+
     raise HTTPException(status_code=404, detail="This is not an existing scheme")
 
 @app.post('/scheme', status_code=status.HTTP_201_CREATED)
@@ -309,6 +309,36 @@ async def get_all_schemes(db: Session = Depends(create_session)):
         scheme_list.append(scheme_dict)
     return scheme_list
 
+@app.delete('/scheme/{scheme_name}', status_code=status.HTTP_200_OK)
+async def delete_scheme(scheme_name: str, db: Session = Depends(create_session)):
+    # Check if the scheme with the provided scheme_name exists
+    db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
+    if not db_scheme:
+        raise HTTPException(status_code=404, detail="Scheme not found")
+    
+    # Delete related attempts
+    db.query(AttemptModel).filter(AttemptModel.question_id.in_(
+        db.query(QuestionModel.question_id).filter(QuestionModel.scheme_name == scheme_name)
+    )).delete(synchronize_session=False)
+
+    # Delete the stored files
+    admin_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../admin-dashboard/public"))
+    admin_file_path = os.path.join(admin_path, db_scheme.scheme_admin_img_path)
+    csa_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../final-csa-dashboard/public"))
+    csa_file_path = os.path.join(csa_path, db_scheme.scheme_csa_img_path)
+    
+    if os.path.exists(admin_file_path):
+        os.remove(admin_file_path)
+    
+    if os.path.exists(csa_file_path):
+        os.remove(csa_file_path)
+    
+    # Delete the scheme
+    db.delete(db_scheme)
+    db.commit()
+
+    return responses.JSONResponse(content = {"message": f"Scheme '{scheme_name}' deleted successfully along with related questions, attempts, and stored files."}, status_code=201)
+
 
 ## QUESTION ROUTES ##
 @app.get("/questions/scheme/{scheme_name}", status_code=status.HTTP_201_CREATED)
@@ -320,10 +350,30 @@ async def get_questions_by_scheme_name(scheme_name: str, db: Session = Depends(c
 
 @app.get("/question/{question_id}", status_code=status.HTTP_201_CREATED)
 async def get_questions_by_question_id(question_id: str, db: Session = Depends(create_session)):
-    db_question = db.query(QuestionModel).filter(QuestionModel.question_id == question_id).all()
+    db_question = db.query(QuestionModel).filter(QuestionModel.question_id == question_id).first()
     if db_question is None:
         raise HTTPException(status_code=404, detail="No questions found for the given scheme")
     return db_question
+
+@app.delete("/question/{question_id}", status_code=status.HTTP_201_CREATED)
+async def delete_question(question_id: str, db: Session = Depends(create_session)):
+    db_question = db.query(QuestionModel).filter(QuestionModel.question_id == question_id).first()
+    if db_question is None:
+        raise HTTPException(status_code=404, detail="No questions found for the given scheme")
+    print(AttemptModel.question_id)
+    db_attempts = db.query(AttemptModel).filter(AttemptModel.question_id == question_id)
+    try:
+        if db_attempts:
+            for attempt in db_attempts:
+                db.delete(attempt)
+        db.delete(db_question)
+        db.commit()
+        return responses.JSONResponse(content = {"message": f"Question deleted successfully along with related questions and attempts."}, status_code=201)
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Unable to delete question. {e}")
+
 
 @app.get("/questions/all", status_code=status.HTTP_201_CREATED)
 async def get_all_questions(db: Session = Depends(create_session)):
@@ -493,5 +543,23 @@ async def get_user_average_scores(user_id: str, db: Session = Depends(create_ses
         "accuracy_score_avg": total_accuracy_score_avg,
         "tone_score_avg": total_tone_score_avg
     })
+    
+    # Add schemes with no attempts
+    distinct_schemes = (
+        db.query(SchemeModel.scheme_name)
+        .join(user_scheme_association, user_scheme_association.c.scheme_table_name == SchemeModel.scheme_name)
+        .filter(user_scheme_association.c.user_table_id == user_id)
+        .distinct()
+        .all()
+    )
+    for scheme in distinct_schemes:
+        scheme_name = scheme[0]
+        if scheme_name not in [s["scheme_name"] for s in scheme_average_scores]:
+            scheme_average_scores.append({
+                "scheme_name": scheme_name,
+                "precision_score_avg": 0,
+                "accuracy_score_avg": 0,
+                "tone_score_avg": 0
+            })
 
     return scheme_average_scores
