@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import {
   Input,
   Dropdown,
@@ -12,27 +12,29 @@ import {
 import { AiFillCaretDown } from "react-icons/ai";
 import { IoIosArrowBack } from "react-icons/io";
 
-export const getServerSideProps = async () => {
-  const res = await fetch("http://127.0.0.1:8000/scheme", { method: "GET" });
-  const allSchemes = await res.json();
-  return { props: { allSchemes } };
-};
+export default function AddQuestions() {
+  const router = useRouter();
 
-export default function AddQuestions({ allSchemes }) {
   const [title, setTitle] = useState("");
   const [question_details, setDetails] = useState("");
   const [ideal, setIdeal] = useState("");
   const difficulty = ["Easy", "Medium", "Difficult"];
   const [selectedDifficulty, setSelectedDifficulty] = useState(0);
-  const router = useRouter();
-  const name = allSchemes.map((scheme) => scheme.scheme_name);
-  const [selectedName, setSelectedName] = useState(0);
+  const [scheme, setScheme] = useState("");
+
+  useEffect(() => {
+    if (router.isReady) {
+      const scheme_name = router.query.slug;
+      setScheme(scheme_name.charAt(0).toUpperCase() + scheme_name.slice(1));
+    }
+  }, [router.isReady]);
+
   async function addquestions(
     title,
     question_difficulty,
     question_details,
     ideal,
-    scheme_name
+    scheme
   ) {
     try {
       const response = await fetch("http://127.0.0.1:8000/question", {
@@ -42,7 +44,7 @@ export default function AddQuestions({ allSchemes }) {
           question_difficulty: question_difficulty,
           question_details: question_details,
           ideal: ideal,
-          scheme_name: scheme_name,
+          scheme_name: scheme,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -69,24 +71,24 @@ export default function AddQuestions({ allSchemes }) {
         difficulty[selectedDifficulty],
         question_details,
         ideal,
-        name[selectedName]
+        scheme
       );
-      router.push("/schemes");
+      router.push(`/${scheme.toLowerCase()}/exercises`);
     } catch (error) {
       console.error("Error adding question:", error);
 
       setTimeout(() => {
-        router.push("/schemes");
+        router.push(`/${scheme.toLowerCase()}/exercises`);
       }, 5000);
     }
   }
+
   function handleCancel() {
     setTitle("");
     setDetails("");
     setIdeal("");
     setSelectedDifficulty(0);
-    setSelectedName(0);
-    router.push("/schemes");
+    router.push(`/${scheme.toLowerCase()}/exercises`);
   }
 
   return (
@@ -104,7 +106,7 @@ export default function AddQuestions({ allSchemes }) {
       {/* Actual page content */}
       <div className="w-3/4 flex flex-col justify-center items-center  gap-4 place-self-center py-2 px-4">
         <span className="text-2xl font-bold m-3 place-self-start">
-          Add Question
+          Add Question to {scheme} Scheme
         </span>
 
         <div className="flex flex-row md:flex-nowrap items-center gap-2 ">
@@ -156,45 +158,7 @@ export default function AddQuestions({ allSchemes }) {
           </div>
         </ButtonGroup>
 
-        <ButtonGroup
-          variant="flat"
-          className="flex flex-row md:flex-nowrap items-center gap-2 pl-10"
-        >
-          <Button>Scheme: </Button>
-          <div className="flex border border-sage-green p-1 w-48 justify-between ">
-            <span className="flex w-full ml-2">{name[selectedName]}</span>
-            <Dropdown>
-              <DropdownTrigger placement="bottom-end">
-                <Button isIconOnly className=" px-2 align-end">
-                  <AiFillCaretDown />
-                </Button>
-              </DropdownTrigger>
-
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label={name[selectedName]}
-                selectedKey={[selectedName]}
-                selectionMode="single"
-                className="place-items-center block bg-light-green"
-              >
-                {name.map((name, index) => (
-                  <DropdownItem
-                    className="p-1 hover:bg-white/50 outline-none rounded w-full"
-                    key={index}
-                    onAction={() => {
-                      setSelectedName(index);
-                      console.log("Selected option:", name);
-                    }}
-                  >
-                    {name}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        </ButtonGroup>
-
-        <div className="flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2  ">
+        <div className="flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2 w-full">
           <span className="flex items-start">Question: </span>
           <textarea
             required={true}
@@ -209,8 +173,10 @@ export default function AddQuestions({ allSchemes }) {
           ></textarea>
         </div>
 
-        <div className="flex flex-row md:flex-nowrap flex-wrap gap-4 px-1 m-2 p-1 mr-5">
-          <span className="flex items-start text-nowrap">Ideal Answer: </span>
+        <div className="flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2 w-full">
+          <span className="flex items-start text-wrap ml-2">
+            Ideal Answer:{" "}
+          </span>
 
           <textarea
             required={true}

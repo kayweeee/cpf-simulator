@@ -10,14 +10,13 @@ import isAuth from "../../components/isAuth";
 
 function Exercises() {
   const router = useRouter();
-  const { submit } = router.query;
   const [name, setName] = useState("");
   const [allQuestions, setAllQuestions] = useState([]);
   const [editState, setEditState] = useState(false);
 
   useEffect(() => {
     async function getQuestions() {
-      const user_id = 1;
+      console.log(router.isReady);
       if (router.isReady) {
         const scheme_name = router.query.slug;
         window.localStorage.setItem("schemeName", scheme_name);
@@ -44,6 +43,11 @@ function Exercises() {
         shallow: true,
       }
     );
+  }
+
+  function handleAddQuestion() {
+    var pagename = name.toLowerCase();
+    router.push(`/${pagename}/addquestions`, undefined, { shallow: true });
   }
 
   const handleDelete = (question_id) => {
@@ -89,7 +93,7 @@ function Exercises() {
               <div className="flex justify-end gap-3">
                 <button
                   className="bg-dark-green hover:bg-darker-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
-                  onClick={() => router.push("/addquestions")}
+                  onClick={handleAddQuestion}
                 >
                   Add Question
                 </button>
