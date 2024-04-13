@@ -528,8 +528,13 @@ async def get_user_average_scores(user_id: str, db: Session = Depends(create_ses
     })
     
     # Add schemes with no attempts
-    # Get the distinct scheme names
-    distinct_schemes = db.query(SchemeModel.scheme_name).distinct().all()
+    distinct_schemes = (
+        db.query(SchemeModel.scheme_name)
+        .join(user_scheme_association, user_scheme_association.c.scheme_table_name == SchemeModel.scheme_name)
+        .filter(user_scheme_association.c.user_table_id == user_id)
+        .distinct()
+        .all()
+    )
     for scheme in distinct_schemes:
         scheme_name = scheme[0]
         if scheme_name not in [s["scheme_name"] for s in scheme_average_scores]:
