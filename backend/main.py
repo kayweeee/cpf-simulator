@@ -437,7 +437,7 @@ async def read_attempt(attempt_id: str, db: Session = Depends(create_session)):
 
 @app.get("/attempt/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def get_user_attempts(user_id: str, db: Session = Depends(create_session)):
-    db_attempts= db.query(AttemptModel).filter(AttemptModel.user_id == user_id).all()
+    db_attempts= db.query(AttemptModel).filter(AttemptModel.user_id == user_id).order_by(AttemptModel.date.asc()).all()
     attempts_list = []
     if db_attempts is None:
         raise HTTPException(status_code=404, detail="Attempts not found")
