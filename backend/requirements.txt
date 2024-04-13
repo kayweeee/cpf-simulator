@@ -12,3 +12,4 @@ chromadb==0.4.15
 pymysql
 pydantic_settings
 python-multipart
+pandas
