@@ -15,7 +15,7 @@ class SchemeModel(Base):
     user_id: Mapped[str] = Column(String(255), ForeignKey("user.uuid"), nullable=True )
     
     users: Mapped[list["UserModel"]] = relationship("UserModel", secondary=user_scheme_association, back_populates="scheme")
-    questions: Mapped[list["QuestionModel"]] = relationship("QuestionModel", back_populates="scheme")
+    questions: Mapped[list["QuestionModel"]] = relationship("QuestionModel", back_populates="scheme", cascade="all, delete")
     
     def to_dict(self):
         return {

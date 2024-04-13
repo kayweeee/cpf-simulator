@@ -309,6 +309,36 @@ async def get_all_schemes(db: Session = Depends(create_session)):
         scheme_list.append(scheme_dict)
     return scheme_list
 
+@app.delete('/scheme/{scheme_name}', status_code=status.HTTP_200_OK)
+async def delete_scheme(scheme_name: str, db: Session = Depends(create_session)):
+    # Check if the scheme with the provided scheme_name exists
+    db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
+    if not db_scheme:
+        raise HTTPException(status_code=404, detail="Scheme not found")
+    
+    # Delete related attempts
+    db.query(AttemptModel).filter(AttemptModel.question_id.in_(
+        db.query(QuestionModel.question_id).filter(QuestionModel.scheme_name == scheme_name)
+    )).delete(synchronize_session=False)
+
+    # Delete the stored files
+    admin_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../admin-dashboard/public"))
+    admin_file_path = os.path.join(admin_path, db_scheme.scheme_admin_img_path)
+    csa_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../final-csa-dashboard/public"))
+    csa_file_path = os.path.join(csa_path, db_scheme.scheme_csa_img_path)
+    
+    if os.path.exists(admin_file_path):
+        os.remove(admin_file_path)
+    
+    if os.path.exists(csa_file_path):
+        os.remove(csa_file_path)
+    
+    # Delete the scheme
+    db.delete(db_scheme)
+    db.commit()
+
+    return {"message": f"Scheme '{scheme_name}' deleted successfully along with related questions, attempts, and stored files."}
+
 
 ## QUESTION ROUTES ##
 @app.get("/questions/scheme/{scheme_name}", status_code=status.HTTP_201_CREATED)
