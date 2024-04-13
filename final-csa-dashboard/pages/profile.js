@@ -12,7 +12,16 @@ import Download from "@mui/icons-material/SimCardDownloadOutlined";
 function Profile({ user }) {
   const [attempts, setAttempts] = useState("");
   const [subCat, setSubCat] = useState("");
+  const [userName, setUserName] = useState("");
   const loginDetails = user;
+
+  useEffect(() => {
+    if (user == "") {
+      setUserName("");
+    } else if (user && user.name) {
+      setUserName(user.name);
+    }
+  }, [user]);
 
   useEffect(() => {
     async function getAttempts() {
@@ -101,7 +110,7 @@ function Profile({ user }) {
   return (
     <>
       <div className="bg-light-green p-4">
-        <div className="font-bold text-xl pl-2">Welcome, {user.name}</div>
+        <div className="font-bold text-xl pl-2">Welcome, {userName}</div>
         <AverageScores className="mt-2" user={user} />
 
         <div className="h-max-content flex flex-row items-start">

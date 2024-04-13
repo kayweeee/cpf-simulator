@@ -15,9 +15,8 @@ export default function Header({ user, setUser }) {
 
   const handleLogout = () => {
     event.preventDefault();
-
     window.localStorage.clear();
-    setUser(null);
+    setUser("");
     router.push("/");
   };
 
