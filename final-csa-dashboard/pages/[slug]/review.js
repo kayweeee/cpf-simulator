@@ -1,6 +1,7 @@
 // framework
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { saveAs } from 'file-saver';
 // components
 import RadialGraph from "../../components/PieGraph.jsx";
 import QuestionBar from "../../components/QuestionBar.jsx";
@@ -12,6 +13,8 @@ function ReviewPage() {
   const router = useRouter();
   const { review, submit, profile, scheme_name } = router.query;
   const [attempt, setAttempt] = useState([]);
+  const loginDetails = JSON.parse(window.localStorage.getItem("loggedUser"));
+  const schemeName = window.localStorage.getItem("schemeName");
 
   useEffect(() => {
     async function getAttempt() {
@@ -54,6 +57,29 @@ function ReviewPage() {
     });
   }
 
+  const convertToCSV = (data) => {
+    const csvContent = [
+      ["employee's name", loginDetails.name],
+      ["employee's email", loginDetails.email],
+      ['scheme', schemeName],
+      ['question:', attempt.question_details],
+      ['answer:', attempt.answer],
+      ['Overall Scores:']
+    ];
+
+    feedbackData.forEach((item) => {
+      csvContent.push([`${item.label}:`, item.feedback, `${(item.value / item.total) * 100}%`]);
+    });
+
+    return csvContent.map(row => row.join(',')).join('\n');
+  };
+
+  const handleDownload = () => {
+    const csvContent = convertToCSV();
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+    saveAs(blob, `${loginDetails.name}_transcript.csv`);
+  };
+
   return (
     <>
       <div className="bg-light-green p-4">
@@ -61,7 +87,7 @@ function ReviewPage() {
         <div className="bg-light-gray rounded-md px-6 pb-12 pt-6 m-5 ">
           <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
             <div className="text-2xl">Feedback</div>
-            <button type="button" className="button">
+            <button type="button" className="button" onClick={handleDownload}>
               <Download fontSize="medium" />
               Download
             </button>
