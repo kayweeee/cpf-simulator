@@ -402,14 +402,14 @@ async def add_question_to_scheme(question: QuestionBase, db: Session = Depends(c
 @app.get("/table/{user_id}/{scheme_name}", status_code=status.HTTP_201_CREATED)
 async def get_table_details_of_user_for_scheme(scheme_name: str, user_id: str, db: Session = Depends(create_session)):
     question_list = []
-    db_questions = db.query(QuestionModel).filter(QuestionModel.scheme_name == scheme_name).all()
+    db_questions = db.query(QuestionModel).filter(QuestionModel.scheme_name == scheme_name).order_by(QuestionModel.created.asc()).all()
     
     if db_questions is None:
         raise HTTPException(status_code=404, detail="No questions found for the given scheme")
 
     for db_question in db_questions:
         question_dict = db_question.to_dict()
-        db_attempt = db.query(AttemptModel).filter(AttemptModel.user_id == user_id).filter(AttemptModel.question_id == db_question.question_id).order_by(desc(AttemptModel.date)).first()
+        db_attempt = db.query(AttemptModel).filter(AttemptModel.user_id == user_id).filter(AttemptModel.question_id == db_question.question_id).order_by(AttemptModel.date.desc()).first()
   
         if db_attempt is None:
             db_attempt = ""
