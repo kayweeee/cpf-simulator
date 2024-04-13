@@ -47,9 +47,10 @@ export default function TableCustomized({ rows }) {
       <table aria-label="custom pagination table">
         <thead>
           <tr>
-            <th>Question</th>
-            <th>Time Completed</th>
-            <th>Transcript</th>
+            <th className=" bg-dark-grey">Question</th>
+            <th className=" bg-dark-grey">Scheme</th>
+            <th className=" bg-dark-grey">Time Completed</th>
+            <th className=" bg-dark-grey">Transcript</th>
           </tr>
         </thead>
         <tbody>
@@ -59,11 +60,9 @@ export default function TableCustomized({ rows }) {
           ).map((row, idx) => (
             <tr key={idx}>
               <td>{row.question_title}</td>
-              <td style={{ width: 240 }} align="right">
-                {row.date}
-              </td>
+              <td>{row.scheme_name}</td>
+              <td align="right">{row.date}</td>
               <td
-                style={{ width: 120 }}
                 align="right"
                 className="hover:underline hover:underline-offset-2"
                 onClick={() => handleReviewNav(row.attempt_id)}
