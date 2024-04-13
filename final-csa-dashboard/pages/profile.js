@@ -21,7 +21,7 @@ function Profile({ user }) {
           `http://127.0.0.1:8000/attempt/user/${user.uuid}`
         );
         const attemptRes = await res.json();
-        setAttempts(attemptRes);
+        setAttempts(attemptRes.reverse());
       } catch (e) {
         console.log(e);
       }
