@@ -1,6 +1,6 @@
 // framework
 import { useEffect, useState } from "react";
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
 // components
 import CustomTable from "../components/CustomTable.jsx";
 import isAuth from "../components/isAuth.jsx";
@@ -12,7 +12,7 @@ import Download from "@mui/icons-material/SimCardDownloadOutlined";
 function Profile({ user }) {
   const [attempts, setAttempts] = useState([]);
   const [subCat, setSubCat] = useState([]);
-  const loginDetails = JSON.parse(window.localStorage.getItem("loggedUser"));
+  const loginDetails = user;
 
   useEffect(() => {
     async function getAttempts() {
@@ -47,53 +47,52 @@ function Profile({ user }) {
 
   const convertToCSV = (attempts) => {
     const headers = [
-        "Name",
-        "Email",
-        "Scheme",
-        "Date",
-        "Question Title",
-        "Question",
-        "Answer",
-        "Accuracy Feedback",
-        "Accuracy Score",
-        "Precision Feedback",
-        "Precision Score",
-        "Tone Feedback",
-        "Tone Score"
+      "Name",
+      "Email",
+      "Scheme",
+      "Date",
+      "Question Title",
+      "Question",
+      "Answer",
+      "Accuracy Feedback",
+      "Accuracy Score",
+      "Precision Feedback",
+      "Precision Score",
+      "Tone Feedback",
+      "Tone Score",
     ];
 
     // Generate rows for each attempt
-    const rows = attempts.map(attempt => [
-        loginDetails.name,
-        loginDetails.email,
-        attempt.scheme_name,
-        attempt.date,
-        `"${attempt.question_title}"`,
-        `"${attempt.question_details}"`,
-        `"${attempt.answer}"`,
-        `"${attempt.accuracy_feedback}"`,
-        `${(attempt.accuracy_score / 5) * 100}%`,
-        `"${attempt.precision_feedback}"`,
-        `${(attempt.precision_score / 5) * 100}%`,
-        `"${attempt.tone_feedback}"`,
-        `${(attempt.tone_score / 5) * 100}%`
+    const rows = attempts.map((attempt) => [
+      loginDetails.name,
+      loginDetails.email,
+      attempt.scheme_name,
+      attempt.date,
+      `"${attempt.question_title}"`,
+      `"${attempt.question_details}"`,
+      `"${attempt.answer}"`,
+      `"${attempt.accuracy_feedback}"`,
+      `${(attempt.accuracy_score / 5) * 100}%`,
+      `"${attempt.precision_feedback}"`,
+      `${(attempt.precision_score / 5) * 100}%`,
+      `"${attempt.tone_feedback}"`,
+      `${(attempt.tone_score / 5) * 100}%`,
     ]);
 
     // Combine headers and rows
-    const csvContent = [headers.join(',')]; 
-    rows.forEach(row => {
-        csvContent.push(row.join(',')); 
+    const csvContent = [headers.join(",")];
+    rows.forEach((row) => {
+      csvContent.push(row.join(","));
     });
 
-    return csvContent.join('\n');
-};
+    return csvContent.join("\n");
+  };
 
-const handleDownload = async () => {
-  const csvContent = convertToCSV(attempts);
-  const csvBlob = new Blob([csvContent], { type: 'text/csv' });
-  saveAs(csvBlob, `${loginDetails.name}_all_attempts.csv`);
-};
-
+  const handleDownload = async () => {
+    const csvContent = convertToCSV(attempts);
+    const csvBlob = new Blob([csvContent], { type: "text/csv" });
+    saveAs(csvBlob, `${loginDetails.name}_all_attempts.csv`);
+  };
 
   return (
     <>
@@ -120,10 +119,10 @@ const handleDownload = async () => {
               <CustomTable rows={attempts} />
               <button
                 type="button"
-                className="absolute top-0 right-0 -mt-8 mr-4 bg-dark-green hover:bg-darker-green text-white font-bold py-2 px-4 rounded flex items-center"
+                className="absolute -top-7 right-4 bg-dark-green hover:bg-darker-green text-white py-1 px-3 rounded flex items-center"
                 onClick={handleDownload}
               >
-                <Download fontSize="medium" />
+                <Download />
                 Download All
               </button>
             </div>

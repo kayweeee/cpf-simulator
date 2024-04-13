@@ -1,7 +1,7 @@
 // framework
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
 // components
 import RadialGraph from "../../components/PieGraph.jsx";
 import QuestionBar from "../../components/QuestionBar.jsx";
@@ -9,11 +9,11 @@ import isAuth from "../../components/isAuth.jsx";
 // icons
 import Download from "@mui/icons-material/SimCardDownloadOutlined";
 
-function ReviewPage() {
+function ReviewPage({ user }) {
   const router = useRouter();
   const { review, submit, profile, scheme_name } = router.query;
   const [attempt, setAttempt] = useState([]);
-  const loginDetails = JSON.parse(window.localStorage.getItem("loggedUser"));
+  const loginDetails = user;
   const schemeName = window.localStorage.getItem("schemeName");
 
   useEffect(() => {
@@ -59,55 +59,64 @@ function ReviewPage() {
 
   const convertToCSV = (attempt) => {
     const headers = [
-        "Name",
-        "Email",
-        "Scheme",
-        "Date",
-        "Question Title",
-        "Question",
-        "Answer",
-        "Accuracy Feedback",
-        "Accuracy Score",
-        "Precision Feedback",
-        "Precision Score",
-        "Tone Feedback",
-        "Tone Score"
+      "Name",
+      "Email",
+      "Scheme",
+      "Date",
+      "Question Title",
+      "Question",
+      "Answer",
+      "Accuracy Feedback",
+      "Accuracy Score",
+      "Precision Feedback",
+      "Precision Score",
+      "Tone Feedback",
+      "Tone Score",
     ];
 
     // Generate rows
     const row = [
-        loginDetails.name,
-        loginDetails.email,
-        schemeName,
-        `"${attempt.date}"`,
-        `"${attempt.title}"`,
-        `"${attempt.question_details}"`,
-        `"${attempt.answer}"`,
-        `"${attempt.accuracy_feedback}"`,
-        `${(attempt.accuracy_score / 5) * 100}%`,
-        `"${attempt.precision_feedback}"`,
-        `${(attempt.precision_score / 5) * 100}%`,
-        `"${attempt.tone_feedback}"`,
-        `${(attempt.tone_score / 5) * 100}%`
+      loginDetails.name,
+      loginDetails.email,
+      schemeName,
+      `"${attempt.date}"`,
+      `"${attempt.title}"`,
+      `"${attempt.question_details}"`,
+      `"${attempt.answer}"`,
+      `"${attempt.accuracy_feedback}"`,
+      `${(attempt.accuracy_score / 5) * 100}%`,
+      `"${attempt.precision_feedback}"`,
+      `${(attempt.precision_score / 5) * 100}%`,
+      `"${attempt.tone_feedback}"`,
+      `${(attempt.tone_score / 5) * 100}%`,
     ];
 
     // Combine headers and row
-  const csvContent = [headers]; 
-  csvContent.push(row); 
+    const csvContent = [headers];
+    csvContent.push(row);
 
-  return csvContent.map(row => row.join(',')).join('\n');
-};
+    return csvContent.map((row) => row.join(",")).join("\n");
+  };
 
-const handleDownload = async () => {
-  const csvContent = convertToCSV(attempt);
-  const csvBlob = new Blob([csvContent], { type: 'text/csv' });
-  saveAs(csvBlob, `${loginDetails.name}_${schemeName} scheme_${attempt.title}_transcript.csv`);
-};
+  const handleDownload = async () => {
+    const csvContent = convertToCSV(attempt);
+    const csvBlob = new Blob([csvContent], { type: "text/csv" });
+    saveAs(
+      csvBlob,
+      `${loginDetails.name}_${schemeName} scheme_${attempt.title}_transcript.csv`
+    );
+  };
 
   return (
     <>
       <div className="bg-light-green p-4">
-        <QuestionBar currentidx={attempt.id} review={review} submit={submit} profile={profile} scheme_name={scheme_name}/>
+        <QuestionBar
+          currentidx={attempt.id}
+          review={review}
+          submit={submit}
+          profile={profile}
+          scheme_name={scheme_name}
+        />
         <div className="bg-light-gray rounded-md px-6 pb-12 pt-6 m-5 ">
           <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
             <div className="text-2xl">Feedback</div>

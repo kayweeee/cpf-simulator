@@ -18,8 +18,15 @@ export default function AverageScores({ user }) {
 
         const averageData = await res.json();
 
+        // sort so that all is first
+        averageData.sort((a, b) => {
+          if (a.scheme_name === "All") return -1;
+          if (b.scheme_name === "All") return 1;
+          return 0;
+        });
+
         // set all average scores
-        setAverageScores(averageData.reverse());
+        setAverageScores(averageData);
 
         // set initial pie chart data
         const allAvg = averageData.filter((i) => i.scheme_name == "All")[0];
@@ -70,7 +77,6 @@ export default function AverageScores({ user }) {
     setPieContent(averageDataFormat);
   };
 
-  console.log(averageScores);
   return (
     <div className="bg-light-gray rounded-lg w-auto h-1/2 flex flex-col mt-4 p-5">
       {/* title + filter */}
