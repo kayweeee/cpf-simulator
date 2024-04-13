@@ -107,13 +107,13 @@ export default function MyTeam({ teamMembers, allSchemes }) {
           {editState ? (
             <div className="flex flex-row gap-2">
               <button
-                className="text-white bg-dark-green px-4 rounded-md "
+                className="text-white bg-dark-green hover:bg-darker-green px-4 rounded-md "
                 onClick={() => router.push("/addprofile")}
               >
                 Add new profile
               </button>
               <button
-                className="text-white bg-dark-green px-4 rounded-md "
+                className="text-white bg-dark-green hover:bg-darker-green px-4 rounded-md "
                 onClick={() => setEditState(false)}
               >
                 Cancel
@@ -121,7 +121,7 @@ export default function MyTeam({ teamMembers, allSchemes }) {
             </div>
           ) : (
             <button
-              className="text-white bg-dark-green px-4 rounded-md "
+              className="text-white bg-dark-green hover:bg-darker-green px-4 rounded-md "
               onClick={() => setEditState(true)}
             >
               Edit

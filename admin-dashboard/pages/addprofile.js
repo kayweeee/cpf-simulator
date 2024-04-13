@@ -79,8 +79,6 @@ export default function AddProfile() {
           />
         </div>
 
-        {console.log(email)}
-
         <div className="flex flex-row justify-center items-center">
           <span className="flex w-1/4">Name: </span>
           <Input
@@ -131,7 +129,13 @@ export default function AddProfile() {
 
         <div className="flex justify-center items-end">
           <Button
-            className="bg-dark-green p-1 px-10 rounded-md text-white m-4"
+            className="bg-dark-green hover:bg-darker-green p-1 px-9 rounded-md text-white m-4"
+            onClick={() => router.push("/myteam")}
+          >
+            Cancel
+          </Button>
+          <Button
+            className="bg-dark-green hover:bg-darker-green p-1 px-10 rounded-md text-white m-4"
             onClick={() => handleSaveProfile()}
           >
             Save
