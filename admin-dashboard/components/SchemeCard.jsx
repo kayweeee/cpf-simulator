@@ -19,7 +19,11 @@ export default function SchemeCard({
 
   return (
     <div className="flex flex-col p-4 border-4 rounded-xl max-w-[350px]">
-      <img src={scheme_img} alt="scheme image" className="rounded-xl" />
+      <img
+        src={scheme_img}
+        alt="scheme image"
+        className="rounded-xl object-cover h-48 w-48"
+      />
       <div className="font-bold pt-2 pb-4">{scheme_name}</div>
       <div className="flex flex-row gap-2">
         <Image src={caseimg} alt="case icon" width="auto" height="auto" />

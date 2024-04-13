@@ -33,7 +33,7 @@ function Schemes() {
           {/* Add Scheme Button */}
           <div className="flex justify-end">
             <button
-              className="bg-dark-green hover:bg-dark-green-700 text-white py-2 px-4"
+              className="bg-dark-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
               onClick={() => router.push("/addscheme")}
             >
               Add Scheme
@@ -41,7 +41,7 @@ function Schemes() {
           </div>
         </div>
         <div className="flex flex-col gap-y-5 min-h-screen">
-          <div className="flex flex-row flex-wrap px-20 justify-around gap-y-7 mb-8">
+          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7 mb-8">
             {schemes.map((i) => (
               <SchemeCard
                 key={i.scheme_name}
