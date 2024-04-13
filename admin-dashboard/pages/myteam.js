@@ -116,7 +116,7 @@ export default function MyTeam({ teamMembers, allSchemes }) {
                 className="text-white bg-dark-green px-4 rounded-md "
                 onClick={() => setEditState(false)}
               >
-                Save
+                Cancel
               </button>
             </div>
           ) : (
