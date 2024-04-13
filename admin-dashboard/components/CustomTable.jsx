@@ -10,7 +10,7 @@ import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import { useRouter } from "next/navigation";
 
-export default function TableCustomized({ rows }) {
+export default function TableCustomized({ rows, user_id }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(6);
 
@@ -32,10 +32,9 @@ export default function TableCustomized({ rows }) {
   function handleReviewNav(review_id) {
     router.push(
       {
-        pathname: `/${review_id}/review`,
-        query: { review: true, submit: false, profile: true },
+        pathname: `/${review_id}/${user_id}/review`,
       },
-      { pathname: `/${review_id}/review` },
+      { pathname: `/${review_id}/${user_id}/review` },
       {
         shallow: true,
       }

@@ -1,37 +1,29 @@
 // framework
 import Image from "next/image";
+import { useState, useEffect } from "react";
 // icons and images
 import landingpage from "../public/landingpage.png";
 import feedbackpage from "../public/feedbackpage.png";
-import transcriptsimage from "../public/transcriptsimage.png";
-import retirementimage from "../public/retirement.png";
 // components
 import SchemeCard from "../components/SchemeCard";
 
 export default function Home() {
-  // scheme card example data (to be replaced with api call)
-  const exampleData = [
-    {
-      scheme_name: "Retirement",
-      questions: 20,
-      scheme_img: retirementimage,
-    },
-    {
-      scheme_name: "a",
-      questions: 20,
-      scheme_img: retirementimage,
-    },
-    {
-      scheme_name: "b",
-      questions: 20,
-      scheme_img: retirementimage,
-    },
-    {
-      scheme_name: "c",
-      questions: 20,
-      scheme_img: retirementimage,
-    },
-  ];
+  const [schemes, setSchemes] = useState([]);
+
+  useEffect(() => {
+    async function getSchemes() {
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/scheme`);
+
+        const schemeData = await res.json();
+        setSchemes(schemeData);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    getSchemes();
+  }, []);
 
   return (
     <div className="text-base">
@@ -48,17 +40,18 @@ export default function Home() {
             us!
           </div>
           <div>
-            <button className="bg-dark-green text-white py-3 px-8 rounded-lg">
+            <button className="bg-dark-green hover:bg-darker-green text-white py-3 px-8 rounded-lg">
               Let's Start
             </button>
           </div>
         </div>
-        <div className="drop-shadow-2xl ">
+        <div className="drop-shadow-2xl">
           <Image
             height={500}
             src={landingpage}
             priority
             alt="Trainee email simulator"
+            className="rounded-xl"
           />
         </div>
       </div>
@@ -94,43 +87,30 @@ export default function Home() {
               </div>
               <div>
                 Upon submitting your answer, you will instantly receive a
-                personalized feedback from our specially trained model. This
+                personalized feedback from our machine learning model. This
                 feedback is tailored specifically to your response.
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-row justify-center items-center gap-20">
-          <div className="w-2/5">
-            <Image src={transcriptsimage} alt="transcripts" />
-          </div>
-          <div className="w-2/5">
-            <div className="text-3xl font-bold pb-2">
-              Download your transcripts for offline reference
-            </div>
-            <div>
-              Afraid that you will forget your review? Fret not as you can
-              download the transcripts to revisit and review again in the
-              future!
-            </div>
-          </div>
-        </div>
-
         {/* Schemes */}
         <div className="flex flex-col gap-y-5">
-          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7">
-            {exampleData.map((i) => (
-              <SchemeCard
-                key={i.scheme_name}
-                scheme_name={i.scheme_name}
-                scheme_img={i.scheme_img}
-                questions={i.questions}
-              />
-            ))}
+          <div className="flex flex-col gap-y-5 ">
+            <div className="flex flex-row flex-wrap px-20 justify-around gap-y-7 mb-8">
+              {schemes.map((i) => (
+                <SchemeCard
+                  key={i.scheme_name}
+                  scheme_name={i.scheme_name}
+                  scheme_img={i.scheme_csa_img_path}
+                  questions={i.questions.length}
+                  scheme_button={false}
+                />
+              ))}
+            </div>
           </div>
           <div className="flex justify-center">
-            <button className="py-2 px-16 border-2 border-dark-green rounded-lg hover:bg-dark-green hover:text-white">
+            <button className="py-2 px-16 border-2 border-dark-green bg-dark-green rounded-lg hover:bg-darker-green text-white">
               Log in to start now!
             </button>
           </div>

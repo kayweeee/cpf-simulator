@@ -8,9 +8,9 @@ URL = "http://127.0.0.1:8000"
 
 # add user
 users = [
-    {"uuid": "1", "email": "trainee1@email.com","access_rights": "Trainee","name": "trainee1"},
-    {"uuid": "2", "email": "trainee2@email.com","access_rights": "Trainee","name": "trainee2"},
-    {"uuid": "3", "email": "admin1@email.com","access_rights": "Admin","name": "admin1"},
+    {"uuid": "1", "email": "trainee1@email.com","access_rights": "Trainee","name": "Jane Doe"},
+    {"uuid": "2", "email": "trainee2@email.com","access_rights": "Trainee","name": "John Ray"},
+    {"uuid": "3", "email": "admin1@email.com","access_rights": "Admin","name": "Sally Tan"},
     {"uuid": "4", "email": "trainee4@email.com","access_rights": "Trainee","name": "trainee3"},
 ]
 
@@ -26,12 +26,13 @@ for user in users:
 directory = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the absolute file paths
-file_path = os.path.join(directory, "retirement.png")
-
+retirement_file_path = os.path.join(directory, "retirement.png")
+housing_file_path = os.path.join(directory, "housing.png")
+healthcare_file_path = os.path.join(directory, "healthcare.png")
 schemes = [
-    {"scheme_name": "Retirement", "file": open(file_path, 'rb')},
-    {"scheme_name": "Savings", "file": open(file_path, 'rb')},
-    {"scheme_name": "Taxes", "file": open(file_path, 'rb')}]
+    {"scheme_name": "Retirement", "file": open(retirement_file_path, 'rb')},
+    {"scheme_name": "Housing", "file": open(housing_file_path, 'rb')},
+    {"scheme_name": "Healthcare", "file": open(healthcare_file_path, 'rb')}]
 
 
 for scheme in schemes:
@@ -114,11 +115,11 @@ users_to_be_added = [{
   "user_id": "2",
   "scheme_name": "Retirement"
 },{                 
-  "user_id": "2",
-  "scheme_name": "Savings"
+  "user_id": "1",
+  "scheme_name": "Housing"
 },{
   "user_id": "3",
-  "scheme_name": "Retirement"
+  "scheme_name": "Healthcare"
 }]
 
 for user in users_to_be_added:

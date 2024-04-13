@@ -19,7 +19,7 @@ export default function AverageScores({ user }) {
         const averageData = await res.json();
 
         if (!res.ok) {
-          throw new Error("no data found");
+          throw new Error("data not found");
         }
 
         // sort so that all is first
