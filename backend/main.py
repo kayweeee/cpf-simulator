@@ -446,8 +446,9 @@ async def get_user_attempts(user_id: str, db: Session = Depends(create_session))
         db_question = db.query(QuestionModel).filter(QuestionModel.question_id == db_attempt.question_id).first()
         question_title = db_question.to_dict()['title']
         scheme_name = db_question.to_dict()['scheme_name']
+        question_details= db_question.to_dict()['question_details']
         attempt_dict = db_attempt.to_dict()
-        attempt_dict.update({'question_title':question_title, 'scheme_name': scheme_name.scheme_name})
+        attempt_dict.update({'question_title':question_title, 'scheme_name': scheme_name.scheme_name, 'question_details': question_details})
         attempts_list.append(attempt_dict)
 
     return attempts_list
