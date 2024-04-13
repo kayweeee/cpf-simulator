@@ -433,6 +433,9 @@ async def read_attempt(attempt_id: str, db: Session = Depends(create_session)):
     question_details = db.query(QuestionModel.question_details).filter(QuestionModel.question_id==attempt_dict['question_id']).first()
     if question_details:
         attempt_dict['question_details'] = str(question_details[0])
+    question_title= db.query(QuestionModel.title).filter(QuestionModel.question_id==attempt_dict['question_id']).first()
+    if question_title:
+        attempt_dict['title'] = str(question_title[0])
     return attempt_dict
 
 @app.get("/attempt/user/{user_id}", status_code=status.HTTP_201_CREATED)
