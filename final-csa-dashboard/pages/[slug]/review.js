@@ -57,31 +57,54 @@ function ReviewPage({ user }) {
     });
   }
 
-  const convertToCSV = (data) => {
-    const csvContent = [
-      ["employee's name", loginDetails.name],
-      ["employee's email", loginDetails.email],
-      ["scheme", schemeName],
-      ["question:", attempt.question_details],
-      ["answer:", attempt.answer],
-      ["Overall Scores:"],
+  const convertToCSV = (attempt) => {
+    const headers = [
+      "Name",
+      "Email",
+      "Scheme",
+      "Date",
+      "Question Title",
+      "Question",
+      "Answer",
+      "Accuracy Feedback",
+      "Accuracy Score",
+      "Precision Feedback",
+      "Precision Score",
+      "Tone Feedback",
+      "Tone Score",
     ];
 
-    feedbackData.forEach((item) => {
-      csvContent.push([
-        `${item.label}:`,
-        item.feedback,
-        `${(item.value / item.total) * 100}%`,
-      ]);
-    });
+    // Generate rows
+    const row = [
+      loginDetails.name,
+      loginDetails.email,
+      schemeName,
+      `"${attempt.date}"`,
+      `"${attempt.title}"`,
+      `"${attempt.question_details}"`,
+      `"${attempt.answer}"`,
+      `"${attempt.accuracy_feedback}"`,
+      `${(attempt.accuracy_score / 5) * 100}%`,
+      `"${attempt.precision_feedback}"`,
+      `${(attempt.precision_score / 5) * 100}%`,
+      `"${attempt.tone_feedback}"`,
+      `${(attempt.tone_score / 5) * 100}%`,
+    ];
+
+    // Combine headers and row
+    const csvContent = [headers];
+    csvContent.push(row);
 
     return csvContent.map((row) => row.join(",")).join("\n");
   };
 
-  const handleDownload = () => {
-    const csvContent = convertToCSV();
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
-    saveAs(blob, `${loginDetails.name}_transcript.csv`);
+  const handleDownload = async () => {
+    const csvContent = convertToCSV(attempt);
+    const csvBlob = new Blob([csvContent], { type: "text/csv" });
+    saveAs(
+      csvBlob,
+      `${loginDetails.name}_${schemeName} scheme_${attempt.title}_transcript.csv`
+    );
   };
 
   return (
