@@ -22,6 +22,7 @@ class QuestionModel(Base):
         return {
             'question_id': self.question_id,
             'question_difficulty': self.question_difficulty,
+            'question_details': self.question_details,
             'ideal': self.ideal,
             'title': self.title,
             'scheme_name': self.scheme,
