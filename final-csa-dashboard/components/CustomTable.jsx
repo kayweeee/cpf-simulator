@@ -43,6 +43,7 @@ export default function TableCustomized({ rows }) {
       <table aria-label="custom pagination table">
         <thead>
           <tr>
+            <th style={{ width: 150 }}>Scheme</th>
             <th>Question</th>
             <th>Time Completed</th>
             <th>Transcript</th>
@@ -54,6 +55,7 @@ export default function TableCustomized({ rows }) {
             : rows
           ).map((row, idx) => (
             <tr key={idx}>
+              <td style={{ width: 150 }}>{row.scheme_name}</td>
               <td>{row.question_title}</td>
               <td style={{ width: 240 }} align="right">
                 {row.date}
