@@ -410,6 +410,8 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
 
 @app.get("/attempt/average_scores/user/{user_id}/", status_code=200)
 async def get_user_average_scores(user_id: str, db: Session = Depends(create_session)):
+    all_scheme_names = [scheme[0] for scheme in db.query(SchemeModel.scheme_name).distinct().all()]
+
     # Subquery to find the attempts with the maximum sum of scores for each question
     attempts_with_max_sum_scores_subquery = (
         db.query(
@@ -445,18 +447,21 @@ async def get_user_average_scores(user_id: str, db: Session = Depends(create_ses
     if not avg_scores_query:
         raise HTTPException(status_code=404, detail="Attempts not found")
 
-    scheme_average_scores = []
+ 
     total_precision_score_avg = 0
     total_accuracy_score_avg = 0
     total_tone_score_avg = 0
-
+    # Create a dictionary to store scheme average scores
+    scheme_average_scores = [{scheme_name:{"precision_score_avg": 0, "accuracy_score_avg": 0, "tone_score_avg": 0}} for scheme_name in all_scheme_names]
+    
+    # Update the dictionary with actual average scores
     for scheme_name, precision_score_avg, accuracy_score_avg, tone_score_avg in avg_scores_query:
-        scheme_average_scores.append({
-            "scheme_name": scheme_name,
-            "precision_score_avg": precision_score_avg,
-            "accuracy_score_avg": accuracy_score_avg,
-            "tone_score_avg": tone_score_avg
-        })
+        for scheme in scheme_average_scores:
+            scheme.update({scheme_name:{
+                "precision_score_avg": precision_score_avg,
+                "accuracy_score_avg": accuracy_score_avg,
+                "tone_score_avg": tone_score_avg,
+            }})
 
         total_precision_score_avg += precision_score_avg
         total_accuracy_score_avg += accuracy_score_avg
