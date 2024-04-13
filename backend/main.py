@@ -226,8 +226,8 @@ async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_se
         else:
             db_scheme.users.append(user)
             db.commit()
-            return {"message": "Scheme has been updated successfully"}
-    
+            return responses.JSONResponse(content = {"message": "Scheme has been updated successfully"}, status_code=201)
+
     raise HTTPException(status_code=404, detail="This is not an existing scheme")
 
 @app.post('/scheme', status_code=status.HTTP_201_CREATED)
@@ -337,7 +337,7 @@ async def delete_scheme(scheme_name: str, db: Session = Depends(create_session))
     db.delete(db_scheme)
     db.commit()
 
-    return {"message": f"Scheme '{scheme_name}' deleted successfully along with related questions, attempts, and stored files."}
+    return responses.JSONResponse(content = {"message": f"Scheme '{scheme_name}' deleted successfully along with related questions, attempts, and stored files."}, status_code=201)
 
 
 ## QUESTION ROUTES ##
@@ -350,10 +350,30 @@ async def get_questions_by_scheme_name(scheme_name: str, db: Session = Depends(c
 
 @app.get("/question/{question_id}", status_code=status.HTTP_201_CREATED)
 async def get_questions_by_question_id(question_id: str, db: Session = Depends(create_session)):
-    db_question = db.query(QuestionModel).filter(QuestionModel.question_id == question_id).all()
+    db_question = db.query(QuestionModel).filter(QuestionModel.question_id == question_id).first()
     if db_question is None:
         raise HTTPException(status_code=404, detail="No questions found for the given scheme")
     return db_question
+
+@app.delete("/question/{question_id}", status_code=status.HTTP_201_CREATED)
+async def delete_question(question_id: str, db: Session = Depends(create_session)):
+    db_question = db.query(QuestionModel).filter(QuestionModel.question_id == question_id).first()
+    if db_question is None:
+        raise HTTPException(status_code=404, detail="No questions found for the given scheme")
+    print(AttemptModel.question_id)
+    db_attempts = db.query(AttemptModel).filter(AttemptModel.question_id == question_id)
+    try:
+        if db_attempts:
+            for attempt in db_attempts:
+                db.delete(attempt)
+        db.delete(db_question)
+        db.commit()
+        return responses.JSONResponse(content = {"message": f"Question deleted successfully along with related questions and attempts."}, status_code=201)
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Unable to delete question. {e}")
+
 
 @app.get("/questions/all", status_code=status.HTTP_201_CREATED)
 async def get_all_questions(db: Session = Depends(create_session)):
@@ -440,8 +460,6 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
 
 @app.get("/attempt/average_scores/user/{user_id}/", status_code=200)
 async def get_user_average_scores(user_id: str, db: Session = Depends(create_session)):
-    all_scheme_names = [scheme[0] for scheme in db.query(SchemeModel.scheme_name).distinct().all()]
-
     # Subquery to find the attempts with the maximum sum of scores for each question
     attempts_with_max_sum_scores_subquery = (
         db.query(
@@ -477,21 +495,18 @@ async def get_user_average_scores(user_id: str, db: Session = Depends(create_ses
     if not avg_scores_query:
         raise HTTPException(status_code=404, detail="Attempts not found")
 
- 
+    scheme_average_scores = []
     total_precision_score_avg = 0
     total_accuracy_score_avg = 0
     total_tone_score_avg = 0
-    # Create a dictionary to store scheme average scores
-    scheme_average_scores = [{scheme_name:{"precision_score_avg": 0, "accuracy_score_avg": 0, "tone_score_avg": 0}} for scheme_name in all_scheme_names]
-    
-    # Update the dictionary with actual average scores
+
     for scheme_name, precision_score_avg, accuracy_score_avg, tone_score_avg in avg_scores_query:
-        for scheme in scheme_average_scores:
-            scheme.update({scheme_name:{
-                "precision_score_avg": precision_score_avg,
-                "accuracy_score_avg": accuracy_score_avg,
-                "tone_score_avg": tone_score_avg,
-            }})
+        scheme_average_scores.append({
+            "scheme_name": scheme_name,
+            "precision_score_avg": precision_score_avg,
+            "accuracy_score_avg": accuracy_score_avg,
+            "tone_score_avg": tone_score_avg
+        })
 
         total_precision_score_avg += precision_score_avg
         total_accuracy_score_avg += accuracy_score_avg
@@ -511,5 +526,18 @@ async def get_user_average_scores(user_id: str, db: Session = Depends(create_ses
         "accuracy_score_avg": total_accuracy_score_avg,
         "tone_score_avg": total_tone_score_avg
     })
+    
+    # Add schemes with no attempts
+    # Get the distinct scheme names
+    distinct_schemes = db.query(SchemeModel.scheme_name).distinct().all()
+    for scheme in distinct_schemes:
+        scheme_name = scheme[0]
+        if scheme_name not in [s["scheme_name"] for s in scheme_average_scores]:
+            scheme_average_scores.append({
+                "scheme_name": scheme_name,
+                "precision_score_avg": 0,
+                "accuracy_score_avg": 0,
+                "tone_score_avg": 0
+            })
 
     return scheme_average_scores
