@@ -97,6 +97,7 @@ function Profile({ user }) {
   return (
     <>
       <div className="bg-light-green p-4">
+        <div className="font-bold text-xl pl-2">Welcome, {user.name}</div>
         <AverageScores className="mt-2" user={user} />
 
         <div className="h-max-content flex flex-row items-start">

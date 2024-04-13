@@ -39,8 +39,8 @@ export default function Login({ setUser }) {
   }
 
   return (
-    <div>
-      <div className="flex justify-center my-8 text-base">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="flex justify-center my-8 text-base ">
         <div className="bg-light-green shadow rounded-md p-5 md:p-10 lg:p-20 flex flex-col md:max-w-lg and lg:max-w-xl  ">
           <form
             onSubmit={onSubmit}
@@ -64,7 +64,7 @@ export default function Login({ setUser }) {
             <button
               type="submit"
               id="login"
-              className="bg-dark-green text-white rounded-lg px-8 py-2 mt-5 sm:w-[300px] hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-dark-green text-white rounded-lg px-8 py-2 mt-5 sm:w-[300px] hover:bg-darker-green focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               Login
             </button>
