@@ -13,7 +13,7 @@ class DatabaseConfig(BaseModel):
     """
 
 
-    dsn: str = "mysql+pymysql://root:090401@localhost:3306/testing"
+    dsn: str = "mysql+pymysql://root:test1234!@localhost:3306/testing"
 
 
 
