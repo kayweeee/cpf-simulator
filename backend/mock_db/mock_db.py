@@ -26,12 +26,13 @@ for user in users:
 directory = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the absolute file paths
-file_path = os.path.join(directory, "retirement.png")
-
+retirement_file_path = os.path.join(directory, "retirement.png")
+housing_file_path = os.path.join(directory, "housing.png")
+healthcare_file_path = os.path.join(directory, "healthcare.png")
 schemes = [
-    {"scheme_name": "Retirement", "file": open(file_path, 'rb')},
-    {"scheme_name": "Savings", "file": open(file_path, 'rb')},
-    {"scheme_name": "Taxes", "file": open(file_path, 'rb')}]
+    {"scheme_name": "Retirement", "file": open(retirement_file_path, 'rb')},
+    {"scheme_name": "Housing", "file": open(housing_file_path, 'rb')},
+    {"scheme_name": "Healthcare", "file": open(healthcare_file_path, 'rb')}]
 
 
 for scheme in schemes:
@@ -114,11 +115,11 @@ users_to_be_added = [{
   "user_id": "2",
   "scheme_name": "Retirement"
 },{                 
-  "user_id": "2",
-  "scheme_name": "Savings"
+  "user_id": "1",
+  "scheme_name": "Housing"
 },{
   "user_id": "3",
-  "scheme_name": "Retirement"
+  "scheme_name": "Healthcare"
 }]
 
 for user in users_to_be_added:
