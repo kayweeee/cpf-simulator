@@ -8,9 +8,9 @@ URL = "http://127.0.0.1:8000"
 
 # add user
 users = [
-    {"uuid": "1", "email": "trainee1@email.com","access_rights": "Trainee","name": "trainee1"},
-    {"uuid": "2", "email": "trainee2@email.com","access_rights": "Trainee","name": "trainee2"},
-    {"uuid": "3", "email": "admin1@email.com","access_rights": "Admin","name": "admin1"},
+    {"uuid": "1", "email": "trainee1@email.com","access_rights": "Trainee","name": "Jane Doe"},
+    {"uuid": "2", "email": "trainee2@email.com","access_rights": "Trainee","name": "John Ray"},
+    {"uuid": "3", "email": "admin1@email.com","access_rights": "Admin","name": "Sally Tan"},
     {"uuid": "4", "email": "trainee4@email.com","access_rights": "Trainee","name": "trainee3"},
 ]
 
