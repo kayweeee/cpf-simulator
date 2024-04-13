@@ -12,7 +12,7 @@ import Download from "@mui/icons-material/SimCardDownloadOutlined";
 
 function Profile() {
   const router = useRouter();
-  const [attempts, setAttempts] = useState([]);
+  const [attempts, setAttempts] = useState("");
   const [subCat, setSubCat] = useState("");
   const [userProfile, setUserProfile] = useState("");
 
@@ -146,7 +146,11 @@ function Profile() {
           </div>
           <div className="bg-light-gray rounded-lg w-2/3 mt-4 relative">
             <h3 className="pl-5 pt-5 font-bold">Attempts</h3>
-            {attempts == [] ? (
+            {attempts == "" ? (
+              <div className="flex justify-center items-center py-8">
+                No attempts
+              </div>
+            ) : (
               <div className="rounded-lg py-4 px-4 h-full flex items-center relative">
                 <CustomTable rows={attempts} user_id={userProfile.uuid} />
                 <button
@@ -157,10 +161,6 @@ function Profile() {
                   <Download />
                   Download All
                 </button>
-              </div>
-            ) : (
-              <div className="flex justify-center items-center py-8">
-                No attempts
               </div>
             )}
           </div>
