@@ -15,7 +15,7 @@ import { IoIosArrowBack } from "react-icons/io";
 export default function AddProfile() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const accessRights = ["Member", "Admin"];
+  const accessRights = ["Trainee", "Admin"];
   const router = useRouter();
   const [selectedAccessIndex, setSelectedAccessIndex] = useState(0);
 

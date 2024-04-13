@@ -16,7 +16,6 @@ function Exercises() {
 
   useEffect(() => {
     async function getQuestions() {
-      console.log(router.isReady);
       if (router.isReady) {
         const scheme_name = router.query.slug;
         window.localStorage.setItem("schemeName", scheme_name);
@@ -51,7 +50,14 @@ function Exercises() {
   }
 
   const handleDelete = (question_id) => {
-    console.log("deleted", question_id);
+    try {
+      const res = fetch(`http://127.0.0.1:8000/question/${question_id}`, {
+        method: "DELETE",
+      });
+      setAllQuestions(allQuestions.filter((i) => i.question_id != question_id));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const tableCellStyle = `text-start py-6 border px-5`;
@@ -69,8 +75,6 @@ function Exercises() {
         return "";
     }
   };
-
-  console.log(allQuestions);
 
   return (
     <div className="text-base bg-light-green">

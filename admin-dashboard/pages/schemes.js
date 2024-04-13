@@ -59,8 +59,8 @@ function Schemes() {
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-y-5 min-h-screen">
-          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7 mb-8">
+        <div className="flex flex-col gap-y-5 ">
+          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7 mb-12">
             {schemes.map((i) => (
               <SchemeCard
                 key={i.scheme_name}
@@ -69,6 +69,8 @@ function Schemes() {
                 questions={i.questions.length}
                 scheme_button={true}
                 editState={editState}
+                schemes={schemes}
+                setSchemes={setSchemes}
               />
             ))}
           </div>

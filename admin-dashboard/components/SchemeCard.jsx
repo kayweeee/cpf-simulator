@@ -11,6 +11,8 @@ export default function SchemeCard({
   questions,
   scheme_button,
   editState,
+  schemes,
+  setSchemes,
 }) {
   const router = useRouter();
 
@@ -19,8 +21,15 @@ export default function SchemeCard({
     router.push(`/${pagename}/exercises`, undefined, { shallow: true });
   }
 
-  const handleDelete = (scheme_name) => {
-    console.log("deleted", scheme_name);
+  const handleDelete = async (scheme_name) => {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/scheme/${scheme_name}`, {
+        method: "DELETE",
+      });
+      setSchemes(schemes.filter((i) => i.scheme_name != scheme_name));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
