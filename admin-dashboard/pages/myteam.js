@@ -135,7 +135,9 @@ export default function MyTeam({ teamMembers, allSchemes }) {
             <tr>
               <th className={`${tableCellStyle} bg-dark-grey `}>Name</th>
               <th className={`${tableCellStyle} bg-dark-grey`}>Email</th>
-              <th className={`${tableCellStyle} bg-dark-grey w-1/2`}>
+              <th className={`${tableCellStyle} bg-dark-grey w-1/6`}>Access</th>
+
+              <th className={`${tableCellStyle} bg-dark-grey w-1/3`}>
                 Schemes
               </th>
               <th className="w-[0px] p-0" />
@@ -153,6 +155,7 @@ export default function MyTeam({ teamMembers, allSchemes }) {
                   {i.name}
                 </td>
                 <td className={`${tableCellStyle}`}>{i.email}</td>
+                <td className={`${tableCellStyle}`}>{i.access_rights}</td>
                 <td className={`${tableCellStyle}`}>
                   <SchemeTags
                     schemes={i.schemes}
