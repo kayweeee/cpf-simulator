@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 // images and icons
 import { ChevronLeft } from "@mui/icons-material";
+import { FaRegTrashCan } from "react-icons/fa6";
 // components
 import isAuth from "../../components/isAuth";
 
@@ -12,6 +13,7 @@ function Exercises() {
   const { submit } = router.query;
   const [name, setName] = useState("");
   const [allQuestions, setAllQuestions] = useState([]);
+  const [editState, setEditState] = useState(false);
 
   useEffect(() => {
     async function getQuestions() {
@@ -44,7 +46,10 @@ function Exercises() {
     );
   }
 
-  // Change table height according to image height
+  const handleDelete = (question_id) => {
+    console.log("deleted", question_id);
+  };
+
   const tableCellStyle = `text-start py-6 border px-5`;
   const tableCenterCellStyle = `text-center py-6 border`;
 
@@ -78,8 +83,34 @@ function Exercises() {
       </button>
       <div className="w-screen flex items-center justify-center p-4">
         <div className="bg-white min-w-full rounded-md p-6">
-          <div className="font-bold text-3xl pt-6 pb-10">{name} Scheme</div>
-
+          <div className=" flex flex-row justify-between items-center pt-6 pb-8">
+            <div className="font-bold text-3xl ">{name} Scheme</div>
+            {editState ? (
+              <div className="flex justify-end gap-3">
+                <button
+                  className="bg-dark-green hover:bg-darker-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
+                  onClick={() => router.push("/addquestions")}
+                >
+                  Add Question
+                </button>
+                <button
+                  className="bg-dark-green hover:bg-darker-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
+                  onClick={() => setEditState(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <div className="flex justify-end gap-3">
+                <button
+                  className="bg-dark-green hover:bg-darker-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
+                  onClick={() => setEditState(true)}
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+          </div>
           {/* Table */}
           <table className="w-full table-fixed border border-collapse border-slate-200">
             <thead>
@@ -93,6 +124,7 @@ function Exercises() {
                 <th className={`${tableCenterCellStyle} bg-dark-grey`}>
                   Scheme
                 </th>
+                <th className="w-[0px] p-0" />
               </tr>
             </thead>
 
@@ -115,6 +147,16 @@ function Exercises() {
                   </td>
                   <td className={`${tableCenterCellStyle}`}>
                     {question.scheme_name}
+                  </td>
+                  <td>
+                    {editState ? (
+                      <button className="flex items-center">
+                        <FaRegTrashCan
+                          className=" text-red-500 ml-0.5"
+                          onClick={() => handleDelete(question.question_id)}
+                        />
+                      </button>
+                    ) : null}
                   </td>
                 </tr>
               ))}
