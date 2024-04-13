@@ -119,10 +119,10 @@ function Profile({ user }) {
               <CustomTable rows={attempts} />
               <button
                 type="button"
-                className="absolute top-0 right-0 -mt-8 mr-4 bg-dark-green hover:bg-darker-green text-white font-bold py-2 px-4 rounded flex items-center"
+                className="absolute -top-7 right-4 bg-dark-green hover:bg-darker-green text-white py-1 px-3 rounded flex items-center"
                 onClick={handleDownload}
               >
-                <Download fontSize="medium" />
+                <Download />
                 Download All
               </button>
             </div>
