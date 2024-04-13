@@ -67,17 +67,6 @@ export default function AddProfile() {
         <span className="text-2xl font-bold m-3 place-self-start">
           Add Profile
         </span>
-        <div className="flex flex-row justify-center items-center">
-          <span className="flex w-1/4">Email:</span>
-          <Input
-            isRequired
-            type="email"
-            placeholder="Enter your email"
-            defaultValue=""
-            onValueChange={(value) => setEmail(value)}
-            className="flex border border-sage-green outline-2 py-1 w-48"
-          />
-        </div>
 
         <div className="flex flex-row justify-center items-center">
           <span className="flex w-1/4">Name: </span>
@@ -86,6 +75,18 @@ export default function AddProfile() {
             placeholder="Enter your Name"
             defaultValue=""
             onValueChange={(value) => setName(value)}
+            className="flex border border-sage-green outline-2 py-1 w-48"
+          />
+        </div>
+
+        <div className="flex flex-row justify-center items-center">
+          <span className="flex w-1/4">Email:</span>
+          <Input
+            isRequired
+            type="email"
+            placeholder="Enter your email"
+            defaultValue=""
+            onValueChange={(value) => setEmail(value)}
             className="flex border border-sage-green outline-2 py-1 w-48"
           />
         </div>
