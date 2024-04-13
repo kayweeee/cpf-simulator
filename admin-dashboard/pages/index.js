@@ -69,7 +69,7 @@ export default function Login({ setUser }) {
             <button
               type="submit"
               id="login"
-              className="bg-dark-green text-white rounded-lg px-8 py-2 mt-5 sm:w-[300px] focus:outline-none focus:ring-2 "
+              className="bg-dark-green hover:bg-darker-green text-white rounded-lg px-8 py-2 mt-5 sm:w-[300px] focus:outline-none focus:ring-2 "
             >
               Login
             </button>

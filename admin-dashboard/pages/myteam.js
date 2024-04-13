@@ -30,7 +30,6 @@ export default function MyTeam({ teamMembers, allSchemes }) {
 
   const [allTeamMembers, setAllTeamMembers] = useState(teamMembers);
   const [displayMembers, setDisplayMembers] = useState(teamMembers);
-  // edit state?
   const [editState, setEditState] = useState(false);
   // for filtering
   const [schemeFilter, setSchemeFilter] = useState("All");
@@ -88,6 +87,10 @@ export default function MyTeam({ teamMembers, allSchemes }) {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  function handleNav(id) {
+    router.push(`/${id}/profile`, undefined, { shallow: true });
   }
 
   return (
@@ -151,6 +154,7 @@ export default function MyTeam({ teamMembers, allSchemes }) {
               >
                 <td
                   className={`${tableCellStyle} hover:underline hover:underline-offset-2`}
+                  onClick={() => handleNav(i.uuid)}
                 >
                   {i.name}
                 </td>
