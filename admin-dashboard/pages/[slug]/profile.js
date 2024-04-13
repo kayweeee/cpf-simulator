@@ -64,13 +64,10 @@ function Profile() {
     }
 
     if (userProfile != "") {
-      console.log(userProfile);
       getAttempts();
       getSubCat();
     }
   }, [userProfile]);
-
-  console.log(subCat);
 
   const convertToCSV = (attempts) => {
     const headers = [
@@ -133,31 +130,39 @@ function Profile() {
           <div className="bg-light-gray rounded-lg w-1/3 mt-4 mr-4 py-5">
             <h3 className="pl-5 font-bold">Scheme Mastery</h3>
             <div className="rounded-lg p-5 w-full h-full flex flex-col justify-center items-center gap-5">
-              {subCat == ""
-                ? null
-                : subCat.map((cat, idx) => (
-                    <ProgressBar
-                      key={idx}
-                      attemptedNum={cat.num_attempted_questions}
-                      qnNum={cat.num_questions}
-                      schemeName={cat.scheme_name}
-                    />
-                  ))}
+              {subCat == "" ? (
+                <div className="pt-2">No schemes assigned</div>
+              ) : (
+                subCat.map((cat, idx) => (
+                  <ProgressBar
+                    key={idx}
+                    attemptedNum={cat.num_attempted_questions}
+                    qnNum={cat.num_questions}
+                    schemeName={cat.scheme_name}
+                  />
+                ))
+              )}
             </div>
           </div>
           <div className="bg-light-gray rounded-lg w-2/3 mt-4 relative">
             <h3 className="pl-5 pt-5 font-bold">Attempts</h3>
-            <div className="rounded-lg py-4 px-4 h-full flex items-center relative">
-              <CustomTable rows={attempts} />
-              <button
-                type="button"
-                className="absolute -top-7 right-4 bg-dark-green hover:bg-darker-green text-white py-1 px-3 rounded flex items-center"
-                onClick={handleDownload}
-              >
-                <Download />
-                Download All
-              </button>
-            </div>
+            {attempts == [] ? (
+              <div className="rounded-lg py-4 px-4 h-full flex items-center relative">
+                <CustomTable rows={attempts} user_id={userProfile.uuid} />
+                <button
+                  type="button"
+                  className="absolute -top-7 right-4 bg-dark-green hover:bg-darker-green text-white py-1 px-3 rounded flex items-center"
+                  onClick={handleDownload}
+                >
+                  <Download />
+                  Download All
+                </button>
+              </div>
+            ) : (
+              <div className="flex justify-center items-center py-8">
+                No attempts
+              </div>
+            )}
           </div>
         </div>
       </div>
