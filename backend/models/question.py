@@ -1,6 +1,7 @@
-from sqlalchemy import Integer, Column, ForeignKey, String
+from sqlalchemy import Column, ForeignKey, String, DateTime
 from sqlalchemy.orm import Mapped, relationship
 from config import Base
+from sqlalchemy.sql import func
 import uuid
 
 def generate_uuid():
@@ -11,6 +12,7 @@ class QuestionModel(Base):
     question_id: Mapped[str] = Column(String(255), primary_key=True, default=generate_uuid)
     question_difficulty: Mapped[str] = Column(String(50), nullable=False )
     question_details: Mapped[str] = Column(String(3000), nullable=False )
+    created: Mapped[DateTime] = Column(DateTime, default=func.now())
     ideal: Mapped[str] = Column(String(3000), nullable=False)
     title: Mapped[str] = Column(String(255), nullable=False)
     scheme_name: Mapped[str] = Column(String(255), ForeignKey("scheme.scheme_name"), nullable=False)
