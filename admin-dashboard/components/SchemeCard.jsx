@@ -3,12 +3,14 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 // images
 import caseimg from "../public/case_scenario.png";
+import { TiDelete } from "react-icons/ti";
 
 export default function SchemeCard({
   scheme_name,
   scheme_img,
   questions,
   scheme_button,
+  editState,
 }) {
   const router = useRouter();
 
@@ -17,9 +19,17 @@ export default function SchemeCard({
     router.push(`/${pagename}/exercises`, undefined, { shallow: true });
   }
 
+  const handleDelete = (scheme_name) => {
+    console.log("deleted", scheme_name);
+  };
+
   return (
-    <div className="flex flex-col p-4 border-4 rounded-xl max-w-[350px]">
-      <img src={scheme_img} alt="scheme image" className="rounded-xl" />
+    <div className="flex flex-col p-4 border-4 rounded-xl max-w-[350px] relative">
+      <img
+        src={scheme_img}
+        alt="scheme image"
+        className="rounded-xl object-cover h-48 w-48"
+      />
       <div className="font-bold pt-2 pb-4">{scheme_name}</div>
       <div className="flex flex-row gap-2">
         <Image src={caseimg} alt="case icon" width="auto" height="auto" />
@@ -34,6 +44,14 @@ export default function SchemeCard({
             View Questions
           </button>
         </div>
+      ) : null}
+      {editState ? (
+        <button
+          className="absolute text-red-600 p-1 -top-6 -right-6"
+          onClick={() => handleDelete(scheme_name)}
+        >
+          <TiDelete size={40} />
+        </button>
       ) : null}
     </div>
   );

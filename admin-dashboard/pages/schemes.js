@@ -7,6 +7,8 @@ import SchemeCard from "../components/SchemeCard";
 
 function Schemes() {
   const [schemes, setSchemes] = useState([]);
+  const [editState, setEditState] = useState(false);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -31,17 +33,34 @@ function Schemes() {
         <div className="w-screen h-auto flex flex-row justify-between items-center px-20 pt-10 pb-10 text-black">
           <div className="font-bold text-3xl">Schemes</div>
           {/* Add Scheme Button */}
-          <div className="flex justify-end">
-            <button
-              className="bg-dark-green hover:bg-dark-green-700 text-white py-2 px-4"
-              onClick={() => router.push("/addscheme")}
-            >
-              Add Scheme
-            </button>
-          </div>
+          {editState ? (
+            <div className="flex justify-end gap-3">
+              <button
+                className="bg-dark-green hover:bg-darker-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
+                onClick={() => router.push("/addscheme")}
+              >
+                Add Scheme
+              </button>
+              <button
+                className="bg-dark-green hover:bg-darker-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
+                onClick={() => setEditState(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <div className="flex justify-end gap-3">
+              <button
+                className="bg-dark-green hover:bg-darker-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
+                onClick={() => setEditState(true)}
+              >
+                Edit
+              </button>{" "}
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-y-5 min-h-screen">
-          <div className="flex flex-row flex-wrap px-20 justify-around gap-y-7 mb-8">
+          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7 mb-8">
             {schemes.map((i) => (
               <SchemeCard
                 key={i.scheme_name}
@@ -49,6 +68,7 @@ function Schemes() {
                 scheme_img={i.scheme_admin_img_path}
                 questions={i.questions.length}
                 scheme_button={true}
+                editState={editState}
               />
             ))}
           </div>
