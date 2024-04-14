@@ -14,7 +14,6 @@ function ReviewPage({ user }) {
   const { review, submit, profile, scheme_name } = router.query;
   const [attempt, setAttempt] = useState([]);
   const loginDetails = user;
-  const schemeName = window.localStorage.getItem("schemeName");
 
   useEffect(() => {
     async function getAttempt() {
@@ -78,7 +77,7 @@ function ReviewPage({ user }) {
     const row = [
       loginDetails.name,
       loginDetails.email,
-      schemeName,
+      `"${attempt.scheme_name}"`,
       `"${attempt.date}"`,
       `"${attempt.title}"`,
       `"${attempt.question_details}"`,
@@ -103,7 +102,7 @@ function ReviewPage({ user }) {
     const csvBlob = new Blob([csvContent], { type: "text/csv" });
     saveAs(
       csvBlob,
-      `${loginDetails.name}_${schemeName} scheme_${attempt.title}_transcript.csv`
+      `${loginDetails.name}_${attempt.scheme_name} scheme_${attempt.title}_transcript.csv`
     );
   };
 
