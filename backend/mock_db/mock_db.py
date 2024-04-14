@@ -9,10 +9,10 @@ URL = "http://127.0.0.1:8000"
 user_ids = []
 # add user
 users = [
-  {"email": "trainee1@email.com","access_rights": "Trainee","name": "trainee1"},
-  {"email": "trainee2@email.com","access_rights": "Trainee","name": "trainee2"},
-  {"email": "admin1@email.com","access_rights": "Admin","name": "admin1"},
-  {"email": "trainee4@email.com","access_rights": "Trainee","name": "trainee3"},
+  {"email": "trainee1@email.com","access_rights": "Trainee","name": "Jane Doe"},
+  {"email": "trainee2@email.com","access_rights": "Trainee","name": "John Ray"},
+  {"email": "admin1@email.com","access_rights": "Admin","name": "Sally Tan"},
+  {"email": "trainee4@email.com","access_rights": "Trainee","name": "Brandon Tay"},
 ]
 
 for user in users:
@@ -115,7 +115,10 @@ for user_id in user_ids:
   users_to_be_added = [{
     "user_id": user_ids[0],
     "scheme_name": "Retirement"
-  }, 
+  }, {
+    "user_id": user_ids[0],
+    "scheme_name": "Healthcare"
+  },
     {                 
     "user_id": user_ids[1],
     "scheme_name": "Retirement"
