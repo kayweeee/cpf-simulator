@@ -46,7 +46,7 @@ function Question({ user }) {
           scheme_name: scheme_name,
         },
       },
-      undefined,
+      `/${review_id}/review`,
       {
         shallow: true,
       }

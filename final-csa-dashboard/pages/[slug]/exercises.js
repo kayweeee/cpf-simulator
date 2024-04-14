@@ -33,19 +33,32 @@ function Exercises() {
   }, [router.isReady]);
 
   function handleQuestionNav(question_id) {
-    router.push({
-      pathname: `/${question_id}/question`,
-      query: {scheme_name: name}
-      }, undefined, {
-      shallow: true,
-    });
+    router.push(
+      {
+        pathname: `/${question_id}/question`,
+        query: {
+          scheme_name: name
+        },
+      }, 
+      `/${question_id}/question`, 
+      { 
+        shallow: true,
+      }
+    );
   }
 
   function handleReviewNav(review_id) {
-    router.push({
+    router.push(
+      {
       pathname: `/${review_id}/review`,
-      query: { review: true, submit: false, profile: false }}, 
-      undefined, {
+      query: { 
+        review: true, 
+        submit: false, 
+        profile: false 
+      }
+    }, 
+    `/${review_id}/review`, 
+    {
       shallow: true,
     });
   }
