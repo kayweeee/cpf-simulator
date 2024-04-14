@@ -58,7 +58,7 @@ export default function Home() {
 
       {/* Feature Highlights */}
       <div
-        className="py-10 flex flex-col gap-20 bg-scroll bg-center bg-no-repeat bg-contain"
+        className="py-10 flex flex-col gap-16 bg-scroll bg-center bg-no-repeat bg-contain"
         style={{
           backgroundImage: `url('/backgroundRectangle.png')`,
         }}

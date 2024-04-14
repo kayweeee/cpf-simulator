@@ -2,12 +2,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 // components
-import QuestionBar from "../../components/QuestionBar";
 import isAuth from "../../components/isAuth";
+import BackBar from "../../components/BackBar";
 
 function Question() {
   const router = useRouter();
   const [question, setQuestion] = useState([]);
+
+  console.log(question.title, "here");
 
   useEffect(() => {
     async function getData() {
@@ -20,8 +22,7 @@ function Question() {
             throw new Error("Failed to fetch data");
           } else {
             const data = await res.json();
-            setQuestion(data[0]);
-            console.log(data);
+            setQuestion(data);
           }
         } catch (e) {
           console.log(e);
@@ -34,7 +35,7 @@ function Question() {
   return (
     <>
       <div className="bg-light-green p-4">
-        <QuestionBar review={false} submit={false} profile={false} />
+        <BackBar review={false} submit={false} profile={false} />
         <div className="bg-light-gray rounded-md p-6 m-5 ">
           <div className="border-4 border-solid border-dark-green rounded-lg p-8 h-max-content flex items-start justify-center text-black mt-30 flex-col ml-20 mr-20 mb-5 gap-4">
             <div className="font-bold text-2xl">{question.title}</div>

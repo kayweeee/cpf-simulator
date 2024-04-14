@@ -158,8 +158,8 @@ export default function AddQuestions() {
           </div>
         </ButtonGroup>
 
-        <div className="flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2 w-full">
-          <span className="flex items-start">Question: </span>
+        <div className="flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2 w-full justify-center">
+          <span className="flex items-start w-18">Question: </span>
           <textarea
             required={true}
             id="ideal-question"
@@ -173,9 +173,9 @@ export default function AddQuestions() {
           ></textarea>
         </div>
 
-        <div className="flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2 w-full">
-          <span className="flex items-start text-wrap ml-2">
-            Ideal Answer:{" "}
+        <div className="flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2 w-full justify-center">
+          <span className="flex items-start text-wrap ml-2 w-20">
+            Ideal Answer:
           </span>
 
           <textarea
