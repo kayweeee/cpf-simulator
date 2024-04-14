@@ -6,20 +6,23 @@ import pandas as pd
 
 URL = "http://127.0.0.1:8000"
 
+user_ids = []
 # add user
 users = [
-    {"uuid": "1", "email": "trainee1@email.com","access_rights": "Trainee","name": "Jane Doe"},
-    {"uuid": "2", "email": "trainee2@email.com","access_rights": "Trainee","name": "John Ray"},
-    {"uuid": "3", "email": "admin1@email.com","access_rights": "Admin","name": "Sally Tan"},
-    {"uuid": "4", "email": "trainee4@email.com","access_rights": "Trainee","name": "trainee3"},
+  {"email": "trainee1@email.com","access_rights": "Trainee","name": "trainee1"},
+  {"email": "trainee2@email.com","access_rights": "Trainee","name": "trainee2"},
+  {"email": "admin1@email.com","access_rights": "Admin","name": "admin1"},
+  {"email": "trainee4@email.com","access_rights": "Trainee","name": "trainee3"},
 ]
 
 for user in users:
-    response = requests.post(
-        f"{URL}/user",
-        json=user
-    )
-    print(response)
+  response = requests.post(
+      f"{URL}/user",
+      json=user
+  )
+  print(response.text[1:-1])
+  user_ids.append(response.text[1:-1])
+print(user_ids)
 
 # add schemes
 # Get the absolute path to the directory containing the script
@@ -29,6 +32,7 @@ directory = os.path.dirname(os.path.abspath(__file__))
 retirement_file_path = os.path.join(directory, "retirement.png")
 housing_file_path = os.path.join(directory, "housing.png")
 healthcare_file_path = os.path.join(directory, "healthcare.png")
+
 schemes = [
     {"scheme_name": "Retirement", "file": open(retirement_file_path, 'rb')},
     {"scheme_name": "Housing", "file": open(housing_file_path, 'rb')},
@@ -107,20 +111,21 @@ print(question_ids)
 
 
 # add user to schemes
-users_to_be_added = [{
-  "user_id": "1",
-  "scheme_name": "Retirement"
-}, 
-  {                 
-  "user_id": "2",
-  "scheme_name": "Retirement"
-},{                 
-  "user_id": "1",
-  "scheme_name": "Housing"
-},{
-  "user_id": "3",
-  "scheme_name": "Healthcare"
-}]
+for user_id in user_ids:
+  users_to_be_added = [{
+    "user_id": user_ids[0],
+    "scheme_name": "Retirement"
+  }, 
+    {                 
+    "user_id": user_ids[1],
+    "scheme_name": "Retirement"
+  },{                 
+    "user_id": user_ids[2],
+    "scheme_name": "Housing"
+  },{
+    "user_id": user_ids[3],
+    "scheme_name": "Retirement"
+  }]
 
 for user in users_to_be_added:
     response = requests.post(
@@ -131,34 +136,35 @@ for user in users_to_be_added:
 
 # add attempts
 # User 1: 2 same questions, and 2 questions within retirement scheme
-attempts = [
-    {
-  "user_id": "1",
-  "answer": "The answer to your question can be found on the FAQ websites",
-  'question_id': question_ids[6]
-},{"user_id": "1",
-  "answer": "The Full Retirement Sum (FRS) applicable to your father depends on the year he turned 70.You can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the grant sums applicable to me?",
-  'question_id': question_ids[6]
-},{"user_id": "1",
-  "answer": "We note that you have updated your bank account recently. Your monthly payout will be credited to your DBS bank account ending with 4167 from March 2024 onwards.",
-  'question_id': question_ids[7]
-},{
-  "user_id": "2",
-  "answer": "The answer to your question can be found on the FAQ websites",
-  'question_id': question_ids[6]
-  }, 
-{"user_id": "2",
-  "answer": "You will not lose out on the interest when your employer pays late.",
-  'question_id': question_ids[12]
-  },{"user_id": "2",
-  "answer": "The interest will be credited to you when CPF Board recovers the CPF arrears from your employer.",
-  'question_id': question_ids[12]
+for user_id in user_ids:
+  attempts = [
+      {
+    "user_id": user_ids[0],
+    "answer": "The answer to your question can be found on the FAQ websites",
+    'question_id': question_ids[6]
+  },{"user_id":user_ids[0],
+    "answer": "The Full Retirement Sum (FRS) applicable to your father depends on the year he turned 70.You can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the grant sums applicable to me?",
+    'question_id': question_ids[6]
+  },{"user_id": user_ids[0],
+    "answer": "We note that you have updated your bank account recently. Your monthly payout will be credited to your DBS bank account ending with 4167 from March 2024 onwards.",
+    'question_id': question_ids[7]
   },{
-  "user_id": "3",
-  "answer": "The answer to your question can be found on the FAQ websites",
-  'question_id': question_ids[6],
-  
-}]
+    "user_id": user_ids[1],
+    "answer": "The answer to your question can be found on the FAQ websites",
+    'question_id': question_ids[6]
+    }, 
+  {"user_id":user_ids[1],
+    "answer": "You will not lose out on the interest when your employer pays late.",
+    'question_id': question_ids[12]
+    },{"user_id":user_ids[1],
+    "answer": "The interest will be credited to you when CPF Board recovers the CPF arrears from your employer.",
+    'question_id': question_ids[12]
+    },{
+    "user_id": user_ids[2],
+    "answer": "The answer to your question can be found on the FAQ websites",
+    'question_id': question_ids[6],
+    
+  }]
 
 for attempt in attempts:
     response = requests.post(

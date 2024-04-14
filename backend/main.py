@@ -104,7 +104,7 @@ async def create_user(user: UserBase, db: Session = Depends(create_session)):
     db_user = UserModel(**user.dict())
     db.add(db_user)
     db.commit()
-    return responses.JSONResponse(content = {'message' : 'User added'}, status_code=201)
+    return db_user.uuid
 
 @app.get("/user/{user_id}/schemes", status_code=status.HTTP_201_CREATED)
 async def get_all_scheme_no_by_user_id(user_id:str, db: Session = Depends(create_session)):
