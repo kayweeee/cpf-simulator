@@ -11,7 +11,10 @@ import Download from "@mui/icons-material/SimCardDownloadOutlined";
 
 function ReviewPage({ user }) {
   const router = useRouter();
-  const { review, submit, profile, scheme_name } = router.query;
+  const review = router.query.review === 'true';
+  const submit = router.query.submit === 'true';
+  const profile = router.query.profile === 'true';
+  const scheme_name = router.query.scheme_name || null;
   const [attempt, setAttempt] = useState([]);
   const loginDetails = user;
 
