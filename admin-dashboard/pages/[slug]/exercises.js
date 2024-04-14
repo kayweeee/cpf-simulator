@@ -35,9 +35,11 @@ function Exercises() {
     router.push(
       {
         pathname: `/${question_id}/question`,
-        query: { scheme_name: name },
+        query: { 
+          scheme_name: name 
+        },
       },
-      undefined,
+      `/${question_id}/question`,
       {
         shallow: true,
       }

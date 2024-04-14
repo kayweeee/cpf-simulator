@@ -8,7 +8,7 @@ import FirstPageRoundedIcon from "@mui/icons-material/FirstPageRounded";
 import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export default function TableCustomized({ rows }) {
   const [page, setPage] = React.useState(0);
@@ -33,9 +33,13 @@ export default function TableCustomized({ rows }) {
     router.push(
       {
         pathname: `/${review_id}/review`,
-        query: { review: true, submit: false, profile: true },
+        query: { 
+          review: true, 
+          submit: false, 
+          profile: true,
+        },
       },
-      { pathname: `/${review_id}/review` },
+      `/${review_id}/review`,
       {
         shallow: true,
       }

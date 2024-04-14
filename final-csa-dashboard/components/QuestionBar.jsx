@@ -6,9 +6,18 @@ export default function QuestionBar({ currentidx, review, submit, profile, schem
   const questiondata = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const handleBack = () => {
     if (submit && scheme_name!=null) {
-      router.push({
+      router.push(
+        {
         pathname: `/${scheme_name.toLowerCase()}/exercises`,
-        query: { submit:true }});
+        query: { 
+          submit: true 
+        },
+      },
+      `/${scheme_name.toLowerCase()}/exercises`,
+      {
+        shallow: true,
+      }
+    );
     } else {
       router.back();
     }
