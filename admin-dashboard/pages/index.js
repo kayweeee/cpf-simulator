@@ -54,7 +54,6 @@ export default function Login({ setUser }) {
             <h1 className="flex pb-5 sm:text-2xl md:text-3xl font-bold">
               Admin Log In
             </h1>
-            <p className="flex">Enter your Email</p>
             <div className="icon-input pt-2">
               <input
                 type="text"
