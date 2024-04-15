@@ -25,7 +25,7 @@ export default function Header({ user, setUser }) {
       <div className="flex flex-row items-center">
         <Image height={60} src={cpfImage} alt="CPF logo" />
         <div className=" text-x">
-          Central Provident Fund Board 
+          CPF Board
           <br />
         </div>
       </div>

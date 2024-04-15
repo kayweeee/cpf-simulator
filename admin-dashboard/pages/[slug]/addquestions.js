@@ -18,7 +18,7 @@ export default function AddQuestions() {
   const [title, setTitle] = useState("");
   const [question_details, setDetails] = useState("");
   const [ideal, setIdeal] = useState("");
-  const difficulty = ["Easy", "Medium", "Difficult"];
+  const difficulty = ["Easy", "Medium", "Hard"];
   const [selectedDifficulty, setSelectedDifficulty] = useState(0);
   const [scheme, setScheme] = useState("");
 
@@ -110,7 +110,9 @@ export default function AddQuestions() {
         </span>
 
         <div className="flex flex-row md:flex-nowrap items-center gap-2 ">
-          <span className="flex">Question Title: </span>
+          <span className="flex">
+            <p className=" text-red-500">*</p>Question Title:{" "}
+          </span>
           <Input
             isRequired
             placeholder="Enter your title"
@@ -124,7 +126,9 @@ export default function AddQuestions() {
           variant="flat"
           className="flex flex-row md:flex-nowrap items-center gap-2 pl-8"
         >
-          <span className="flex w-1/4">Difficulty: </span>
+          <span className="flex w-1/4">
+            <p className=" text-red-500">*</p>Difficulty:{" "}
+          </span>
           <div className="flex border border-sage-green p-1 w-48 justify-between ">
             <span className="flex w-1/4">{difficulty[selectedDifficulty]}</span>
             <Dropdown>
@@ -159,7 +163,9 @@ export default function AddQuestions() {
         </ButtonGroup>
 
         <div className="flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2 w-full justify-center">
-          <span className="flex items-start w-18">Question: </span>
+          <span className="flex items-start w-18">
+            <p className=" text-red-500">*</p>Question:{" "}
+          </span>
           <textarea
             required={true}
             id="ideal-question"
@@ -175,7 +181,7 @@ export default function AddQuestions() {
 
         <div className="flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2 w-full justify-center">
           <span className="flex items-start text-wrap ml-2 w-20">
-            Ideal Answer:
+            <p className=" text-red-500">*</p>Ideal Answer:
           </span>
 
           <textarea

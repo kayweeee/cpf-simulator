@@ -67,7 +67,9 @@ export default function AddScheme() {
           Add Scheme
         </span>
         <div className="flex flex-row justify-center items-center">
-          <span className="flex w-1/2">Scheme Name</span>
+          <span className="flex w-1/2">
+            <p className=" text-red-500">*</p>Scheme Name
+          </span>
           <Input
             isRequired
             placeholder="Enter scheme name"
@@ -78,7 +80,9 @@ export default function AddScheme() {
         </div>
         {/* Upload image */}
         <div className="flex flex-row justify-center items-center">
-          <span className="flex w-1/2">Upload Image</span>
+          <span className="flex w-1/2">
+            <p className=" text-red-500">*</p>Upload Image
+          </span>
           <input
             type="file"
             ref={hiddenFileInput}
