@@ -46,6 +46,9 @@ export default function Login({ setUser }) {
             onSubmit={onSubmit}
             className="flex justify-start flex-col w-full"
           >
+            <h1 className="flex pb-5 sm:text-2xl md:text-3xl font-bold">
+              Trainee Module
+            </h1>
 
             <div className="icon-input pt-2">
               <input
