@@ -132,7 +132,7 @@ function Profile({ user }) {
             </div>
           </div>
           <div className="bg-light-gray rounded-lg w-2/3 mt-4 relative">
-            <h3 className="pl-5 pt-5 font-bold">Attempts</h3>
+            <h3 className="pl-5 pt-5 font-bold">Practice Details</h3>
             {attempts != "" ? (
               <div className="rounded-lg py-4 px-4 h-full flex items-center relative">
                 <CustomTable rows={attempts} />

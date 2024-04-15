@@ -78,14 +78,22 @@ function Question({ user }) {
   return (
     <>
       <div className="bg-light-green p-4">
-        <QuestionBar review={false} submit={false} profile={false} />
+        <QuestionBar
+          review={false}
+          submit={false}
+          profile={false}
+          scheme_name={question.scheme_name}
+        />
         <div className="bg-light-gray rounded-md p-6 m-5 ">
+          <div className="ml-20 mb-3 font-bold text-xl">Practice Question</div>
+
           <div className="border-4 border-solid border-dark-green rounded-lg p-10 h-max-content flex items-start justify-center text-black mt-30 flex-col ml-20 mr-20 mb-5">
             <div className="w-auto h-max-content flex justify-between items-center font-bold mb-5">
               {question.title}
             </div>
             <p id="question-content">{question.question_details}</p>
           </div>
+          <div className="ml-20 mb-3 font-bold text-xl">Officer's Answer</div>
           <div
             className="border-4 border-solid border-dark-green rounded-lg p-5 mt-30 flex-col ml-20 mr-20 overflow-auto"
             style={{ height: 300 }}
