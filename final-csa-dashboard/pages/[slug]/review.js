@@ -132,7 +132,7 @@ function ReviewPage({ user }) {
             <p>{attempt.question_details}</p>
           </div>
           <div className="pl-4 pr-4 mb-4">
-            <h3 className="font-bold">Officer's Answer:</h3>
+            <h3 className="font-bold">Your Answer:</h3>
             <p>{attempt.answer}</p>
           </div>
           <h3 className="px-4 py-2 w-auto h-max-content flex justify-between items-center font-bold">

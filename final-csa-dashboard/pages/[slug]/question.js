@@ -93,7 +93,7 @@ function Question({ user }) {
             </div>
             <p id="question-content">{question.question_details}</p>
           </div>
-          <div className="ml-20 mb-3 font-bold text-xl">Officer's Answer</div>
+          <div className="ml-20 mb-3 font-bold text-xl">Your Answer</div>
           <div
             className="border-4 border-solid border-dark-green rounded-lg p-5 mt-30 flex-col ml-20 mr-20 overflow-auto"
             style={{ height: 300 }}
