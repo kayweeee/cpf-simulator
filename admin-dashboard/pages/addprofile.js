@@ -69,7 +69,9 @@ export default function AddProfile() {
         </span>
 
         <div className="flex flex-row justify-center items-center">
-          <span className="flex w-1/4">Name: </span>
+          <span className="flex w-1/4">
+            <p className=" text-red-500">*</p>Name:
+          </span>
           <Input
             isRequired
             placeholder="Enter your Name"
@@ -80,11 +82,13 @@ export default function AddProfile() {
         </div>
 
         <div className="flex flex-row justify-center items-center">
-          <span className="flex w-1/4">Email:</span>
+          <span className="flex w-1/4">
+            <p className=" text-red-500">*</p>Email:
+          </span>
           <Input
             isRequired
             type="email"
-            placeholder="Enter your email"
+            placeholder="Enter your Email"
             defaultValue=""
             onValueChange={(value) => setEmail(value)}
             className="flex border border-sage-green outline-2 py-1 w-48"
@@ -95,7 +99,9 @@ export default function AddProfile() {
           variant="flat"
           className="flex flex-row md:flex-nowrap flex-wrap items-center"
         >
-          <span className="flex w-1/4">Access: </span>
+          <span className="flex w-1/4">
+            <p className=" text-red-500">*</p>Access:{" "}
+          </span>
           <div className="flex border border-sage-green p-1 w-48 justify-between ">
             <span className="flex w-1/4">
               {accessRights[selectedAccessIndex]}
