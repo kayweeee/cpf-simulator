@@ -4,7 +4,7 @@ export default function Footer() {
 
   return (
     <div className="bg-dark-green text-white w-screen h-1/5 text-xs flex flex-row justify-between px-16 py-5">
-      <div>CPF Board Simulator</div>
+      <div>CCU’s Training Simulator</div>
       <div className="flex flex-row w-1/3 justify-between">
         <div>
           <div className="font-bold pb-5">Schemes</div>

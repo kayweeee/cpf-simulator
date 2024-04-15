@@ -31,7 +31,7 @@ function Schemes() {
       <div>
         {/* Header */}
         <div className="w-screen h-auto flex flex-row justify-between items-center px-20 pt-10 pb-10 text-black">
-          <div className="font-bold text-3xl">Schemes</div>
+          <div className="font-bold text-3xl">Schemes Overview</div>
           {/* Add Scheme Button */}
           {editState ? (
             <div className="flex justify-end gap-3">
