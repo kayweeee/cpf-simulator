@@ -34,10 +34,7 @@ export default function Home() {
             Start training with CPF simulator
           </div>
           <div>
-            Welcome to CPF Simulator! Improve your skills by engaging with
-            real-life scenarios and boost your ability to independently respond
-            to various enquiries across different schemes after training with
-            us!
+          We are excited to introduce a new training simulator powered by GenAI, designed to enhance the proficiency of CCU officers in handling written enquiries.
           </div>
           <div>
             <button className="bg-dark-green hover:bg-darker-green text-white py-3 px-8 rounded-lg">
@@ -66,12 +63,11 @@ export default function Home() {
         <div className="flex flex-row justify-center items-center gap-20">
           <div className="w-2/5 flex flex-col gap-8 border-4 px-8 py-12 text-center drop-shadow-m rounded-lg">
             <div className="text-3xl font-bold text-sage-green">
-              Practice with Simulated Exercises
+              Practice and refine your skills
             </div>
             <div>
-              The simulated exercises mirror real-life scenarios you might
-              encounter, varying in difficulty levels from easy to medium to
-              hard.
+            The practice cases within the simulator are adapted from real enquiries received by the Customer Correspondence Unit,
+            ensuring you are exposed to authentic scenarios.
             </div>
           </div>
 
@@ -83,12 +79,12 @@ export default function Home() {
             />
             <div>
               <div className="text-3xl font-bold pb-2">
-                Gain real-time feedback on your performance.
+                Gain valuable feedback on your performance
               </div>
               <div>
-                Upon submitting your answer, you will instantly receive a
-                personalized feedback from our machine learning model. This
-                feedback is tailored specifically to your response.
+              Through this immersive training experience,
+              you can identify areas of strength and opportunities for improvement,
+              ultimately enhancing your ability to provide effective and efficient responses to customer enquiries.
               </div>
             </div>
           </div>
@@ -111,7 +107,7 @@ export default function Home() {
           </div>
           <div className="flex justify-center">
             <button className="py-2 px-16 border-2 border-dark-green bg-dark-green rounded-lg hover:bg-darker-green text-white">
-              Log in to start now!
+              Log in to start!
             </button>
           </div>
         </div>

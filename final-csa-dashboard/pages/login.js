@@ -46,9 +46,6 @@ export default function Login({ setUser }) {
             onSubmit={onSubmit}
             className="flex justify-start flex-col w-full"
           >
-            <h1 className="flex pb-5 sm:text-2xl md:text-3xl font-bold">
-              Log In
-            </h1>
 
             <div className="icon-input pt-2">
               <input
@@ -57,7 +54,7 @@ export default function Login({ setUser }) {
                 name="email"
                 placeholder="Enter your Email"
                 onChange={({ target }) => setEmail(target.value)}
-                className="px-3 py-2 rounded-md border border-gray-300 sm:w-[300px]  placeholder:text-xs  md:placeholder:text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="px-3 py-2 rounded-md border border-gray-300 sm:w-[300px]  placeholder:text-xs placeholder-center  md:placeholder:text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
             <div className="text-red-600 text-sm">{notification}</div>
