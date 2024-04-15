@@ -37,11 +37,11 @@ function Exercises() {
       {
         pathname: `/${question_id}/question`,
         query: {
-          scheme_name: name
+          scheme_name: name,
         },
-      }, 
-      `/${question_id}/question`, 
-      { 
+      },
+      `/${question_id}/question`,
+      {
         shallow: true,
       }
     );
@@ -50,17 +50,18 @@ function Exercises() {
   function handleReviewNav(review_id) {
     router.push(
       {
-      pathname: `/${review_id}/review`,
-      query: { 
-        review: true, 
-        submit: false, 
-        profile: false 
+        pathname: `/${review_id}/review`,
+        query: {
+          review: true,
+          submit: false,
+          profile: false,
+        },
+      },
+      `/${review_id}/review`,
+      {
+        shallow: true,
       }
-    }, 
-    `/${review_id}/review`, 
-    {
-      shallow: true,
-    });
+    );
   }
 
   // Change table height according to image height
@@ -83,10 +84,15 @@ function Exercises() {
 
   return (
     <div className="text-base bg-light-green">
-      <button className="button-btm" onClick={(submit)=>{submit?router.push(`/schemes`):router.back()}}>
+      <button
+        className="button-btm"
+        onClick={(submit) => {
+          submit ? router.push(`/schemes`) : router.back();
+        }}
+      >
         <div className="hover:text-gray-600 flex flex-row pl-5 pt-5">
           <ChevronLeft style={{ verticalAlign: "middle" }} />
-          <span className="back-text">Back to Schemes</span>
+          <span className="back-text">Back to Schemes - Overview</span>
         </div>
       </button>
       <div className="w-screen flex items-center justify-center p-4">
@@ -151,7 +157,7 @@ function Exercises() {
                     className={`${tableCenterCellStyle} hover:underline hover:underline-offset-2 `}
                     onClick={() => handleReviewNav(question.attempt)}
                   >
-                    {question.attempt ? "View Here" : null}
+                    {question.attempt ? "Click to View" : null}
                   </td>
                 </tr>
               ))}

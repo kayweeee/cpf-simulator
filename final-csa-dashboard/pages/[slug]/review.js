@@ -11,9 +11,9 @@ import Download from "@mui/icons-material/SimCardDownloadOutlined";
 
 function ReviewPage({ user }) {
   const router = useRouter();
-  const review = router.query.review === 'true';
-  const submit = router.query.submit === 'true';
-  const profile = router.query.profile === 'true';
+  const review = router.query.review === "true";
+  const submit = router.query.submit === "true";
+  const profile = router.query.profile === "true";
   const scheme_name = router.query.scheme_name || null;
   const [attempt, setAttempt] = useState([]);
   const loginDetails = user;
@@ -121,18 +121,18 @@ function ReviewPage({ user }) {
         />
         <div className="bg-light-gray rounded-md px-6 pb-12 pt-6 m-5 ">
           <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
-            <div className="text-2xl">Feedback</div>
+            <div className="text-2xl">Feedback on your performance</div>
             <button type="button" className="button" onClick={handleDownload}>
               <Download fontSize="medium" />
               Download
             </button>
           </div>
           <div className="pl-4 pr-4 mb-4">
-            <h3 className="font-bold">Question:</h3>
+            <h3 className="font-bold">Practice Question:</h3>
             <p>{attempt.question_details}</p>
           </div>
           <div className="pl-4 pr-4 mb-4">
-            <h3 className="font-bold">Your Answer:</h3>
+            <h3 className="font-bold">Officer's Answer:</h3>
             <p>{attempt.answer}</p>
           </div>
           <h3 className="px-4 py-2 w-auto h-max-content flex justify-between items-center font-bold">
