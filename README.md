@@ -28,7 +28,7 @@ conda activate yourenvname
 
 ### Venv
 ```
-python3.9 -m venv "yourenvname " # or python=3.10
+python3.9 -m venv "yourenvname" # or python=3.10
 source yourenvname/bin/activate
 ```
 
