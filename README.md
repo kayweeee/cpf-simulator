@@ -11,7 +11,7 @@ Our project is divided into two main components: the admin dashboard and Custome
 
 Admin dashboard is located at /admin-dashboard for admin access only.
 
-CSA dashboard is located at /final-csa-dashboard for CSA to access.
+CSA dashboard is located at /final-csa-dashboard for CSA's access.
 
 The backend to facilitate database connectivity is located at /backend.
 
@@ -34,46 +34,46 @@ source yourenvname/bin/activate
 
 ### Database Setup
 ##### Setting up MySQL and MySQL Workbench
-**1. Download MySQL:**
-    Visit [MySQL Downloads](https://dev.mysql.com/downloads/installer/) 
-    Download the MySQL installer appropriate for your operating system.
-    Follow the installation instructions provided for your operating system.
+**1. Download MySQL:**          
+    Visit [MySQL Downloads](https://dev.mysql.com/downloads/installer/)         
+    Download the MySQL installer appropriate for your operating system.            
+    Follow the installation instructions provided for your operating system.            
 
-**2. Download MySQL Workbench:**
-    Visit [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) 
-    Download the MySQL Workbench installer.
-    Follow the installation instructions provided for your operating system.
+**2. Download MySQL Workbench:**                
+    Visit [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)             
+    Download the MySQL Workbench installer.                
+    Follow the installation instructions provided for your operating system.                
 
-**3. Start MySQL Server:**
-    Once MySQL is installed, start the local server. This typically involves starting the MySQL service.
-    Create a New Schema in MySQL Workbench:
-    Open MySQL Workbench.
-    Connect to your local MySQL server.
-    In the Navigator (left sidebar), under the "SCHEMAS" section, right-click and select "Create Schema".
-    Enter the name for your new schema and click "Apply" and then "Finish".
+**3. Start MySQL Server:**                
+    Once MySQL is installed, start the local server. This typically involves starting the MySQL service.                    
+    Create a New Schema in MySQL Workbench:            
+        - Open MySQL Workbench.                    
+        - Connect to your local MySQL server.        
+        - In the Navigator (left sidebar), under the "SCHEMAS" section, right-click and select "Create Schema".
+    Enter the name for your new schema and click "Apply" and then "Finish".            
 
 
 ### Configuring Backend ####
-**1. Edit Configuration File:**
-    Navigate to the /backend directory of your project.
-    Open the config.py file.
-    Locate the line in config.py that defines the DSN (Data Source Name) string.
-    Update the DSN string to match the following format:
+**1. Edit Configuration File:**                
+    Navigate to the /backend/config.py file.            
+    Locate the line in config.py that defines the DSN (Data Source Name) string.            
+    Update the DSN string to match the following format:                            
 
 ```
 dsn: str = "mysql+pymysql://root:{server_password}@localhost:{port}/{name_of_schema}"
 ```
-Replace the placeholders with appropriate values:
 
-{server_password}: Replace this with the password for your MySQL server.
+Replace the placeholders with appropriate values:            
 
-{port}: Replace this with the port on which your MySQL server is running (default is usually 3306).
+{server_password}: Replace this with the password for your MySQL server.            
 
-{name_of_schema}: Replace this with the name of the schema you created in MySQL Workbench.
+{port}: Replace this with the port on which your MySQL server is running (default is usually 3306).            
 
-**Save Changes:**
-Save the config.py file after making the necessary changes.
-With these steps completed, your backend configuration should be properly set up to connect to your MySQL database.
+{name_of_schema}: Replace this with the name of the schema you created in MySQL Workbench.            
+
+**Save Changes:**                
+Save the config.py file after making the necessary changes.            
+With these steps completed, your backend configuration should be properly set up to connect to your MySQL database.            
 
 ### Update your OpenAI key
 
