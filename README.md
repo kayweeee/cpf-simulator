@@ -35,22 +35,22 @@ source yourenvname/bin/activate
 ### Database Setup
 ##### Setting up MySQL and MySQL Workbench
 **1. Download MySQL:**          
-    Visit [MySQL Downloads](https://dev.mysql.com/downloads/installer/)         
-    Download the MySQL installer appropriate for your operating system.            
-    Follow the installation instructions provided for your operating system.            
+    • Visit [MySQL Downloads](https://dev.mysql.com/downloads/installer/)         
+    • Download the MySQL installer appropriate for your operating system.            
+    • Follow the installation instructions provided for your operating system.            
 
 **2. Download MySQL Workbench:**                
-    Visit [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)             
-    Download the MySQL Workbench installer.                
-    Follow the installation instructions provided for your operating system.                
+    • Visit [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)             
+    • Download the MySQL Workbench installer.                
+    • Follow the installation instructions provided for your operating system.                
 
 **3. Start MySQL Server:**                
     Once MySQL is installed, start the local server. This typically involves starting the MySQL service.                    
     Create a New Schema in MySQL Workbench:            
-        - Open MySQL Workbench.                    
-        - Connect to your local MySQL server.        
-        - In the Navigator (left sidebar), under the "SCHEMAS" section, right-click and select "Create Schema".
-    Enter the name for your new schema and click "Apply" and then "Finish".            
+        • Open MySQL Workbench.                    
+        • Connect to your local MySQL server.        
+        • In the Navigator (left sidebar), under the "SCHEMAS" section, right-click and select "Create Schema".        
+        • Enter the name for your new schema and click "Apply" and then "Finish".            
 
 
 ### Configuring Backend ####
