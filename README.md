@@ -7,7 +7,7 @@ Personalized interactions have always been a key component in the customer servi
 Thus, the CPF CCU (Customer Correspondence Unit), has tasked us with designing and creating a practice simulator application. The application should be able to give personalized feedback to users and efficiently point out key areas of improvement, thus streamlining the training process and allowing new recruits to reach a satisfactory level of customer service more quickly. We addressed this problem by using the Design Thinking process in an iterative process to produce an industry-standard application while still aligning closely with the needs of key stakeholders.
 
 ## Our Project
-OOur project is divided into two main components: the admin dashboard and Customer Service Associates (CSA) dashboard. We used Next.js and FastAPI for the frontend development, while MySQL serves as our local database.
+Our project is divided into two main components: the admin dashboard and Customer Service Associates (CSA) dashboard. We used Next.js and FastAPI for the frontend development, while MySQL serves as our local database.
 
 Admin dashboard is located at /admin-dashboard for admin access only.
 
