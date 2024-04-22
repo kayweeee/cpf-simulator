@@ -101,18 +101,21 @@ pip install -r requirements.txt
 uvicorn main:app
 ```
 
-### Run the Admin Dasboard
+### Run the Admin Dasboard        
+Install the required dependencies for the Admin Dashboard by navigating to the /admin-dashboard directory and running the command below. This only needs to be run the first time the dashboard is opened.
 ```
-# once you are done setting up the database, navigate to the /backend directory and install the required dependencies
-npm i
-# after all the dependencies are successfully installed, you can now run the admin dashboard
+npm install
+```
+Once dependencies are successfully installed, the Admin Dashboard can be run by using the command below.
+```
 npm run dev
 ```
-
 ### Run the CSA Dasboard
+Install the required dependencies for the CSA Dashboard by navigating to the /final-csa-dashboard directory and running the command below. This only needs to be run the first time the dashboard is opened.
 ```
-# likewise, navigate to the /final-csa-dashboard directory and install the required dependencies
-npm i
-# after all the dependencies are successfully installed, you can now run the CSA dashboard
+npm install
+```
+Once dependencies are successfully installed, the CSA Dashboard can be run by using the command below.
+```
 npm run dev
 ```
