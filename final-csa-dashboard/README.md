@@ -11,7 +11,7 @@ OOur project is divided into two main components: the admin dashboard and Custom
 
 Admin dashboard is located at /admin-dashboard for admin access only.
 
-CSA dashboard is located at /csa-dashboard for CSA to access.
+CSA dashboard is located at /final-csa-dashboard for CSA to access.
 
 The backend to facilitate database connectivity is located at /backend.
 
@@ -34,6 +34,11 @@ source yourenvname/bin/activate
 
 ### Database Setup
 Ensure you have [MySQL](https://dev.mysql.com/downloads/installer/) and [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) downloaded. You can click on the respective links to download them.
+
+Follow all the steps required and edit your login details accordingly at /backend/config.py
+```
+dsn: str = "mysql+pymysql://root:test1234!@localhost:3306/testing"
+```
 
 ### Dependency Installation
 Install Python dependencies:
@@ -59,7 +64,7 @@ npm run dev
 
 ### Run the CSA Dasboard
 ```
-# likewise, navigate to the /csa-dashboard directory and install the required dependencies
+# likewise, navigate to the /final-csa-dashboard directory and install the required dependencies
 npm i
 # after all the dependencies are successfully installed, you can now run the CSA dashboard
 npm run dev
