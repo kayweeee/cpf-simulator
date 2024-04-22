@@ -71,7 +71,7 @@ def process_response(res):
 def openAI_response(question, response, ideal):
     # Define model
     llm = ChatOpenAI(
-	temperature=1.5,
+	temperature=1,
 	openai_api_key="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",
 	model_name="gpt-3.5-turbo-0125"
     )
