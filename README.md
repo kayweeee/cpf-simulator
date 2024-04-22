@@ -76,9 +76,15 @@ Save the config.py file after making the necessary changes.
 With these steps completed, your backend configuration should be properly set up to connect to your MySQL database.
 
 ### Update your OpenAI key
-    Create your own OpenAI key. For more information, visit the website [here](https://www.maisieai.com/help/how-to-get-an-openai-api-key-for-chatgpt).
-    Navigate to the /backend/ML/ directory of your project.
-    Open the openAI.py file.
+
+Create your own OpenAI key. For more information, visit the website [here](https://www.maisieai.com/help/how-to-get-an-openai-api-key-for-chatgpt).
+
+Navigate to the /backend/ML/ directory of your project.
+
+Open the openAI.py file and edit line 75:
+```
+openai_api_key={insert open AI key here }
+```
 
 
 ### Dependency Installation
