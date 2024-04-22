@@ -33,12 +33,50 @@ source yourenvname/bin/activate
 ```
 
 ### Database Setup
-Ensure you have [MySQL](https://dev.mysql.com/downloads/installer/) and [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) downloaded. You can click on the respective links to download them.
+##### Setting up MySQL and MySQL Workbench
+**1. Download MySQL:**
+    Visit [MySQL Downloads](https://dev.mysql.com/downloads/installer/) 
+    Download the MySQL installer appropriate for your operating system.
+    Follow the installation instructions provided for your operating system.
 
-Follow all the steps required and edit your login details accordingly at /backend/config.py
+**2. Download MySQL Workbench:**
+    Visit [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) 
+    Download the MySQL Workbench installer.
+    Follow the installation instructions provided for your operating system.
+
+**3. Start MySQL Server:**
+    Once MySQL is installed, start the local server. This typically involves starting the MySQL service.
+    Create a New Schema in MySQL Workbench:
+    Open MySQL Workbench.
+    Connect to your local MySQL server.
+    In the Navigator (left sidebar), under the "SCHEMAS" section, right-click and select "Create Schema".
+    Enter the name for your new schema and click "Apply" and then "Finish".
+
+
+### Configuring Backend ####
+**1. Edit Configuration File:**
+    Navigate to the /backend directory of your project.
+    Open the config.py file.
+    Locate the line in config.py that defines the DSN (Data Source Name) string.
+    Update the DSN string to match the following format:
+
 ```
-dsn: str = "mysql+pymysql://root:test1234!@localhost:3306/testing"
+dsn: str = "mysql+pymysql://root:{server_password}@localhost:{port}/{name_of_schema}"
 ```
+Replace the placeholders with appropriate values:
+{server_password}: Replace this with the password for your MySQL server.
+{port}: Replace this with the port on which your MySQL server is running (default is usually 3306).
+{name_of_schema}: Replace this with the name of the schema you created in MySQL Workbench.
+
+**Save Changes:**
+Save the config.py file after making the necessary changes.
+With these steps completed, your backend configuration should be properly set up to connect to your MySQL database.
+
+### Update your OpenAI key
+    Create your own OpenAI key. For more information, visit the website [here](https://www.maisieai.com/help/how-to-get-an-openai-api-key-for-chatgpt).
+    Navigate to the /backend/ML/ directory of your project.
+    Open the openAI.py file.
+
 
 ### Dependency Installation
 Install Python dependencies:
