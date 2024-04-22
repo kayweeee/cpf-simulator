@@ -64,8 +64,11 @@ source yourenvname/bin/activate
 dsn: str = "mysql+pymysql://root:{server_password}@localhost:{port}/{name_of_schema}"
 ```
 Replace the placeholders with appropriate values:
+
 {server_password}: Replace this with the password for your MySQL server.
+
 {port}: Replace this with the port on which your MySQL server is running (default is usually 3306).
+
 {name_of_schema}: Replace this with the name of the schema you created in MySQL Workbench.
 
 **Save Changes:**
