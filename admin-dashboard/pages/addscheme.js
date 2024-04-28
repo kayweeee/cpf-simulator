@@ -2,8 +2,9 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Input, Button } from "@nextui-org/react";
 import { IoIosArrowBack } from "react-icons/io";
+import isAuth from "../components/isAuth";
 
-export default function AddScheme() {
+function AddScheme() {
   const router = useRouter();
   const [scheme_name, setSchemeName] = useState("");
   const [file, setFile] = useState("");
@@ -112,3 +113,5 @@ export default function AddScheme() {
     </div>
   );
 }
+
+export default isAuth(AddScheme);

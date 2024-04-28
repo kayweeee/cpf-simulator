@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 // components
 import SchemeCard from "../components/SchemeCard";
-// import isAuth from "../components/isAuth";
+import isAuth from "../components/isAuth";
 
 function Schemes() {
   const [schemes, setSchemes] = useState([]);
@@ -80,4 +80,4 @@ function Schemes() {
   );
 }
 
-export default Schemes;
+export default isAuth(Schemes);

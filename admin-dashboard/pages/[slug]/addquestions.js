@@ -11,8 +11,9 @@ import {
 } from "@nextui-org/react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { IoIosArrowBack } from "react-icons/io";
+import isAuth from "../components/isAuth";
 
-export default function AddQuestions() {
+function AddQuestions() {
   const router = useRouter();
 
   const [title, setTitle] = useState("");
@@ -215,3 +216,5 @@ export default function AddQuestions() {
     </div>
   );
 }
+
+export default isAuth(AddQuestions);

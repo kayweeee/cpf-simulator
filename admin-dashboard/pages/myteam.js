@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import SchemeTags from "../components/SchemeTags";
 import SchemeFilter from "../components/SchemeFilter";
 import SearchBar from "../components/SearchBar";
+import isAuth from "../components/isAuth";
 // icons
 import { FaRegTrashCan } from "react-icons/fa6";
 
@@ -24,7 +25,7 @@ export const getServerSideProps = async () => {
   return { props: { teamMembers, allSchemes } };
 };
 
-export default function MyTeam({ teamMembers, allSchemes }) {
+function MyTeam({ teamMembers, allSchemes }) {
   const tableCellStyle = `text-start py-2 px-3 border`;
   const router = useRouter();
 
@@ -187,3 +188,5 @@ export default function MyTeam({ teamMembers, allSchemes }) {
     </div>
   );
 }
+
+export default isAuth(MyTeam);
