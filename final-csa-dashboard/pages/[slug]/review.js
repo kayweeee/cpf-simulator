@@ -117,7 +117,7 @@ function ReviewPage({ user }) {
           review={review}
           submit={submit}
           profile={profile}
-          scheme_name={scheme_name}
+          scheme_name={attempt.scheme_name}
         />
         <div className="bg-light-gray rounded-md px-6 pb-12 pt-6 m-5 ">
           <div className="p-4 w-auto h-max-content flex justify-between items-center font-bold">
