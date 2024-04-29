@@ -44,7 +44,7 @@ function Schemes() {
     <div className="text-base flex justify-center items-center">
       {/* delete modal */}
       {deleteId == "" ? null : (
-        <>
+        <div className="w-full h-full flex justify-center items-center fixed -top-0.5 z-40">
           <DeleteModal
             id={deleteId}
             setId={setDeleteId}
@@ -52,7 +52,7 @@ function Schemes() {
             handleDelete={handleDelete}
           />
           <div className="w-screen bg-gray-500/50 h-screen absolute z-30" />
-        </>
+        </div>
       )}
 
       <div>

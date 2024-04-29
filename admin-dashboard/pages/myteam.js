@@ -105,7 +105,7 @@ function MyTeam({ teamMembers, allSchemes }) {
     <div className=" w-screen bg-light-green flex items-center justify-center p-4 relative">
       {/* for delete modal */}
       {deleteId == "" ? null : (
-        <>
+        <div className="w-full h-full flex justify-center items-center fixed -top-0.5 z-40">
           <DeleteModal
             id={deleteId}
             setId={setDeleteId}
@@ -117,7 +117,7 @@ function MyTeam({ teamMembers, allSchemes }) {
             handleDelete={handleDelete}
           />
           <div className="w-screen bg-gray-500/50 h-screen absolute z-30" />
-        </>
+        </div>
       )}
 
       {/* page content */}
