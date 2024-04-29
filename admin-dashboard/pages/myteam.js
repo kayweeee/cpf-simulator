@@ -8,6 +8,7 @@ import SearchBar from "../components/SearchBar";
 import isAuth from "../components/isAuth";
 // icons
 import { FaRegTrashCan } from "react-icons/fa6";
+import DeleteModal from "../components/DeleteModal";
 
 export const getServerSideProps = async () => {
   // get all team members
@@ -26,12 +27,16 @@ export const getServerSideProps = async () => {
 };
 
 function MyTeam({ teamMembers, allSchemes }) {
-  const tableCellStyle = `text-start py-2 px-3 border`;
   const router = useRouter();
 
+  // styles
+  const tableCellStyle = `text-start py-2 px-3 border`;
+
+  // states
   const [allTeamMembers, setAllTeamMembers] = useState(teamMembers);
   const [displayMembers, setDisplayMembers] = useState(teamMembers);
   const [editState, setEditState] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
   // for filtering
   const [schemeFilter, setSchemeFilter] = useState("All");
   const [search, setSearch] = useState("");
@@ -85,6 +90,8 @@ function MyTeam({ teamMembers, allSchemes }) {
           displayMembers.filter((member) => member.uuid !== user_id)
         );
       }
+      // close modal
+      setDeleteId("");
     } catch (e) {
       console.log(e);
     }
@@ -95,7 +102,23 @@ function MyTeam({ teamMembers, allSchemes }) {
   }
 
   return (
-    <div className=" w-screen bg-light-green flex items-center justify-center p-4">
+    <div className=" w-screen bg-light-green flex items-center justify-center p-4 relative">
+      {/* for delete modal */}
+      {deleteId == "" ? null : (
+        <>
+          <DeleteModal
+            id={deleteId}
+            setId={setDeleteId}
+            text={allTeamMembers
+              .filter((member) => member.uuid == deleteId)
+              .map((i) => i.name)}
+            handleDelete={handleDelete}
+          />
+          <div className="w-screen bg-gray-500/50 h-screen absolute z-30" />
+        </>
+      )}
+
+      {/* page content */}
       <div className="bg-white min-w-full rounded-md p-6">
         <p className="font-bold">Team members</p>
         {/* Search bars */}
@@ -175,7 +198,7 @@ function MyTeam({ teamMembers, allSchemes }) {
                     <button className="flex items-center">
                       <FaRegTrashCan
                         className=" text-red-500 ml-0.5"
-                        onClick={() => handleDelete(i.uuid)}
+                        onClick={() => setDeleteId(i.uuid)}
                       />
                     </button>
                   ) : null}
