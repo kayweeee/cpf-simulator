@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 // components
 import SchemeCard from "../components/SchemeCard";
-// import isAuth from "../components/isAuth";
+import isAuth from "../components/isAuth";
+import DeleteModal from "../components/DeleteModal";
 
 function Schemes() {
   const [schemes, setSchemes] = useState([]);
   const [editState, setEditState] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
 
   const router = useRouter();
 
@@ -26,8 +28,33 @@ function Schemes() {
     getSchemes();
   }, []);
 
+  const handleDelete = async (scheme_name) => {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/scheme/${scheme_name}`, {
+        method: "DELETE",
+      });
+      setSchemes(schemes.filter((i) => i.scheme_name != scheme_name));
+      setDeleteId("");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <div className="text-base">
+    <div className="text-base flex justify-center items-center">
+      {/* delete modal */}
+      {deleteId == "" ? null : (
+        <div className="w-full h-full flex justify-center items-center fixed -top-0.5 z-40">
+          <DeleteModal
+            id={deleteId}
+            setId={setDeleteId}
+            text={`${deleteId} scheme`}
+            handleDelete={handleDelete}
+          />
+          <div className="w-screen bg-gray-500/50 h-screen absolute z-30" />
+        </div>
+      )}
+
       <div>
         {/* Header */}
         <div className="w-screen h-auto flex flex-row justify-between items-center px-20 pt-10 pb-10 text-black">
@@ -60,7 +87,7 @@ function Schemes() {
           )}
         </div>
         <div className="flex flex-col gap-y-5 ">
-          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7 mb-12">
+          <div className="flex flex-row flex-wrap px-20 justify-evenly gap-y-7 mb-12">
             {schemes.map((i) => (
               <SchemeCard
                 key={i.scheme_name}
@@ -69,8 +96,7 @@ function Schemes() {
                 questions={i.questions.length}
                 scheme_button={true}
                 editState={editState}
-                schemes={schemes}
-                setSchemes={setSchemes}
+                setDeleteId={setDeleteId}
               />
             ))}
           </div>
@@ -80,4 +106,4 @@ function Schemes() {
   );
 }
 
-export default Schemes;
+export default isAuth(Schemes);

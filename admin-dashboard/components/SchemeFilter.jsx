@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
+
 export default function SchemeFilter({
   schemeFilter,
   setSchemeFilter,

@@ -11,8 +11,9 @@ import {
 } from "@nextui-org/react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { IoIosArrowBack } from "react-icons/io";
+import isAuth from "../components/isAuth";
 
-export default function AddProfile() {
+function AddProfile() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const accessRights = ["Trainee", "Admin"];
@@ -152,3 +153,5 @@ export default function AddProfile() {
     </div>
   );
 }
+
+export default isAuth(AddProfile);
