@@ -7,12 +7,14 @@ import { ChevronLeft } from "@mui/icons-material";
 import { FaRegTrashCan } from "react-icons/fa6";
 // components
 import isAuth from "../../components/isAuth";
+import DeleteModal from "../../components/DeleteModal";
 
 function Exercises() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [allQuestions, setAllQuestions] = useState([]);
   const [editState, setEditState] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
 
   useEffect(() => {
     async function getQuestions() {
@@ -35,8 +37,8 @@ function Exercises() {
     router.push(
       {
         pathname: `/${question_id}/question`,
-        query: { 
-          scheme_name: name 
+        query: {
+          scheme_name: name,
         },
       },
       `/${question_id}/question`,
@@ -57,6 +59,7 @@ function Exercises() {
         method: "DELETE",
       });
       setAllQuestions(allQuestions.filter((i) => i.question_id != question_id));
+      setDeleteId("");
     } catch (e) {
       console.log(e);
     }
@@ -79,7 +82,7 @@ function Exercises() {
   };
 
   return (
-    <div className="text-base bg-light-green">
+    <div className="text-base bg-light-green flex flex-col">
       <button
         className="button-btm"
         onClick={(submit) => {
@@ -91,6 +94,24 @@ function Exercises() {
           <span className="back-text">Back to Schemes</span>
         </div>
       </button>
+      {/* for delete modal */}
+      {deleteId == "" ? null : (
+        <div className="w-full h-full flex justify-center items-center fixed -top-0.5">
+          <DeleteModal
+            id={deleteId}
+            setId={setDeleteId}
+            text={
+              allQuestions
+                .filter((q) => q.question_id == deleteId)
+                .map((i) => i.title)[0]
+            }
+            handleDelete={handleDelete}
+            className=" justify-self-center place-items-center"
+          />
+          <div className="w-screen bg-gray-500/50 h-screen absolute z-30" />
+        </div>
+      )}
+
       <div className="w-screen flex items-center justify-center p-4">
         <div className="bg-white min-w-full rounded-md p-6">
           <div className=" flex flex-row justify-between items-center pt-6 pb-8">
@@ -163,7 +184,7 @@ function Exercises() {
                       <button className="flex items-center">
                         <FaRegTrashCan
                           className=" text-red-500 ml-0.5"
-                          onClick={() => handleDelete(question.question_id)}
+                          onClick={() => setDeleteId(question.question_id)}
                         />
                       </button>
                     ) : null}
