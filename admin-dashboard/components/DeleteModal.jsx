@@ -1,10 +1,8 @@
 export default function DeleteModal({ id, setId, text, handleDelete }) {
-  const element = text[0];
-
   return (
     <div className=" bg-light-green h-2/5 w-1/4 absolute z-40 rounded-lg flex flex-col justify-evenly items-center p-4">
       <p className=" font-bold text-xl">Delete Confirmation</p>
-      <p>Delete {element}?</p>
+      <p>Delete {text}?</p>
       <div className="flex flex-row gap-10">
         <button
           className="text-white bg-red-600 hover:bg-red-800 px-4 py-2 rounded-md"

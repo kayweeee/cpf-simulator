@@ -109,9 +109,11 @@ function MyTeam({ teamMembers, allSchemes }) {
           <DeleteModal
             id={deleteId}
             setId={setDeleteId}
-            text={allTeamMembers
-              .filter((member) => member.uuid == deleteId)
-              .map((i) => i.name)}
+            text={
+              allTeamMembers
+                .filter((member) => member.uuid == deleteId)
+                .map((i) => i.name)[0]
+            }
             handleDelete={handleDelete}
           />
           <div className="w-screen bg-gray-500/50 h-screen absolute z-30" />

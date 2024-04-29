@@ -11,8 +11,7 @@ export default function SchemeCard({
   questions,
   scheme_button,
   editState,
-  schemes,
-  setSchemes,
+  setDeleteId,
 }) {
   const router = useRouter();
 
@@ -20,17 +19,6 @@ export default function SchemeCard({
     var pagename = scheme_name.toLowerCase();
     router.push(`/${pagename}/exercises`, undefined, { shallow: true });
   }
-
-  const handleDelete = async (scheme_name) => {
-    try {
-      const res = await fetch(`http://127.0.0.1:8000/scheme/${scheme_name}`, {
-        method: "DELETE",
-      });
-      setSchemes(schemes.filter((i) => i.scheme_name != scheme_name));
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   return (
     <div className="flex flex-col p-4 border-4 rounded-xl max-w-[350px] relative">
@@ -57,7 +45,7 @@ export default function SchemeCard({
       {editState ? (
         <button
           className="absolute text-red-600 p-1 -top-6 -right-6"
-          onClick={() => handleDelete(scheme_name)}
+          onClick={() => setDeleteId(scheme_name)}
         >
           <TiDelete size={40} />
         </button>
