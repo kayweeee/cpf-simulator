@@ -86,6 +86,12 @@ Open the openAI.py file and edit line 75:
 openai_api_key={insert open AI key here }
 ```
 
+### Changing the OpenAI Prompt                
+Navigate to the /backend/ML/ directory and open the openAI.py file. Edit the prompt template in there as necessary.         
+
+```
+ prompt_template = PromptTemplate.from_template({your prompt})
+```
 
 ### Dependency Installation
 Install Python dependencies:
