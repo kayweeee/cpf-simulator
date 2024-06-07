@@ -16,7 +16,7 @@ function Question() {
       if (router.isReady) {
         try {
           const res = await fetch(
-            `http://127.0.0.1:8000/question/${router.query.slug}`
+            `https://d17ygk7qno65io.cloudfront.net/question/${router.query.slug}`
           );
           if (!res.ok) {
             throw new Error("Failed to fetch data");

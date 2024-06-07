@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { IoIosArrowBack } from "react-icons/io";
-import isAuth from "../components/isAuth";
+import isAuth from '../../components/isAuth';
 
 function AddQuestions() {
   const router = useRouter();
@@ -38,7 +38,7 @@ function AddQuestions() {
     scheme
   ) {
     try {
-      const response = await fetch("http://127.0.0.1:8000/question", {
+      const response = await fetch("https://d17ygk7qno65io.cloudfront.net/question", {
         method: "POST",
         body: JSON.stringify({
           title: title,

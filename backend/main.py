@@ -19,15 +19,23 @@ from ML.openAI import process_response, openAI_response
 import shutil
 import uuid
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
 # Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 origins = [
-    "http://localhost",
     "http://localhost:3000",
-    "https://example.com"
+    "http://localhost:3001",
+    "http://admin-dashboard:3001",
+    "http://final-csa-dashboard:3000",
+    "http://admin.ccutrainingsimulator.com:3001",
+    "http://csa.ccutrainingsimulator.com:3000"
+    "https://d3c855xi262dlx.cloudfront.net",
+    "https://d38aq7hgnx9or9.cloudfront.net"
 ]
 
 app.add_middleware(

@@ -21,7 +21,7 @@ function Exercises() {
         const scheme_name = router.query.slug;
         window.localStorage.setItem("schemeName", scheme_name);
         const res = await fetch(
-          `http://127.0.0.1:8000/table/${user_id}/${scheme_name}`
+          `https://d17ygk7qno65io.cloudfront.net/table/${user_id}/${scheme_name}`
         );
         const questions = await res.json();
         setAllQuestions(questions);

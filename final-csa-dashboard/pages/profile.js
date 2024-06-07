@@ -27,7 +27,7 @@ function Profile({ user }) {
     async function getAttempts() {
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/attempt/user/${user.uuid}`
+          `https://d17ygk7qno65io.cloudfront.net/attempt/user/${user.uuid}`
         );
         const attemptRes = await res.json();
         if (res.ok) {
@@ -41,7 +41,7 @@ function Profile({ user }) {
     async function getSubCat() {
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/user/${user.uuid}/schemes`
+          `https://d17ygk7qno65io.cloudfront.net/user/${user.uuid}/schemes`
         );
         const subCatData = await res.json();
         if (res.ok) {

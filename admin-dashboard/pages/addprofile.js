@@ -22,7 +22,7 @@ function AddProfile() {
 
   async function addUser(email, access_rights, name) {
     try {
-      const response = await fetch("http://127.0.0.1:8000/user", {
+      const response = await fetch("https://d17ygk7qno65io.cloudfront.net/user", {
         method: "POST",
         body: JSON.stringify({
           email: email,

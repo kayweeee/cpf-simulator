@@ -22,7 +22,7 @@ function Exercises() {
         const scheme_name = router.query.slug;
         window.localStorage.setItem("schemeName", scheme_name);
         const res = await fetch(
-          `http://127.0.0.1:8000/questions/scheme/${scheme_name}`
+          `https://d17ygk7qno65io.cloudfront.net/questions/scheme/${scheme_name}`
         );
         const questions = await res.json();
         setAllQuestions(questions);
@@ -55,7 +55,7 @@ function Exercises() {
 
   const handleDelete = (question_id) => {
     try {
-      const res = fetch(`http://127.0.0.1:8000/question/${question_id}`, {
+      const res = fetch(`http://backendapi.ccutrainingsimulator.com:8000/question/${question_id}`, {
         method: "DELETE",
       });
       setAllQuestions(allQuestions.filter((i) => i.question_id != question_id));

@@ -13,7 +13,9 @@ class DatabaseConfig(BaseModel):
     """
 
 
-    dsn: str = "mysql+pymysql://root:test1234!@localhost:3306/testing"
+    # dsn: str = "mysql+pymysql://root:test1234!@localhost:3306/testing"
+    # dsn: str = "mysql+pymysql://myuser:mypassword@localhost:3306/testing"
+    dsn: str = "mysql+pymysql://myuser:mypassword@mysql:3306/testing"
 
 
 
@@ -35,13 +37,13 @@ class Config(BaseSettings):
     token_key: str = ""
     upload_path: str = "scheme_imgs"
     
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        env_prefix="MYAPI_",
-        env_nested_delimiter="__",
-        case_sensitive=False,
-    )
+    # model_config = SettingsConfigDict(
+    #     env_file=".env",
+    #     env_file_encoding="utf-8",
+    #     env_prefix="MYAPI_",
+    #     env_nested_delimiter="__",
+    #     case_sensitive=False,
+    # )
 
 
 config = Config()

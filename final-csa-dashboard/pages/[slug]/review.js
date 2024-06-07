@@ -22,7 +22,7 @@ function ReviewPage({ user }) {
     async function getAttempt() {
       if (router.isReady) {
         const attempt_id = router.query.slug;
-        const res = await fetch(`http://127.0.0.1:8000/attempt/${attempt_id}`);
+        const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/attempt/${attempt_id}`);
 
         const attemptData = await res.json();
 

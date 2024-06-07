@@ -18,7 +18,7 @@ export default function SchemeTags({
   useEffect(() => {
     const updateSchemeBackend = async () => {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/scheme/${user_id}`, {
+        const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/scheme/${user_id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

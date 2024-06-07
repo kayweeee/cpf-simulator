@@ -16,7 +16,7 @@ function Schemes() {
   useEffect(() => {
     async function getSchemes() {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/scheme`);
+        const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/scheme`);
 
         const schemeData = await res.json();
         setSchemes(schemeData);
@@ -30,7 +30,7 @@ function Schemes() {
 
   const handleDelete = async (scheme_name) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/scheme/${scheme_name}`, {
+      const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/scheme/${scheme_name}`, {
         method: "DELETE",
       });
       setSchemes(schemes.filter((i) => i.scheme_name != scheme_name));

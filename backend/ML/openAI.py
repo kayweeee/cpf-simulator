@@ -3,12 +3,15 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_core.prompts import PromptTemplate 
 from langchain_community.vectorstores import Chroma
-import os
 from langchain_community.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import (ConversationalRetrievalChain)
 from langchain.memory import ConversationBufferMemory
 import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 file_path = "./ML/faq_data.csv"
 
@@ -69,10 +72,11 @@ def process_response(res):
     return format_dict
 
 def openAI_response(question, response, ideal):
+    
     # Define model
     llm = ChatOpenAI(
 	temperature=1,
-	openai_api_key="",
+	openai_api_key= os.getenv("OPENAI_KEY"),
 	model_name="gpt-3.5-turbo-0125"
     )
 

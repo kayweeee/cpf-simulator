@@ -12,12 +12,12 @@ import DeleteModal from "../components/DeleteModal";
 
 export const getServerSideProps = async () => {
   // get all team members
-  const res = await fetch("http://127.0.0.1:8000/user", { method: "GET" });
+  const res = await fetch("http://backendapi.ccutrainingsimulator.com:8000/user", { method: "GET" });
 
   const teamMembers = await res.json();
 
   // get all schemes
-  const res2 = await fetch("http://127.0.0.1:8000/distinct/scheme", {
+  const res2 = await fetch("http://backendapi.ccutrainingsimulator.com:8000/distinct/scheme", {
     method: "GET",
   });
 
@@ -66,7 +66,7 @@ function MyTeam({ teamMembers, allSchemes }) {
 
   const updateTeamMembers = async () => {
     // get all team members
-    const res = await fetch("http://127.0.0.1:8000/user", { method: "GET" });
+    const res = await fetch("https://d17ygk7qno65io.cloudfront.net/user", { method: "GET" });
 
     const teamMembers = await res.json();
 
@@ -75,7 +75,7 @@ function MyTeam({ teamMembers, allSchemes }) {
 
   async function handleDelete(user_id) {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/user/${user_id}`, {
+      const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/user/${user_id}`, {
         method: "DELETE",
         body: JSON.stringify({ user_id: user_id }),
         headers: {

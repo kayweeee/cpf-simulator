@@ -139,41 +139,41 @@ for user in users_to_be_added:
 
 # add attempts
 # User 1: 2 same questions, and 2 questions within retirement scheme
-for user_id in user_ids:
-  attempts = [
-      {
-    "user_id": user_ids[0],
-    "answer": "The answer to your question can be found on the FAQ websites",
-    'question_id': question_ids[6]
-  },{"user_id":user_ids[0],
-    "answer": "The Full Retirement Sum (FRS) applicable to your father depends on the year he turned 70.You can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the grant sums applicable to me?",
-    'question_id': question_ids[6]
-  },{"user_id": user_ids[0],
-    "answer": "We note that you have updated your bank account recently. Your monthly payout will be credited to your DBS bank account ending with 4167 from March 2024 onwards.",
-    'question_id': question_ids[7]
-  },{
-    "user_id": user_ids[1],
-    "answer": "The answer to your question can be found on the FAQ websites",
-    'question_id': question_ids[6]
-    }, 
-  {"user_id":user_ids[1],
-    "answer": "You will not lose out on the interest when your employer pays late.",
-    'question_id': question_ids[12]
-    },{"user_id":user_ids[1],
-    "answer": "The interest will be credited to you when CPF Board recovers the CPF arrears from your employer.",
-    'question_id': question_ids[12]
-    },{
-    "user_id": user_ids[2],
-    "answer": "The answer to your question can be found on the FAQ websites",
-    'question_id': question_ids[6],
+# for user_id in user_ids:
+#   attempts = [
+#       {
+#     "user_id": user_ids[0],
+#     "answer": "The answer to your question can be found on the FAQ websites",
+#     'question_id': question_ids[6]
+#   },{"user_id":user_ids[0],
+#     "answer": "The Full Retirement Sum (FRS) applicable to your father depends on the year he turned 70.You can view the pdf with the past years’ Full Retirement Sums which is in our website FAQ on What are the grant sums applicable to me?",
+#     'question_id': question_ids[6]
+#   },{"user_id": user_ids[0],
+#     "answer": "We note that you have updated your bank account recently. Your monthly payout will be credited to your DBS bank account ending with 4167 from March 2024 onwards.",
+#     'question_id': question_ids[7]
+#   },{
+#     "user_id": user_ids[1],
+#     "answer": "The answer to your question can be found on the FAQ websites",
+#     'question_id': question_ids[6]
+#     }, 
+#   {"user_id":user_ids[1],
+#     "answer": "You will not lose out on the interest when your employer pays late.",
+#     'question_id': question_ids[12]
+#     },{"user_id":user_ids[1],
+#     "answer": "The interest will be credited to you when CPF Board recovers the CPF arrears from your employer.",
+#     'question_id': question_ids[12]
+#     },{
+#     "user_id": user_ids[2],
+#     "answer": "The answer to your question can be found on the FAQ websites",
+#     'question_id': question_ids[6],
     
-  }]
+#   }]
 
-for attempt in attempts:
-    response = requests.post(
-        f"{URL}/attempt",
-        json=attempt
-    )
-    print(response.text)
+# for attempt in attempts:
+#     response = requests.post(
+#         f"{URL}/attempt",
+#         json=attempt
+#     )
+#     print(response.text)
     
 

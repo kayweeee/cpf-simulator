@@ -13,3 +13,5 @@ pymysql
 pydantic_settings
 python-multipart
 pandas
+python-dotenv
+requests

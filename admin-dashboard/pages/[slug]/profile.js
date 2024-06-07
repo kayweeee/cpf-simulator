@@ -21,7 +21,7 @@ function Profile() {
       if (router.isReady) {
         try {
           const res = await fetch(
-            `http://127.0.0.1:8000/user/${router.query.slug}`
+            `https://d17ygk7qno65io.cloudfront.net/user/${router.query.slug}`
           );
 
           const userInfo = await res.json();
@@ -38,7 +38,7 @@ function Profile() {
     async function getAttempts() {
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/attempt/user/${userProfile.uuid}`
+          `http://backendapi.ccutrainingsimulator.com:8000/attempt/user/${userProfile.uuid}`
         );
         const attemptRes = await res.json();
         if (res.ok) {
@@ -52,7 +52,7 @@ function Profile() {
     async function getSubCat() {
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/user/${userProfile.uuid}/schemes`
+          `http://backendapi.ccutrainingsimulator.com:8000/user/${userProfile.uuid}/schemes`
         );
         const subCatData = await res.json();
         if (res.ok) {

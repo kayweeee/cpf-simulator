@@ -13,7 +13,7 @@ export default function AverageScores({ user }) {
       try {
         // retrive data
         const res = await fetch(
-          `http://127.0.0.1:8000/attempt/average_scores/user/${user.uuid}`
+          `https://d17ygk7qno65io.cloudfront.net/attempt/average_scores/user/${user.uuid}`
         );
 
         const averageData = await res.json();

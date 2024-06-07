@@ -28,7 +28,7 @@ function AddScheme() {
       const formData = new FormData();
       formData.append("file", file);
       const response = await fetch(
-        `http://127.0.0.1:8000/scheme?scheme_name=${encodeURIComponent(
+        `https://d17ygk7qno65io.cloudfront.net/scheme?scheme_name=${encodeURIComponent(
           scheme_name
         )}`,
         {
