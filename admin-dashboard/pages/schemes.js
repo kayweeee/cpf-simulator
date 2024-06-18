@@ -6,27 +6,27 @@ import SchemeCard from "../components/SchemeCard";
 import isAuth from "../components/isAuth";
 import DeleteModal from "../components/DeleteModal";
 
-function Schemes() {
-  const [schemes, setSchemes] = useState([]);
+export const getServerSideProps = async () => {
+  try {
+    const res = await fetch("https://d17ygk7qno65io.cloudfront.net/scheme", {
+      method: "GET",
+    });
+
+    const schemeData = await res.json();
+
+    return { props: { initialSchemes: schemeData } };
+  } catch (e) {
+    console.error(e);
+    return { props: { initialSchemes: [] } };
+  }
+};
+
+function Schemes({ initialSchemes }) {
+  const [schemes, setSchemes] = useState(initialSchemes);
   const [editState, setEditState] = useState(false);
   const [deleteId, setDeleteId] = useState("");
 
   const router = useRouter();
-
-  useEffect(() => {
-    async function getSchemes() {
-      try {
-        const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/scheme`);
-
-        const schemeData = await res.json();
-        setSchemes(schemeData);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
-    getSchemes();
-  }, []);
 
   const handleDelete = async (scheme_name) => {
     try {
@@ -41,64 +41,68 @@ function Schemes() {
   };
 
   return (
-    <div className="text-base flex justify-center items-center">
-      {/* delete modal */}
-      {deleteId == "" ? null : (
-        <div className="w-full h-full flex justify-center items-center fixed -top-0.5 z-40">
-          <DeleteModal
-            id={deleteId}
-            setId={setDeleteId}
-            text={`${deleteId} scheme`}
-            handleDelete={handleDelete}
-          />
-          <div className="w-screen bg-gray-500/50 h-screen absolute z-30" />
-        </div>
-      )}
-
+    <div className="text-base">
       <div>
         {/* Header */}
         <div className="w-screen h-auto flex flex-row justify-between items-center px-20 pt-10 pb-10 text-black">
           <div className="font-bold text-3xl">Schemes Overview</div>
-          {/* Add Scheme Button */}
-          {editState ? (
+          {/* Add Scheme and Edit Buttons */}
+          {schemes.length > 0 && (
             <div className="flex justify-end gap-3">
-              <button
-                className="bg-dark-green hover:bg-darker-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
-                onClick={() => router.push("/addscheme")}
-              >
-                Add Scheme
-              </button>
-              <button
-                className="bg-dark-green hover:bg-darker-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
-                onClick={() => setEditState(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          ) : (
-            <div className="flex justify-end gap-3">
-              <button
-                className="bg-dark-green hover:bg-darker-green rounded-md hover:bg-dark-green-700 text-white py-2 px-4"
-                onClick={() => setEditState(true)}
-              >
-                Edit
-              </button>{" "}
+              {editState ? (
+                <>
+                  <button
+                    className="bg-dark-green hover:bg-darker-green rounded-md text-white py-2 px-4"
+                    onClick={() => router.push("/addscheme")}
+                  >
+                    Add Scheme
+                  </button>
+                  <button
+                    className="bg-dark-green hover:bg-darker-green rounded-md text-white py-2 px-4"
+                    onClick={() => setEditState(false)}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <button
+                  className="bg-dark-green hover:bg-darker-green rounded-md text-white py-2 px-4"
+                  onClick={() => setEditState(true)}
+                >
+                  Edit
+                </button>
+              )}
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-y-5 ">
-          <div className="flex flex-row flex-wrap px-20 justify-evenly gap-y-7 mb-12">
-            {schemes.map((i) => (
-              <SchemeCard
-                key={i.scheme_name}
-                scheme_name={i.scheme_name}
-                scheme_img={i.scheme_admin_img_path}
-                questions={i.questions.length}
-                scheme_button={true}
-                editState={editState}
-                setDeleteId={setDeleteId}
-              />
-            ))}
+        <div className="flex flex-col gap-y-5">
+          <div className="flex flex-row flex-wrap px-20 justify-between gap-y-7 mb-12">
+            {schemes.length > 0 ? (
+              schemes.map((scheme) => (
+                <SchemeCard
+                  key={scheme.scheme_name}
+                  scheme_name={scheme.scheme_name}
+                  scheme_img={scheme.scheme_admin_img_path}
+                  questions={scheme.questions.length}
+                  scheme_button={true}
+                  editState={editState}
+                  schemes={schemes}
+                  setSchemes={setSchemes}
+                />
+              ))
+            ) : (
+              <div className="w-full flex flex-col items-center justify-center text-center py-20">
+                <div className="text-xl font-semibold text-gray-600 mb-4">
+                  No Scheme Found
+                </div>
+                <button
+                  className="bg-dark-green hover:bg-darker-green rounded-md text-white py-2 px-4"
+                  onClick={() => router.push("/addscheme")}
+                >
+                  Add Scheme
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
