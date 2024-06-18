@@ -17,7 +17,7 @@ export default function Login({ setUser }) {
 
     try {
  
-      const res = await fetch(`http://backendapi.ccutrainingsimulator.com:8000/login`, {
+      const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

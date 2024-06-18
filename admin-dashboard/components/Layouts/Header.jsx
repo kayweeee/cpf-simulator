@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 // icons and images
-import cpfImage from "../../public/cpf_image.png";
+import cpfImage from "../../public/cpf_image_resized.png";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoIosLogOut } from "react-icons/io";
 

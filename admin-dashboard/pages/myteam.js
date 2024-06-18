@@ -12,12 +12,12 @@ import DeleteModal from "../components/DeleteModal";
 
 export const getServerSideProps = async () => {
   // get all team members
-  const res = await fetch("http://backendapi.ccutrainingsimulator.com:8000/user", { method: "GET" });
+  const res = await fetch("https://d17ygk7qno65io.cloudfront.net/user", { method: "GET" });
 
   const teamMembers = await res.json();
 
   // get all schemes
-  const res2 = await fetch("http://backendapi.ccutrainingsimulator.com:8000/distinct/scheme", {
+  const res2 = await fetch("https://d17ygk7qno65io.cloudfront.net/distinct/scheme", {
     method: "GET",
   });
 

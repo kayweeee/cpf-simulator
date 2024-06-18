@@ -55,7 +55,7 @@ function Exercises() {
 
   const handleDelete = (question_id) => {
     try {
-      const res = fetch(`http://backendapi.ccutrainingsimulator.com:8000/question/${question_id}`, {
+      const res = fetch(`https://d17ygk7qno65io.cloudfront.net/question/${question_id}`, {
         method: "DELETE",
       });
       setAllQuestions(allQuestions.filter((i) => i.question_id != question_id));

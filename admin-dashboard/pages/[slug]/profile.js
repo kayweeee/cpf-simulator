@@ -38,7 +38,7 @@ function Profile() {
     async function getAttempts() {
       try {
         const res = await fetch(
-          `http://backendapi.ccutrainingsimulator.com:8000/attempt/user/${userProfile.uuid}`
+          `https://d17ygk7qno65io.cloudfront.net/attempt/user/${userProfile.uuid}`
         );
         const attemptRes = await res.json();
         if (res.ok) {
@@ -52,7 +52,7 @@ function Profile() {
     async function getSubCat() {
       try {
         const res = await fetch(
-          `http://backendapi.ccutrainingsimulator.com:8000/user/${userProfile.uuid}/schemes`
+          `https://d17ygk7qno65io.cloudfront.net/user/${userProfile.uuid}/schemes`
         );
         const subCatData = await res.json();
         if (res.ok) {
