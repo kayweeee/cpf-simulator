@@ -11,7 +11,7 @@ function Schemes({ user }) {
     async function getSchemes() {
       if (user) {
         try {
-          const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/${user.uuid}`);
+          const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/scheme/${user.uuid}`);
           const schemeData = await res.json();
           setSchemes(schemeData);
         } catch (e) {
