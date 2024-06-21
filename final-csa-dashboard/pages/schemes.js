@@ -31,15 +31,24 @@ function Schemes({ user }) {
         </div>
         <div className="flex flex-col gap-y-5 min-h-screen">
           <div className="flex flex-row flex-wrap px-20 justify-around gap-y-7 mb-8">
-            {schemes.map((i) => (
-              <SchemeCard
-                key={i.scheme_name}
-                scheme_name={i.scheme_name}
-                scheme_img={i.scheme_csa_img_path}
-                questions={i.questions.length}
-                scheme_button={true}
-              />
-            ))}
+            {schemes.length > 0 ? (
+              schemes.map((scheme) => (
+                <SchemeCard
+                  key={scheme.scheme_name}
+                  scheme_name={scheme.scheme_name}
+                  scheme_img={scheme.scheme_csa_img_path}
+                  questions={scheme.questions.length}
+                  scheme_button={true}
+                />
+              ))
+            ) : (
+              <div className="w-full flex flex-col items-center justify-center text-center py-20">
+                <div className="text-xl font-semibold text-gray-600 mb-4">
+                  No Scheme Found. 
+                  Please contact your administrator.
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
