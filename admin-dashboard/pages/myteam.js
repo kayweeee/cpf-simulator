@@ -21,7 +21,19 @@ export const getServerSideProps = async () => {
     method: "GET",
   });
 
-  const allSchemes = await res2.json();
+  let allSchemes = await res2.json();
+
+  console.log("allSchemes", allSchemes);
+
+  // Handle case where allSchemes is not an array
+    if (!Array.isArray(allSchemes)) {
+      allSchemes = [];
+    } else {
+      // Format schemes (capitalize first letter)
+      allSchemes = allSchemes.map((scheme) =>
+        scheme.charAt(0).toUpperCase() + scheme.slice(1).toLowerCase()
+      );
+    }
 
   return { props: { teamMembers, allSchemes } };
 };

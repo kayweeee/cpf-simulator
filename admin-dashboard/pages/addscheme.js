@@ -6,7 +6,7 @@ import isAuth from "../components/isAuth";
 
 function AddScheme() {
   const router = useRouter();
-  const [scheme_name, setSchemeName] = useState("");
+  const [schemeName, setSchemeName] = useState("");
   const [file, setFile] = useState("");
 
   const hiddenFileInput = useRef(null);
@@ -22,14 +22,20 @@ function AddScheme() {
     router.push("/schemes");
   };
 
+  const capitalize = (str) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
   async function addScheme(event) {
     event.preventDefault(); // Prevent default form submission
     try {
       const formData = new FormData();
       formData.append("file", file);
+      const standardizedSchemeName = capitalize(schemeName);
       const response = await fetch(
         `https://d17ygk7qno65io.cloudfront.net/scheme?scheme_name=${encodeURIComponent(
-          scheme_name
+          standardizedSchemeName
         )}`,
         {
           method: "POST",
