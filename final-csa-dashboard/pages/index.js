@@ -4,8 +4,11 @@ import { useState, useEffect } from "react";
 // icons and images
 import landingpage from "../public/landingpage.png";
 import feedbackpage from "../public/feedbackpage.png";
+import cpfImage from "../public/cpf_image_resized.png";
+
 // components
 import SchemeCard from "../components/SchemeCard";
+
 
 export default function Home() {
   const [schemes, setSchemes] = useState([]);
@@ -98,7 +101,7 @@ export default function Home() {
                 <SchemeCard
                   key={i.scheme_name}
                   scheme_name={i.scheme_name}
-                  scheme_img={i.scheme_csa_img_path}
+                  scheme_img={i.scheme_admin_img_path}
                   questions={i.questions.length}
                   scheme_button={false}
                 />

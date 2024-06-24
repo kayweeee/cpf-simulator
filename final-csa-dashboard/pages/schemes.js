@@ -13,7 +13,14 @@ function Schemes({ user }) {
         try {
           const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/scheme/${user.uuid}`);
           const schemeData = await res.json();
-          setSchemes(schemeData);
+          
+          // Transform scheme names
+          const transformedSchemes = schemeData.map(scheme => ({
+            ...scheme,
+            scheme_name: scheme.scheme_name.charAt(0).toUpperCase() + scheme.scheme_name.slice(1).toLowerCase()
+          }));
+          
+          setSchemes(transformedSchemes);
         } catch (e) {
           console.log(e);
         }

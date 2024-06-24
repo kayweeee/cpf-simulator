@@ -20,12 +20,23 @@ function Exercises() {
       if (router.isReady) {
         const scheme_name = router.query.slug;
         window.localStorage.setItem("schemeName", scheme_name);
+
         const res = await fetch(
           `https://d17ygk7qno65io.cloudfront.net/table/${user_id}/${scheme_name}`
         );
         const questions = await res.json();
-        setAllQuestions(questions);
-        setName(scheme_name.charAt(0).toUpperCase() + scheme_name.slice(1));
+
+        // Transform the scheme_name
+        const transformedQuestions = questions.map((question) => ({
+          ...question,
+          scheme_name: {
+            ...question.scheme_name,
+            scheme_name: question.scheme_name.scheme_name.charAt(0).toUpperCase() + question.scheme_name.scheme_name.slice(1).toLowerCase()
+          }
+        }));
+
+        setAllQuestions(transformedQuestions);
+        setName(scheme_name.charAt(0).toUpperCase() + scheme_name.slice(1).toLowerCase());
       }
     }
 

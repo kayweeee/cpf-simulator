@@ -75,6 +75,36 @@ function Question({ user }) {
     setLoading(false);
   };
 
+  // async function handleSubmit(event) {
+  //   event.preventDefault();
+  //   setLoading(true);
+  //   setSubmit(true);
+  //   try {
+  //     const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/attempt`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         user_id: user.uuid,
+  //         question_id: question.question_id,
+  //         answer: answer,
+  //       }),
+  //     });
+
+  //     if (res.ok) {
+  //       console.log('res', res);
+  //       const data = await res.json();
+  //       console.log('data', data);
+        
+  //       handleReviewNav(data);
+  //     }
+  //     setLoading(false);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
+
   return (
     <>
       <div className="bg-light-green p-4">
