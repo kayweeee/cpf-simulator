@@ -233,9 +233,9 @@ function AddQuestions() {
           ></textarea>
         </div>
             {idealSystems.map((idealSystem, index) => (
-              <div key={index} className="flex justify-center">
+              <div key={index} className="flex justify-center w-5/6">
                 <div className="w-full ml-3">
-                <div className="font-bold">Ideal System Name</div>
+                <p className=" text-red-500 inline">*</p>Ideal System Name:
                   <textarea
                     required={true}
                     id={`ideal-system-name-${index}`}
@@ -250,7 +250,7 @@ function AddQuestions() {
                     />
                     </div>
                     <div className="w-full ml-3">
-                      <div className="font-bold">Ideal System URL</div>
+                    <p className=" text-red-500 inline">*</p>Ideal System URL:
                   <textarea
                     required={true}
                     id={`ideal-system-url-${index}`}
