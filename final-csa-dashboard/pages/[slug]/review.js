@@ -25,6 +25,7 @@ function ReviewPage({ user }) {
         const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/attempt/${attempt_id}`);
 
         const attemptData = await res.json();
+        console.log("attempt", attemptData);
 
         setAttempt(attemptData);
       }
@@ -68,6 +69,8 @@ function ReviewPage({ user }) {
       "Question Title",
       "Question",
       "Answer",
+      "System Name",
+      "System URL",
       "Accuracy Feedback",
       "Accuracy Score",
       "Precision Feedback",
@@ -85,6 +88,8 @@ function ReviewPage({ user }) {
       `"${attempt.title}"`,
       `"${attempt.question_details}"`,
       `"${attempt.answer}"`,
+      `"${attempt.system_name}"`,
+      `"${attempt.system_url}"`,
       `"${attempt.accuracy_feedback}"`,
       `${(attempt.accuracy_score / 5) * 100}%`,
       `"${attempt.precision_feedback}"`,
@@ -134,6 +139,14 @@ function ReviewPage({ user }) {
           <div className="pl-4 pr-4 mb-4">
             <h3 className="font-bold">Your Answer:</h3>
             <p>{attempt.answer}</p>
+          </div>
+          <div className="pl-4 pr-4 mb-4">
+            <h3 className="font-bold">Your System Name Answer:</h3>
+            <p>{attempt.system_name}</p>
+          </div>
+          <div className="pl-4 pr-4 mb-4">
+            <h3 className="font-bold">Your System URL Answer:</h3>
+            <p>{attempt.system_url}</p>
           </div>
           <h3 className="px-4 py-2 w-auto h-max-content flex justify-between items-center font-bold">
             Overall Scores

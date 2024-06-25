@@ -1,9 +1,8 @@
-// framework
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-// components
 import QuestionBar from "../../components/QuestionBar";
 import isAuth from "../../components/isAuth";
+import { IoIosArrowBack, IoMdAdd, IoMdRemove } from "react-icons/io";
 
 function Question({ user }) {
   const router = useRouter();
@@ -12,12 +11,13 @@ function Question({ user }) {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const [submit, setSubmit] = useState(false);
+  const [systems, setSystems] = useState([{ name: "", url: "" }]);
+  
 
   useEffect(() => {
     async function getData() {
       if (router.isReady) {
         try {
-          console.log(router.query.slug);
           const res = await fetch(
             `https://d17ygk7qno65io.cloudfront.net/question/${router.query.slug}`
           );
@@ -28,7 +28,7 @@ function Question({ user }) {
             setQuestion(data);
           }
         } catch (e) {
-          console.log(e);
+          console.error("Error fetching question:", e);
         }
       }
     }
@@ -56,6 +56,8 @@ function Question({ user }) {
   const handleSubmit = async () => {
     setLoading(true);
     setSubmit(true);
+    const systemName = systems.map(system => system.name).join(", ");
+    const systemUrl = systems.map(system => system.url).join(", ");
     const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/attempt`, {
       method: "POST",
       headers: {
@@ -65,6 +67,8 @@ function Question({ user }) {
         user_id: user.uuid,
         question_id: question.question_id,
         answer: answer,
+        system_name: systemName, 
+        system_url: systemUrl,   
       }),
     });
 
@@ -75,35 +79,28 @@ function Question({ user }) {
     setLoading(false);
   };
 
-  // async function handleSubmit(event) {
-  //   event.preventDefault();
-  //   setLoading(true);
-  //   setSubmit(true);
-  //   try {
-  //     const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/attempt`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         user_id: user.uuid,
-  //         question_id: question.question_id,
-  //         answer: answer,
-  //       }),
-  //     });
-
-  //     if (res.ok) {
-  //       console.log('res', res);
-  //       const data = await res.json();
-  //       console.log('data', data);
-        
-  //       handleReviewNav(data);
-  //     }
-  //     setLoading(false);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
+  function handleSystemNameChange(index, value) {
+    const newSystems = [...systems];
+    newSystems[index].name = value;
+    setSystems(newSystems);
+  }
+  
+  function handleSystemUrlChange(index, value) {
+    const newSystems = [...systems];
+    newSystems[index].url = value;
+    setSystems(newSystems);
+  }
+  
+  function addSystemRow() {
+    setSystems([...systems, { name: "", url: "" }]);
+  }
+  
+  function removeSystemRow(index) {
+    const newSystems = [...systems];
+    newSystems.splice(index, 1);
+    setSystems(newSystems);
+  }
+  
 
   return (
     <>
@@ -136,6 +133,55 @@ function Question({ user }) {
               onChange={(e) => setAnswer(e.target.value)}
             />
           </div>
+
+        {systems.map((system, index) => (
+          <div key={index} className="flex justify-center ml-20 mr-20 mb-3 mt-5">
+            <div className="w-1/3 ml-3">
+              <div className="font-bold">System Name</div>
+              <textarea
+                required={true}
+                id={`system-name-${index}`}
+                rows='1'
+                className="w-full bg-transparent border border-solid border-dark-green rounded-lg p-2"
+                placeholder="Enter system name"
+                value={system.name}
+                onChange={(e) => handleSystemNameChange(index, e.target.value)}
+              />
+            </div>
+            <div className="w-1/3 ml-3">
+              <div className="font-bold">System URL</div>
+              <textarea
+                required={true}
+                id={`system-url-${index}`}
+                rows="1"
+                className="w-full bg-transparent border border-solid border-dark-green rounded-lg p-2"
+                placeholder="Enter system URL"
+                value={system.url}
+                onChange={(e) => handleSystemUrlChange(index, e.target.value)}
+              />
+            </div>
+            {index === systems.length - 1 && (
+              <div className="relative">
+              <div className="absolute flex items-center py-10 px-8">
+                <button
+                  className="bg-light-green rounded-md p-1 mr-2"
+                  onClick={addSystemRow}
+                >
+                  <IoMdAdd />
+                </button>
+                {index !== 0 && (
+                  <button
+                    className="bg-red-500 rounded-md p-1"
+                    onClick={() => removeSystemRow(index)}
+                  >
+                    <IoMdRemove />
+                  </button>
+                )}
+              </div>
+              </div>
+            )}
+          </div>
+        ))}
         </div>
         <hr className="mt-5 border-grey" />
         <div className="p-5 flex flex-row justify-center">
