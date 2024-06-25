@@ -20,6 +20,8 @@ import shutil
 import uuid
 import os
 from dotenv import load_dotenv
+from boto3.session import Session as BotoSession
+import boto3
 
 load_dotenv()
 
@@ -28,23 +30,33 @@ app = FastAPI()
 Base.metadata.create_all(bind=engine)
 
 origins = [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://admin-dashboard:3001",
-    "http://final-csa-dashboard:3000",
-    "http://admin.ccutrainingsimulator.com:3001",
-    "http://csa.ccutrainingsimulator.com:3000"
     "https://d3c855xi262dlx.cloudfront.net",
-    "https://d38aq7hgnx9or9.cloudfront.net"
+    "https://d38aq7hgnx9or9.cloudfront.net",
+    "https://d17ygk7qno65io.cloudfront.net",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+BUCKET_NAME = os.getenv("AWS_BUCKET_NAME")
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_REGION_NAME = os.getenv("AWS_REGION_NAME")
+
+# def create_s3_client():
+#     return BotoSession(
+#         aws_access_key_id=AWS_ACCESS_KEY_ID,
+#         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+#         region_name=AWS_REGION_NAME
+#     ).client("s3")
+
+s3_client = boto3.client('s3')
+
 
 ### USER ROUTES ###
 
@@ -186,10 +198,10 @@ async def get_scheme_by_user_id(user_id: str, db: Session = Depends(create_sessi
 
     return scheme_list
 
-async def save_image_locally(file):
-    unique_str = str(uuid.uuid4())[:5]
-    filename, file_extension = os.path.splitext(file.filename)
-    file.filename = f"{filename}_{unique_str}{file_extension}"
+# async def save_image_locally(file):
+#     unique_str = str(uuid.uuid4())[:5]
+#     filename, file_extension = os.path.splitext(file.filename)
+#     file.filename = f"{filename}_{unique_str}{file_extension}"
     
     # Save file for admin dashboard
     admin_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../admin-dashboard/public"))
@@ -239,23 +251,63 @@ async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_se
     raise HTTPException(status_code=404, detail="This is not an existing scheme")
 
 @app.post('/scheme', status_code=status.HTTP_201_CREATED)
-async def add_new_scheme(scheme_name: str, file: UploadFile = File(...), db: Session = Depends(create_session)):
+async def add_new_scheme(scheme_name: str, file_url: str, db: Session = Depends(create_session)):
+    # if not file:
+    #     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No file provided")
+    
+    # Standardize the scheme name
+    scheme_name = scheme_name[0].upper() + scheme_name[1:].lower()
+    
     # Check if the scheme with the provided scheme_name exists
     db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
     if db_scheme:
-        return responses.JSONResponse(content={"message": "This is an exisiting scheme"})
+        return {"message": "This is an existing scheme"}
+
+    try:
+    #     # Upload file to S3
+    #     s3_client.upload_fileobj(file.file, BUCKET_NAME, file.filename)
+
+    #     # Construct the S3 URL
+    #     s3_file_url = f"https://{BUCKET_NAME}.s3.{AWS_REGION_NAME}.amazonaws.com/{file.filename}"
+
+    #     print("s3_file_url",s3_file_url)
+
+        # Save scheme details to the database
+        new_scheme = SchemeModel(
+            scheme_name=scheme_name,
+            scheme_csa_img_path=file_url,
+            scheme_admin_img_path=file_url  # Assuming admin and CSA images are the same for simplicity
+        )
+        db.add(new_scheme)
+        db.commit()
+
+        return {
+            "message": "File uploaded successfully",
+            "filename": file_url.split('/')[-1],
+            "s3_url": file_url
+        }
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+    # # Check if the scheme with the provided scheme_name exists
+    # db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
+    # if db_scheme:
+    #     return responses.JSONResponse(content={"message": "This is an exisiting scheme"})
     
-    else:
-        try:
-            csa_filepath, admin_filepath = await save_image_locally(file)
-            new_scheme = SchemeModel(scheme_name=scheme_name, scheme_csa_img_path=csa_filepath, scheme_admin_img_path= admin_filepath)
-            db.add(new_scheme)
-            db.commit()
+    # else:
+    #     try:
+    #         # csa_filepath, admin_filepath = await save_image_locally(file)
+    #         temp_scheme = "https://schemes-img.s3.ap-southeast-1.amazonaws.com/cpf+logo.png"
+    #         new_scheme = SchemeModel(scheme_name=scheme_name, scheme_csa_img_path=temp_scheme, scheme_admin_img_path= temp_scheme)
+    #         db.add(new_scheme)
+    #         db.commit()
 
-        except:
-            raise HTTPException(status_code=404, detail= "Please upload an image")
+    #     except:
+    #         raise HTTPException(status_code=404, detail= "Please upload an image")
 
-    return responses.JSONResponse(content={"message": "File uploaded successfully", "filename": file.filename})
+    # return responses.JSONResponse(content={"message": "File uploaded successfully", "filename": file.filename})
 
 @app.put("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
 async def update_scheme_of_user(scheme_input: SchemeInput, db: Session = Depends(create_session)):
@@ -306,7 +358,8 @@ async def get_distinct_scheme_names(db: Session = Depends(create_session)):
 async def get_all_schemes(db: Session = Depends(create_session)):
     db_schemes= db.query(distinct(SchemeModel.scheme_name)).all()
     if not db_schemes:
-        raise HTTPException(status_code=404, detail="No scheme names found")
+        # raise HTTPException(status_code=404, detail="No scheme names found")
+        return []
     scheme_list = []
     for scheme in db_schemes:
         scheme_name = scheme[0]
@@ -319,6 +372,7 @@ async def get_all_schemes(db: Session = Depends(create_session)):
 
 @app.delete('/scheme/{scheme_name}', status_code=status.HTTP_200_OK)
 async def delete_scheme(scheme_name: str, db: Session = Depends(create_session)):
+    print('delete')
     # Check if the scheme with the provided scheme_name exists
     db_scheme = db.query(SchemeModel).filter(SchemeModel.scheme_name == scheme_name).first()
     if not db_scheme:
@@ -330,16 +384,22 @@ async def delete_scheme(scheme_name: str, db: Session = Depends(create_session))
     )).delete(synchronize_session=False)
 
     # Delete the stored files
-    admin_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../admin-dashboard/public"))
-    admin_file_path = os.path.join(admin_path, db_scheme.scheme_admin_img_path)
-    csa_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../final-csa-dashboard/public"))
-    csa_file_path = os.path.join(csa_path, db_scheme.scheme_csa_img_path)
+    # admin_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../admin-dashboard/public"))
+    # admin_file_path = os.path.join(admin_path, db_scheme.scheme_admin_img_path)
+    # csa_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../final-csa-dashboard/public"))
+    # csa_file_path = os.path.join(csa_path, db_scheme.scheme_csa_img_path)
     
-    if os.path.exists(admin_file_path):
-        os.remove(admin_file_path)
+    # if os.path.exists(admin_file_path):
+    #     os.remove(admin_file_path)
     
-    if os.path.exists(csa_file_path):
-        os.remove(csa_file_path)
+    # if os.path.exists(csa_file_path):
+    #     os.remove(csa_file_path)
+
+    # Delete image from s3 bucket
+    # s3_file_url = db_scheme.scheme_admin_img_path
+    # s3_filename = s3_file_url.split("/")[-1]
+    # print("s3_filename", s3_filename)
+    # s3_client.delete_object(Bucket=BUCKET_NAME, Key=s3_filename)
     
     # Delete the scheme
     db.delete(db_scheme)
@@ -467,7 +527,7 @@ async def get_user_attempts(user_id: str, db: Session = Depends(create_session))
 
     return attempts_list
 
-@app.post("/attempt/", status_code=status.HTTP_201_CREATED)
+@app.post("/attempt", status_code=status.HTTP_201_CREATED)
 async def create_attempt(schema: AttemptBase , db: Session = Depends(create_session)):
     inputs = dict(schema)
     db_question = db.query(QuestionModel).filter(QuestionModel.question_id == inputs['question_id']).first()
@@ -491,7 +551,7 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
 
     return db_attempt.attempt_id
 
-@app.get("/attempt/average_scores/user/{user_id}/", status_code=200)
+@app.get("/attempt/average_scores/user/{user_id}", status_code=200)
 async def get_user_average_scores(user_id: str, db: Session = Depends(create_session)):
     # Subquery to find the attempts with the maximum sum of scores for each question
     attempts_with_max_sum_scores_subquery = (
@@ -505,6 +565,8 @@ async def get_user_average_scores(user_id: str, db: Session = Depends(create_ses
         .group_by(QuestionModel.scheme_name, AttemptModel.question_id)
         .subquery()
     )
+
+    print("attempts_with_max_sum_scores_subquery", attempts_with_max_sum_scores_subquery)
 
     # Query to get the average scores based on the attempts with the maximum sum of scores for each question and scheme
     avg_scores_query = (
@@ -525,8 +587,10 @@ async def get_user_average_scores(user_id: str, db: Session = Depends(create_ses
         .all()
     )
 
-    if not avg_scores_query:
-        raise HTTPException(status_code=404, detail="Attempts not found")
+    print("avg_scores_query", avg_scores_query)
+
+    # if not avg_scores_query:
+    #     raise HTTPException(status_code=404, detail="Attempts not found")
 
     scheme_average_scores = []
     total_precision_score_avg = 0
@@ -541,16 +605,23 @@ async def get_user_average_scores(user_id: str, db: Session = Depends(create_ses
             "tone_score_avg": tone_score_avg
         })
 
+        print("scheme_average_scores before adding", scheme_average_scores)
+
         total_precision_score_avg += precision_score_avg
         total_accuracy_score_avg += accuracy_score_avg
         total_tone_score_avg += tone_score_avg
 
+        print("scheme_average_scores after adding", scheme_average_scores)
+
     # Calculate total average scores across all schemes
     total_scheme_count = len(avg_scores_query)
+    print("total_scheme_count", total_scheme_count)
     if total_scheme_count > 0:
         total_precision_score_avg /= total_scheme_count
         total_accuracy_score_avg /= total_scheme_count
         total_tone_score_avg /= total_scheme_count
+
+        print("total_scheme_count > 0", total_scheme_count)
 
     # Add total average scores across all schemes to the list
     scheme_average_scores.append({
@@ -579,3 +650,35 @@ async def get_user_average_scores(user_id: str, db: Session = Depends(create_ses
             })
 
     return scheme_average_scores
+
+def get_s3_image_urls(bucket_name, prefix):
+    try:
+        response = s3_client.list_objects_v2(
+            Bucket=bucket_name,
+            Prefix=prefix
+        )
+
+        if 'Contents' not in response:
+            return []
+
+        image_urls = []
+        for content in response['Contents']:
+            image_urls.append(f"https://{bucket_name}.s3.amazonaws.com/{content['Key']}")
+
+        # Exclude the first image URL
+        if image_urls:
+            image_urls = image_urls[1:]
+
+        return image_urls
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/s3-images")
+async def list_s3_images():
+    bucket_name = BUCKET_NAME 
+    prefix = "images/"  
+    try:
+        image_urls = get_s3_image_urls(bucket_name, prefix)
+        return {"image_urls": image_urls}
+    except HTTPException as e:
+        return {"error": e.detail}

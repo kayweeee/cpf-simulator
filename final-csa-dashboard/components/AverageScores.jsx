@@ -61,6 +61,7 @@ export default function AverageScores({ user }) {
 
   const handlePieChart = (scheme_name) => {
     setPieSelect(scheme_name);
+    setOpen(false);
 
     const allAvg = averageScores.filter((i) => i.scheme_name == scheme_name)[0];
 
