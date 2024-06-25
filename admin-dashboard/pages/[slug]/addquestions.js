@@ -232,22 +232,10 @@ function AddQuestions() {
             onChange={(e) => setIdeal(e.target.value)}
           ></textarea>
         </div>
-
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 text-left">
-                <p className="text-red-500 inline">*</p>Ideal System Name
-              </th>
-              <th className="px-4 py-2 text-left">
-                <p className=" text-red-500 inline">*</p>Ideal System URL
-              </th>
-            </tr>
-          </thead>
-          <tbody>
             {idealSystems.map((idealSystem, index) => (
-              <tr key={index} className="border-t">
-                <td className="px-4 py-2">
+              <div key={index} className="flex justify-center">
+                <div className="w-full ml-3">
+                <div className="font-bold">Ideal System Name</div>
                   <textarea
                     required={true}
                     id={`ideal-system-name-${index}`}
@@ -259,9 +247,10 @@ function AddQuestions() {
                     placeholder="Enter the ideal system name"
                     value={idealSystem.name}
                     onChange={(e) => handleIdealSystemNameChange(index, e.target.value)}
-                  ></textarea>
-                </td>
-                <td className="px-4 py-2">
+                    />
+                    </div>
+                    <div className="w-full ml-3">
+                      <div className="font-bold">Ideal System URL</div>
                   <textarea
                     required={true}
                     id={`ideal-system-url-${index}`}
@@ -273,18 +262,17 @@ function AddQuestions() {
                     placeholder="Enter the ideal system URL"
                     value={idealSystem.url}
                     onChange={(e) => handleIdealSystemUrlChange(index, e.target.value)}
-                  ></textarea>
-                </td>
-                <td className="px-4 py-5 flex justify-end">
-                  <div className="flex">
+                  />
+                  </div>
                     {index === idealSystems.length - 1 && (
-                      <button
+                      <div className="relative">
+                      <div className="absolute flex items-center py-10 px-8">
+                        <button
                         className="bg-light-green rounded-md p-1 mr-2"
                         onClick={addIdealSystemRow}
                       >
                         <IoMdAdd />
                       </button>
-                    )}
                     {index !== 0 && (
                       <button
                         className="bg-red-500 rounded-md p-1"
@@ -294,11 +282,11 @@ function AddQuestions() {
                       </button>
                     )}
                   </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  </div>
+            )}
+          </div>
+        ))}
+        </div>
 
         <div className="flex justify-center items-end">
           <Button
@@ -315,7 +303,6 @@ function AddQuestions() {
           </Button>
         </div>
       </div>
-    </div>
   );
 }
 
