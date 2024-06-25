@@ -10,8 +10,8 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import { AiFillCaretDown } from "react-icons/ai";
-import { IoIosArrowBack } from "react-icons/io";
-import isAuth from '../../components/isAuth';
+import { IoIosArrowBack, IoMdAdd, IoMdRemove } from "react-icons/io";
+import isAuth from "../../components/isAuth";
 
 function AddQuestions() {
   const router = useRouter();
@@ -22,6 +22,7 @@ function AddQuestions() {
   const difficulty = ["Easy", "Medium", "Hard"];
   const [selectedDifficulty, setSelectedDifficulty] = useState(0);
   const [scheme, setScheme] = useState("");
+  const [idealSystems, setIdealSystems] = useState([{ name: "", url: "" }]);
 
   useEffect(() => {
     if (router.isReady) {
@@ -35,7 +36,9 @@ function AddQuestions() {
     question_difficulty,
     question_details,
     ideal,
-    scheme
+    scheme,
+    idealSystemNames,
+    idealSystemUrls
   ) {
     try {
       const response = await fetch("https://d17ygk7qno65io.cloudfront.net/question", {
@@ -46,6 +49,8 @@ function AddQuestions() {
           question_details: question_details,
           ideal: ideal,
           scheme_name: scheme,
+          ideal_system_name: idealSystemNames,
+          ideal_system_url: idealSystemUrls,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -67,12 +72,17 @@ function AddQuestions() {
 
   async function handleSaveQuestion() {
     try {
+      const idealSystemNames = idealSystems.map(system => system.name).join(", ");
+      const idealSystemUrls = idealSystems.map(system => system.url).join(", ");
+
       await addquestions(
         title,
         difficulty[selectedDifficulty],
         question_details,
         ideal,
-        scheme
+        scheme,
+        idealSystemNames,
+        idealSystemUrls
       );
       router.push(`/${scheme.toLowerCase()}/exercises`);
     } catch (error) {
@@ -89,7 +99,30 @@ function AddQuestions() {
     setDetails("");
     setIdeal("");
     setSelectedDifficulty(0);
+    setIdealSystems([{ name: "", url: "" }]);
     router.push(`/${scheme.toLowerCase()}/exercises`);
+  }
+
+  function handleIdealSystemNameChange(index, value) {
+    const newIdealSystems = [...idealSystems];
+    newIdealSystems[index].name = value;
+    setIdealSystems(newIdealSystems);
+  }
+
+  function handleIdealSystemUrlChange(index, value) {
+    const newIdealSystems = [...idealSystems];
+    newIdealSystems[index].url = value;
+    setIdealSystems(newIdealSystems);
+  }
+
+  function addIdealSystemRow() {
+    setIdealSystems([...idealSystems, { name: "", url: "" }]);
+  }
+
+  function removeIdealSystemRow(index) {
+    const newIdealSystems = [...idealSystems];
+    newIdealSystems.splice(index, 1);
+    setIdealSystems(newIdealSystems);
   }
 
   return (
@@ -105,7 +138,7 @@ function AddQuestions() {
       </div>
 
       {/* Actual page content */}
-      <div className="w-3/4 flex flex-col justify-center items-center  gap-4 place-self-center py-2 px-4">
+      <div className="w-3/4 flex flex-col justify-center items-center gap-4 place-self-center py-2 px-4">
         <span className="text-2xl font-bold m-3 place-self-start">
           Add Question to {scheme} Scheme
         </span>
@@ -163,7 +196,7 @@ function AddQuestions() {
           </div>
         </ButtonGroup>
 
-        <div className="flex flex-row md:flex-nowrap flex-wrap gap-0.5 px-1 m-2 w-full justify-center">
+        <div className="flex flex-row md:flex-nowrap gap-0.5 px-1 m-2 w-full justify-center">
           <span className="flex items-start w-18">
             <p className=" text-red-500">*</p>Question:{" "}
           </span>
@@ -198,16 +231,83 @@ function AddQuestions() {
           ></textarea>
         </div>
 
+        <table className="table-auto w-full">
+          <thead>
+            <tr>
+              <th className="px-4 py-2 text-left">
+                <p className="text-red-500 inline">*</p>Ideal System Name
+              </th>
+              <th className="px-4 py-2 text-left">
+                <p className=" text-red-500 inline">*</p>Ideal System URL
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {idealSystems.map((idealSystem, index) => (
+              <tr key={index} className="border-t">
+                <td className="px-4 py-2">
+                  <textarea
+                    required={true}
+                    id={`ideal-system-name-${index}`}
+                    rows="1"
+                    className="block p-2.5 text-sm text-gray-900 text-wrap h-[50px] w-full
+                      bg-gray-50 rounded-lg border border-sage-green focus:ring-blue-500 
+                      focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter the ideal system name"
+                    value={idealSystem.name}
+                    onChange={(e) => handleIdealSystemNameChange(index, e.target.value)}
+                  ></textarea>
+                </td>
+                <td className="px-4 py-2">
+                  <textarea
+                    required={true}
+                    id={`ideal-system-url-${index}`}
+                    rows="1"
+                    className="block p-2.5 text-sm text-gray-900 text-wrap h-[50px] w-full
+                      bg-gray-50 rounded-lg border border-sage-green focus:ring-blue-500 
+                      focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter the ideal system URL"
+                    value={idealSystem.url}
+                    onChange={(e) => handleIdealSystemUrlChange(index, e.target.value)}
+                  ></textarea>
+                </td>
+                <td className="px-4 py-5 flex justify-end">
+                  <div className="flex">
+                    {index === idealSystems.length - 1 && (
+                      <button
+                        className="bg-light-green rounded-md p-1 mr-2"
+                        onClick={addIdealSystemRow}
+                      >
+                        <IoMdAdd />
+                      </button>
+                    )}
+                    {index !== 0 && (
+                      <button
+                        className="bg-red-500 rounded-md p-1"
+                        onClick={() => removeIdealSystemRow(index)}
+                      >
+                        <IoMdRemove />
+                      </button>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
         <div className="flex justify-center items-end">
           <Button
             className="bg-dark-green hover:bg-darker-green p-1 px-9 rounded-md text-white m-4"
-            onClick={() => handleCancel()}
+            onClick={handleCancel}
           >
             Cancel
           </Button>
           <Button
             className="bg-dark-green hover:bg-darker-green p-1 px-10 rounded-md text-white m-4"
-            onClick={() => handleSaveQuestion()}
+            onClick={handleSaveQuestion}
           >
             Save
           </Button>
