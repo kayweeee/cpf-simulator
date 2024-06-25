@@ -23,6 +23,7 @@ function AddQuestions() {
   const [selectedDifficulty, setSelectedDifficulty] = useState(0);
   const [scheme, setScheme] = useState("");
   const [idealSystems, setIdealSystems] = useState([{ name: "", url: "" }]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (router.isReady) {
@@ -165,7 +166,7 @@ function AddQuestions() {
           </span>
           <div className="flex border border-sage-green p-1 w-48 justify-between ">
             <span className="flex w-1/4">{difficulty[selectedDifficulty]}</span>
-            <Dropdown>
+            <Dropdown isOpen={dropdownOpen} onOpenChange={setDropdownOpen}>
               <DropdownTrigger placement="bottom-end">
                 <Button isIconOnly className="px-2">
                   <AiFillCaretDown />
@@ -185,6 +186,7 @@ function AddQuestions() {
                     key={index}
                     onAction={() => {
                       setSelectedDifficulty(index);
+                      setDropdownOpen(false); // Close the dropdown after selecting an option
                       console.log("Selected option:", difficulty);
                     }}
                   >
