@@ -40,8 +40,8 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"]
 )
@@ -467,7 +467,7 @@ async def get_user_attempts(user_id: str, db: Session = Depends(create_session))
 
     return attempts_list
 
-@app.post("/attempt/", status_code=status.HTTP_201_CREATED)
+@app.post("/attempt", status_code=status.HTTP_201_CREATED)
 async def create_attempt(schema: AttemptBase , db: Session = Depends(create_session)):
     inputs = dict(schema)
     db_question = db.query(QuestionModel).filter(QuestionModel.question_id == inputs['question_id']).first()
@@ -476,11 +476,17 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
     
     question = db_question.question_details
     ideal = db_question.ideal
+    ideal_system_name = db_question.ideal_system_name
+    ideal_system_url = db_question.ideal_system_url
 
     response = openAI_response(
         question=question, 
         response=inputs['answer'],
-        ideal=ideal
+        ideal=ideal,
+        ideal_system_name = ideal_system_name,
+        ideal_system_url = ideal_system_url,
+        system_name=inputs['system_name'],
+        system_url=inputs['system_url'],
         )
     
     response = process_response(response)
@@ -491,7 +497,7 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
 
     return db_attempt.attempt_id
 
-@app.get("/attempt/average_scores/user/{user_id}/", status_code=200)
+@app.get("/attempt/average_scores/user/{user_id}", status_code=200)
 async def get_user_average_scores(user_id: str, db: Session = Depends(create_session)):
     # Subquery to find the attempts with the maximum sum of scores for each question
     attempts_with_max_sum_scores_subquery = (

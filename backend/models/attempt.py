@@ -18,6 +18,8 @@ class AttemptModel(Base):
     user_id: Mapped[str] = Column(String(255), ForeignKey("user.uuid"), nullable=False)
     question_id: Mapped[str] = Column(String(255), ForeignKey("question.question_id"), nullable=False)
     answer: Mapped[str] = Column(String(3000), nullable=False)
+    system_name: Mapped[str] = Column(String(3000), nullable=False)
+    system_url: Mapped[str] = Column(String(3000), nullable=False)
     date: Mapped[str] = Column(String(255), default=generate_date, nullable=False)
     # scores
     precision_score: Mapped[int] = Column(Integer, nullable=False)
@@ -42,5 +44,7 @@ class AttemptModel(Base):
             'accuracy_feedback': self.accuracy_feedback,
             'precision_feedback': self.precision_feedback,
             'tone_feedback': self.tone_feedback,
-            'feedback': self.feedback
+            'feedback': self.feedback,
+            'system_name': self.system_name,
+            'system_url': self.system_url
         }
