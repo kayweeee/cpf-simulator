@@ -71,7 +71,7 @@ def process_response(res):
     
     return format_dict
 
-def openAI_response(question, response, ideal):
+def openAI_response(question, response, ideal, ideal_system_name, ideal_system_url, system_name, system_url):
     
     # Define model
     llm = ChatOpenAI(
@@ -91,11 +91,13 @@ def openAI_response(question, response, ideal):
     # Prompt
     prompt_template = PromptTemplate.from_template(
     """
-    I will give you a question, a customer service trainee's response to that question, and the ideal response to that question. 
+    I will give you a question, a customer service trainee's response to that question, the ideal response to that question, the sources from which the trainee obtained their response (system name and system URL), and the ideal source from which the trainee should be obtaining their response.
     Please assess the trainee's response to the question. Do not actually answer the question, but evaluate the answer only using the context given and the ideal answer.
+    Please consider the system name and system URL, aiming for the trainee's response to closely match the ideal system name and system URL, allowing for minor variations in spelling or URL format as long as they are similar. The system name and system URL could be a single name and URL or multiple names and URLs.
     Please give the trainee's response a score out of 5 for accuracy, precision and tone. Accuracy refers to if the factually correct answers were provided, precision refers to whether the answer has enough details and is concise, and tone refers to whether the tone of the answer is respectful and professional. 
     Please take note that the ideal response scored 5 for accuracy, precision and tone and use it as a point of reference.
     Please also give some general feedback for improvement.
+
 
     It is acceptable to give the trainee full marks if they answered similarly to the ideal response, and if you do not have improvements to give, please give a score of 5. Do not mention the existence of the ideal response when providing your feedback.
 
@@ -106,8 +108,12 @@ def openAI_response(question, response, ideal):
     Question: {question}
     Trainee's response: {response}
     Ideal response: {ideal}
+    Trainee's response to System Name(s): {system_name}
+    Trainee's response to System URL(s): {system_url}
+    Ideal System Name(s): {ideal_system_name}
+    Ideal System URL(s): {ideal_system_url}
     """)
 
-    result = qa.run({"question": prompt_template.format(question=question, response=response, ideal=ideal)})
+    result = qa.run({"question": prompt_template.format(question=question, response=response, ideal=ideal, ideal_system_name=ideal_system_name, ideal_system_url=ideal_system_url, system_name=system_name, system_url=system_url)})
     
     return result

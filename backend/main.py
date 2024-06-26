@@ -536,11 +536,17 @@ async def create_attempt(schema: AttemptBase , db: Session = Depends(create_sess
     
     question = db_question.question_details
     ideal = db_question.ideal
+    ideal_system_name = db_question.ideal_system_name
+    ideal_system_url = db_question.ideal_system_url
 
     response = openAI_response(
         question=question, 
         response=inputs['answer'],
-        ideal=ideal
+        ideal=ideal,
+        ideal_system_name = ideal_system_name,
+        ideal_system_url = ideal_system_url,
+        system_name=inputs['system_name'],
+        system_url=inputs['system_url']
         )
     
     response = process_response(response)

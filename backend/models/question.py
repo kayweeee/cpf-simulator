@@ -17,6 +17,8 @@ class QuestionModel(Base):
     title: Mapped[str] = Column(String(255), nullable=False)
     scheme_name: Mapped[str] = Column(String(255), ForeignKey("scheme.scheme_name"), nullable=False)
     scheme: Mapped["SchemeModel"] = relationship("SchemeModel", back_populates="questions")
+    ideal_system_name: Mapped[str] = Column(String(255))
+    ideal_system_url: Mapped[str] = Column(String(1000))
     
     def to_dict(self):
         return {
@@ -26,7 +28,8 @@ class QuestionModel(Base):
             'ideal': self.ideal,
             'title': self.title,
             'scheme_name': self.scheme,
-            # 'scheme': self.scheme
+            'ideal_system_name': self.ideal_system_name,
+            'ideal_system_url': self.ideal_system_url
         }
     
     
