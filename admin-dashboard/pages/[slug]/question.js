@@ -7,9 +7,7 @@ import BackBar from "../../components/BackBar";
 
 function Question() {
   const router = useRouter();
-  const [question, setQuestion] = useState([]);
-
-  console.log(question.title, "here");
+  const [question, setQuestion] = useState({});
 
   useEffect(() => {
     async function getData() {
@@ -32,6 +30,14 @@ function Question() {
     getData();
   }, [router.isReady]);
 
+  // Split the names and URLs into arrays
+  const systemNames = question.ideal_system_name
+    ? question.ideal_system_name.split(", ")
+    : [];
+  const systemUrls = question.ideal_system_url
+    ? question.ideal_system_url.split(", ")
+    : [];
+
   return (
     <>
       <div className="bg-light-green p-4">
@@ -44,6 +50,7 @@ function Question() {
                 <span className="font-bold">Scheme: </span>
                 {question.scheme_name}
               </div>
+
               <div>
                 <span className="font-bold">Difficulty: </span>
                 {question.question_difficulty}
@@ -57,6 +64,22 @@ function Question() {
             <div>
               <p className="font-bold">Ideal Answer:</p>
               <p>{question.ideal}</p>
+            </div>
+            <div>
+              <p className="font-bold">System Names:</p>
+              <ul>
+                {systemNames.map((name, index) => (
+                  <li key={index}>{name}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-bold">System URLs:</p>
+              <ul>
+                {systemUrls.map((url, index) => (
+                  <li key={index}>{url}</li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
