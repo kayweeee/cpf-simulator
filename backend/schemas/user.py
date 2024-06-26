@@ -3,11 +3,13 @@ from typing import List
 
 class UserBase(BaseModel):
     email: str
+    password: str
     access_rights: str
     name: str
 
-class UserEmailInput(BaseModel):
+class UserInput(BaseModel):
     email: str
+    password: str
 
 class UserResponseSchema(BaseModel):
     uuid: str

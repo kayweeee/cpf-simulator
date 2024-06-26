@@ -8,7 +8,7 @@ from models.question import QuestionModel
 from models.association_tables import user_scheme_association
 from session import create_session, engine
 from schemas.attempt import AttemptBase
-from schemas.user import UserBase, UserEmailInput, UserResponseSchema
+from schemas.user import UserBase, UserInput, UserResponseSchema
 from schemas.scheme import SchemeBase, SchemeInput
 from schemas.question import QuestionBase
 from schemas.table import TableBase
@@ -22,6 +22,7 @@ import os
 from dotenv import load_dotenv
 from boto3.session import Session as BotoSession
 import boto3
+from passlib.context import CryptContext
 
 load_dotenv()
 
@@ -57,16 +58,35 @@ AWS_REGION_NAME = os.getenv("AWS_REGION_NAME")
 
 s3_client = boto3.client('s3')
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 ### USER ROUTES ###
 
+@app.post("/register", response_model=str, status_code=status.HTTP_201_CREATED)
+async def create_user(user: UserBase, db: Session = Depends(create_session)):
+    hashed_password = pwd_context.hash(user.password)  # Hash the password
+    db_user = UserModel(
+        email=user.email,
+        hashed_password=hashed_password,
+        name=user.name,
+        access_rights=user.access_rights
+    )
+    db.add(db_user)
+    db.commit()
+    return db_user.uuid
+
 @app.post("/login", status_code=200)
-async def login_user(user_input: UserEmailInput, db: Session = Depends(create_session)):
+async def login_user(user_input: UserInput, db: Session = Depends(create_session)):
     email = user_input.email
+    password = user_input.password
     db_user = db.query(UserModel).filter(UserModel.email == email).first()
     if db_user is None:
-        raise HTTPException(status_code=404, detail= "User not found")
-
+        raise HTTPException(status_code=401, detail="User not found")
+    
+    if not pwd_context.verify(password, db_user.hashed_password):
+        raise HTTPException(status_code=401, detail="Incorrect password")
+    
     return db_user
 
 @app.get("/user", status_code=status.HTTP_201_CREATED)
@@ -96,8 +116,15 @@ async def read_user(user_id:str, db: Session = Depends(create_session)):
     db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-
-    return db_user
+    
+    user_data = {
+        "uuid": db_user.uuid,
+        "email": db_user.email,
+        "name": db_user.name,
+        "access_rights": db_user.access_rights
+        # Exclude hashed_password from the response
+    }
+    return user_data
 
 @app.delete("/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def delete_user(user_id: str, db: Session = Depends(create_session)):
@@ -121,7 +148,13 @@ async def delete_user(user_id: str, db: Session = Depends(create_session)):
 
 @app.post("/user", status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserBase, db: Session = Depends(create_session)):
-    db_user = UserModel(**user.dict())
+    hashed_password = pwd_context.hash(user.password)  # Hash the password
+    db_user = UserModel(
+        email=user.email,
+        hashed_password=hashed_password,
+        name=user.name,
+        access_rights=user.access_rights
+    )
     db.add(db_user)
     db.commit()
     return db_user.uuid

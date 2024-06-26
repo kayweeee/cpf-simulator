@@ -16,6 +16,7 @@ class UserModel(Base):
     email: Mapped[str] = Column(String(255), nullable=False)
     name: Mapped[str] = Column(String(255), nullable=False)
     access_rights: Mapped[str] = Column(String(255), nullable=False)
+    hashed_password: Mapped[str] = Column(String(255), nullable=False)
     
     # relationships
     scheme: Mapped[list[SchemeModel]] = relationship(SchemeModel, secondary=user_scheme_association, cascade="all, delete", back_populates="users")
