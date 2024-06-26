@@ -15,7 +15,10 @@ function ReviewPage({ user }) {
   const submit = router.query.submit === "true";
   const profile = router.query.profile === "true";
   const scheme_name = router.query.scheme_name || null;
-  const [attempt, setAttempt] = useState([]);
+  const [attempt, setAttempt] = useState({
+    system_name: [],
+    system_url: []
+  });
   const loginDetails = user;
 
   useEffect(() => {
@@ -25,6 +28,11 @@ function ReviewPage({ user }) {
         const res = await fetch(`https://d17ygk7qno65io.cloudfront.net/attempt/${attempt_id}`);
 
         const attemptData = await res.json();
+        console.log("attempt", attemptData);
+
+        // Convert system_name and system_url to arrays
+        attemptData.system_name = attemptData.system_name.split(',').map(item => item.trim());
+        attemptData.system_url = attemptData.system_url.split(',').map(item => item.trim());
 
         setAttempt(attemptData);
       }
@@ -68,6 +76,8 @@ function ReviewPage({ user }) {
       "Question Title",
       "Question",
       "Answer",
+      "System Name",
+      "System URL",
       "Accuracy Feedback",
       "Accuracy Score",
       "Precision Feedback",
@@ -77,27 +87,30 @@ function ReviewPage({ user }) {
     ];
 
     // Generate rows
-    const row = [
-      loginDetails.name,
+    const rows = [
+      [
+        loginDetails.name,
       loginDetails.email,
       `"${attempt.scheme_name}"`,
       `"${attempt.date}"`,
       `"${attempt.title}"`,
       `"${attempt.question_details}"`,
       `"${attempt.answer}"`,
+      `"${attempt.system_name}"`,
+      `"${attempt.system_url}"`,
       `"${attempt.accuracy_feedback}"`,
       `${(attempt.accuracy_score / 5) * 100}%`,
       `"${attempt.precision_feedback}"`,
       `${(attempt.precision_score / 5) * 100}%`,
       `"${attempt.tone_feedback}"`,
       `${(attempt.tone_score / 5) * 100}%`,
+      ]
     ];
 
-    // Combine headers and row
-    const csvContent = [headers];
-    csvContent.push(row);
+    // Combine headers and rows
+    const csvContent = [headers.join(","), ...rows.map(row => row.join(","))];
 
-    return csvContent.map((row) => row.join(",")).join("\n");
+    return csvContent.join("\n");
   };
 
   const handleDownload = async () => {
@@ -134,6 +147,22 @@ function ReviewPage({ user }) {
           <div className="pl-4 pr-4 mb-4">
             <h3 className="font-bold">Your Answer:</h3>
             <p>{attempt.answer}</p>
+          </div>
+          <div className="pl-4 pr-4 mb-4">
+            <h3 className="font-bold">Your System Name Answer:</h3>
+            <ul>
+              {attempt.system_name.map((name, index) => (
+                <li key={index}>{name}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="pl-4 pr-4 mb-4">
+            <h3 className="font-bold">Your System URL Answer:</h3>
+            <ul>
+              {attempt.system_url.map((url, index) => (
+                <li key={index}>{url}</li>
+              ))}
+            </ul>
           </div>
           <h3 className="px-4 py-2 w-auto h-max-content flex justify-between items-center font-bold">
             Overall Scores
