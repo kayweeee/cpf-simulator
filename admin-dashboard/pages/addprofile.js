@@ -14,6 +14,7 @@ import {
 } from "@nextui-org/react";
 import { AiFillCaretDown, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { IoIosArrowBack } from "react-icons/io";
+import { BiRefresh } from "react-icons/bi";
 import isAuth from "../components/isAuth";
 
 function AddProfile() {
@@ -26,6 +27,19 @@ function AddProfile() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State for password visibility
   const [selectedAccessIndex, setSelectedAccessIndex] = useState(0);
   const accessRights = ["Trainee", "Admin"];
+
+  // Function to generate a random password
+  const generatePassword = () => {
+    const length = 15; // Set the length of the generated password
+    const charset =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|<>?"; // Characters to include
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      result += charset[randomIndex];
+    }
+    return result;
+  };
 
   // Function to add a new user
   async function addUser(name, email, password, access_rights) {
@@ -67,6 +81,12 @@ function AddProfile() {
         alert("Failed to save profile. Please try again.");
       });
   }
+
+  // Function to handle generating a new password
+  const handleGeneratePassword = () => {
+    const newPassword = generatePassword();
+    setPassword(newPassword);
+  };
 
   return (
     <div className="flex flex-col p-4">
@@ -117,19 +137,30 @@ function AddProfile() {
         </div>
 
         {/* Password input */}
-        <div className="flex flex-row justify-center items-center pl-2">
+        <div className="flex flex-row justify-center items-center pl-7">
           <span className="flex w-1/4">
             <p className="text-red-500">*</p>Password:
           </span>
           <div className="flex items-center py-1 ml-2 w-full">
             <Input
               isRequired
-              type={isPasswordVisible ? "text" : "password"} // Toggle input type
+              type={isPasswordVisible ? "text" : "password"}
               placeholder="Enter your Password"
-              defaultValue=""
+              value={password}
               onValueChange={(value) => setPassword(value)}
               className="flex border border-sage-green outline-2 py-1 w-48"
             />
+              {/* Generate password button */}
+              <div className="flex justify-center items-center">
+              <Button
+                    isIconOnly
+                    className="ml-2"
+                    onClick={handleGeneratePassword}
+                    aria-label="Generate Password"
+                  >
+                    <BiRefresh />
+                  </Button>
+              </div>
             <Button
               isIconOnly
               className="ml-2"
