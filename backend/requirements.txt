@@ -16,3 +16,4 @@ pandas
 python-dotenv
 requests
 boto3
+passlib
