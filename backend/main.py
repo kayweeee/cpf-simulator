@@ -8,7 +8,7 @@ from models.question import QuestionModel
 from models.association_tables import user_scheme_association
 from session import create_session, engine
 from schemas.attempt import AttemptBase
-from schemas.user import UserBase, UserEmailInput, UserResponseSchema
+from schemas.user import UserBase, UserInput, UserResponseSchema
 from schemas.scheme import SchemeBase, SchemeInput
 from schemas.question import QuestionBase
 from schemas.table import TableBase
@@ -22,6 +22,7 @@ import os
 from dotenv import load_dotenv
 from boto3.session import Session as BotoSession
 import boto3
+from passlib.context import CryptContext
 
 load_dotenv()
 
@@ -48,25 +49,37 @@ AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_REGION_NAME = os.getenv("AWS_REGION_NAME")
 
-# def create_s3_client():
-#     return BotoSession(
-#         aws_access_key_id=AWS_ACCESS_KEY_ID,
-#         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-#         region_name=AWS_REGION_NAME
-#     ).client("s3")
-
 s3_client = boto3.client('s3')
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 ### USER ROUTES ###
 
+# @app.post("/register", response_model=str, status_code=status.HTTP_201_CREATED)
+# async def create_user(user: UserBase, db: Session = Depends(create_session)):
+#     hashed_password = pwd_context.hash(user.password)  # Hash the password
+#     db_user = UserModel(
+#         email=user.email,
+#         hashed_password=hashed_password,
+#         name=user.name,
+#         access_rights=user.access_rights
+#     )
+#     db.add(db_user)
+#     db.commit()
+#     return db_user.uuid
+
 @app.post("/login", status_code=200)
-async def login_user(user_input: UserEmailInput, db: Session = Depends(create_session)):
+async def login_user(user_input: UserInput, db: Session = Depends(create_session)):
     email = user_input.email
+    password = user_input.password
     db_user = db.query(UserModel).filter(UserModel.email == email).first()
     if db_user is None:
-        raise HTTPException(status_code=404, detail= "User not found")
-
+        raise HTTPException(status_code=401, detail="User not found")
+    
+    if not pwd_context.verify(password, db_user.hashed_password):
+        raise HTTPException(status_code=401, detail="Incorrect password")
+    
     return db_user
 
 @app.get("/user", status_code=status.HTTP_201_CREATED)
@@ -96,8 +109,15 @@ async def read_user(user_id:str, db: Session = Depends(create_session)):
     db_user = db.query(UserModel).filter(UserModel.uuid == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-
-    return db_user
+    
+    user_data = {
+        "uuid": db_user.uuid,
+        "email": db_user.email,
+        "name": db_user.name,
+        "access_rights": db_user.access_rights
+        # Exclude hashed_password from the response
+    }
+    return user_data
 
 @app.delete("/user/{user_id}", status_code=status.HTTP_201_CREATED)
 async def delete_user(user_id: str, db: Session = Depends(create_session)):
@@ -121,7 +141,13 @@ async def delete_user(user_id: str, db: Session = Depends(create_session)):
 
 @app.post("/user", status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserBase, db: Session = Depends(create_session)):
-    db_user = UserModel(**user.dict())
+    hashed_password = pwd_context.hash(user.password)  # Hash the password
+    db_user = UserModel(
+        email=user.email,
+        hashed_password=hashed_password,
+        name=user.name,
+        access_rights=user.access_rights
+    )
     db.add(db_user)
     db.commit()
     return db_user.uuid
@@ -198,36 +224,36 @@ async def get_scheme_by_user_id(user_id: str, db: Session = Depends(create_sessi
 
     return scheme_list
 
-# async def save_image_locally(file):
-#     unique_str = str(uuid.uuid4())[:5]
-#     filename, file_extension = os.path.splitext(file.filename)
-#     file.filename = f"{filename}_{unique_str}{file_extension}"
+# # async def save_image_locally(file):
+# #     unique_str = str(uuid.uuid4())[:5]
+# #     filename, file_extension = os.path.splitext(file.filename)
+# #     file.filename = f"{filename}_{unique_str}{file_extension}"
     
-    # Save file for admin dashboard
-    admin_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../admin-dashboard/public"))
-    admin_upload_path = os.path.join(admin_path, "uploads")
-    os.makedirs(admin_upload_path, exist_ok=True)
-    admin_file_path = os.path.join(admin_upload_path, file.filename)
+#     # Save file for admin dashboard
+#     admin_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../admin-dashboard/public"))
+#     admin_upload_path = os.path.join(admin_path, "uploads")
+#     os.makedirs(admin_upload_path, exist_ok=True)
+#     admin_file_path = os.path.join(admin_upload_path, file.filename)
 
-    with open(admin_file_path, "wb") as f_admin:
-        file.file.seek(0)  # Reset file pointer to start of the file
-        shutil.copyfileobj(file.file, f_admin)
+#     with open(admin_file_path, "wb") as f_admin:
+#         file.file.seek(0)  # Reset file pointer to start of the file
+#         shutil.copyfileobj(file.file, f_admin)
         
-    # Save file for final-csa-dashboard
-    csa_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../final-csa-dashboard/public"))
-    csa_upload_path = os.path.join(csa_path, "uploads")  
-    os.makedirs(csa_upload_path, exist_ok=True)
-    csa_file_path = os.path.join(csa_upload_path, file.filename)  
+#     # Save file for final-csa-dashboard
+#     csa_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../final-csa-dashboard/public"))
+#     csa_upload_path = os.path.join(csa_path, "uploads")  
+#     os.makedirs(csa_upload_path, exist_ok=True)
+#     csa_file_path = os.path.join(csa_upload_path, file.filename)  
 
-    with open(csa_file_path, "wb") as f_csa:
-        file.file.seek(0)  
-        shutil.copyfileobj(file.file, f_csa)
+#     with open(csa_file_path, "wb") as f_csa:
+#         file.file.seek(0)  
+#         shutil.copyfileobj(file.file, f_csa)
     
-    # Get the relative path of the saved files
-    rel_admin_path = os.path.relpath(admin_file_path, admin_path)
-    rel_csa_path = os.path.relpath(csa_file_path, csa_path)
+#     # Get the relative path of the saved files
+#     rel_admin_path = os.path.relpath(admin_file_path, admin_path)
+#     rel_csa_path = os.path.relpath(csa_file_path, csa_path)
     
-    return rel_admin_path, rel_csa_path
+#     return rel_admin_path, rel_csa_path
 
 @app.post("/scheme/{user_id}", status_code=status.HTTP_201_CREATED)
 async def add_user_to_scheme(scheme: SchemeBase, db: Session = Depends(create_session)):
